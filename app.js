@@ -86,6 +86,17 @@ function initHeroChart() {
 
 function switchView(view) { document.querySelectorAll(".view").forEach(section => section.classList.toggle("active-view", section.dataset.section === view)); document.querySelectorAll(".nav a").forEach(link => link.classList.toggle("active", link.dataset.view === view)); $("#mainNav").classList.remove("open"); window.scrollTo({ top: 0, behavior: "smooth" }); }
 
+function updateTeamRoles() {
+  document.querySelectorAll(".member").forEach(member => {
+    const name = member.querySelector("strong")?.textContent || "";
+    const role = member.querySelector("small");
+    const icon = member.querySelector("i");
+    if (!role || !icon) return;
+    if (name.includes("Quispe Rupaylla Fabrizio Alonso")) { role.textContent = "Matemática y modelación"; icon.className = "fa-solid fa-square-root-variable"; }
+    if (name.includes("Suarez Huamani Marco Antonio")) { role.textContent = "Diseño didáctico y web"; icon.className = "fa-solid fa-pen-ruler"; }
+  });
+}
+
 document.querySelectorAll("[data-view]").forEach(link => link.addEventListener("click", event => { event.preventDefault(); switchView(link.dataset.view); history.replaceState(null, "", `#${link.dataset.view}`); }));
 $("#menuToggle").addEventListener("click", () => $("#mainNav").classList.toggle("open"));
 $("#calculatorForm").addEventListener("submit", event => { event.preventDefault(); runCalculator(); });
@@ -96,3 +107,4 @@ $("#printActa").addEventListener("click", () => window.print());
 
 initHeroChart();
 runCalculator();
+updateTeamRoles();
