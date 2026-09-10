@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Laboratorio de ecuaciones no lineales: Bisección y Newton.">
+  <title>Raíz | Ecuaciones no lineales</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#inicio" data-view="inicio" aria-label="Ir al inicio">
+      <span class="brand-mark"><i class="fa-solid fa-wave-square"></i></span>
+      <span><strong>RAÍZ</strong><small>laboratorio numérico</small></span>
+    </a>
+    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
+    <nav class="nav" id="mainNav" aria-label="Navegación principal">
+      <a href="#inicio" data-view="inicio" class="active">Inicio</a>
+      <a href="#teoria" data-view="teoria">Teoría</a>
+      <a href="#calculadoras" data-view="calculadoras">Calculadoras</a>
+      <a href="#practica" data-view="practica">Práctica</a>
+      <a href="#equipo" data-view="equipo">Equipo</a>
+    </nav>
+    <span class="status"><span class="status-dot"></span> Semana 1</span>
+  </header>
+
+  <main>
+    <section class="view active-view" id="inicio" data-section="inicio">
+      <div class="hero-grid">
+        <div class="hero-copy reveal">
+          <p class="eyebrow"><span>01</span> MÉTODOS NUMÉRICOS · MÓDULO I</p>
+          <h1>Encontrar una raíz es <em>entender</em> un problema.</h1>
+          <p class="lead">Explora cómo Bisección y Newton convierten una ecuación no lineal en una respuesta comprobable.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#calculadoras" data-view="calculadoras"><i class="fa-solid fa-play"></i> Probar calculadoras</a>
+            <a class="text-link" href="#teoria" data-view="teoria">Comenzar por la teoría <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+          <div class="problem-chip"><span class="chip-label">CASO BASE</span><code>f(x) = x³ − x − 2</code><span class="chip-range">[1, 2]</span></div>
+        </div>
+        <div class="hero-visual reveal delay-1">
+          <div class="coordinate-card">
+            <div class="card-top"><span>VISUALIZACIÓN EN VIVO</span><span class="live-dot">●</span></div>
+            <div class="graph-wrap"><canvas id="heroChart" aria-label="Gráfica de la función x al cubo menos x menos dos"></canvas></div>
+            <div class="graph-footer"><span><i class="fa-solid fa-minus"></i> f(x)</span><span class="root-value">raíz ≈ 1.5214</span></div>
+          </div>
+          <div class="floating-note note-one"><strong>100</strong><span>iteraciones máx.</span></div>
+          <div class="floating-note note-two"><strong>10⁻⁶</strong><span>tolerancia</span></div>
+        </div>
+      </div>
+      <div class="metrics reveal delay-2">
+        <div><strong>02</strong><span>métodos interactivos</span></div>
+        <div><strong>03</strong><span>resultados de aprendizaje</span></div>
+        <div><strong>01</strong><span>caso aplicado</span></div>
+        <div><strong>∞</strong><span>preguntas por explorar</span></div>
+      </div>
+    </section>
+
+    <section class="view" id="teoria" data-section="teoria">
+      <div class="section-heading"><p class="eyebrow"><span>02</span> FUNDAMENTOS</p><h2>Dos caminos hacia<br><em>la misma raíz.</em></h2><p>Ambos métodos aproximan la solución de f(x) = 0, pero sus decisiones y garantías son diferentes.</p></div>
+      <div class="method-grid">
+        <article class="method-card method-bisection"><div class="method-number">01</div><i class="fa-solid fa-arrows-left-right method-icon"></i><h3>Bisección</h3><p>Divide repetidamente un intervalo donde la función cambia de signo. Es robusto y siempre conserva la raíz si se cumplen las condiciones.</p><div class="formula">c = <span>a + b</span><small>2</small></div><ul><li><i class="fa-solid fa-check"></i> Requiere f(a) · f(b) &lt; 0</li><li><i class="fa-solid fa-check"></i> Convergencia garantizada</li><li><i class="fa-solid fa-check"></i> Convergencia lineal</li></ul></article>
+        <article class="method-card method-newton"><div class="method-number">02</div><i class="fa-solid fa-bolt method-icon"></i><h3>Newton</h3><p>Usa la tangente de la función para saltar hacia una aproximación mejor. Es veloz cerca de la raíz, pero sensible al punto inicial.</p><div class="formula">x<sub>n+1</sub> = x<sub>n</sub> − <span>f(x<sub>n</sub>)</span><small>f'(x<sub>n</sub>)</small></div><ul><li><i class="fa-solid fa-check"></i> Necesita la derivada</li><li><i class="fa-solid fa-check"></i> Convergencia cuadrática</li><li><i class="fa-solid fa-check"></i> Muy rápido cerca de la raíz</li></ul></article>
+      </div>
+      <div class="learning-band"><div><span class="band-label">AL FINAL DE ESTE MÓDULO</span><h3>Podrás elegir el método adecuado y defender tu resultado con evidencia.</h3></div><div class="learning-list"><span><b>01</b> Interpretar una ecuación</span><span><b>02</b> Ejecutar un algoritmo</span><span><b>03</b> Analizar el error</span></div></div>
+    </section>
+
+    <section class="view" id="calculadoras" data-section="calculadoras">
+      <div class="section-heading compact"><p class="eyebrow"><span>03</span> EXPERIMENTA</p><h2>Calcula. Observa.<br><em>Comprueba.</em></h2><p>Modifica los parámetros y sigue cada paso del algoritmo.</p></div>
+      <div class="calculator-tabs" role="tablist"><button class="calc-tab active" data-calculator="biseccion" role="tab"><i class="fa-solid fa-arrows-left-right"></i> Bisección</button><button class="calc-tab" data-calculator="newton" role="tab"><i class="fa-solid fa-bolt"></i> Newton</button></div>
+      <div class="calculator-layout">
+        <form class="control-panel" id="calculatorForm">
+          <div class="panel-heading"><span class="panel-kicker">CONFIGURACIÓN</span><span class="method-pill" id="methodPill">BISECCIÓN</span></div>
+          <label>Función <span class="label-note">caso base</span><input type="text" value="x^3 - x - 2" readonly></label>
+          <div class="input-row" id="bisectionInputs"><label>Extremo a<input id="inputA" type="number" value="1" step="any"></label><label>Extremo b<input id="inputB" type="number" value="2" step="any"></label></div>
+          <div class="input-row hidden" id="newtonInputs"><label>Valor inicial x₀<input id="inputX0" type="number" value="1.5" step="any"></label><label>Derivada<input type="text" value="3x² - 1" readonly></label></div>
+          <div class="input-row"><label>Tolerancia<input id="inputTolerance" type="number" value="0.000001" min="0.000000001" step="any"></label><label>Máximo de iteraciones<input id="inputIterations" type="number" value="100" min="1" max="500"></label></div>
+          <button class="button button-primary run-button" type="submit"><i class="fa-solid fa-calculator"></i> Ejecutar método</button>
+          <p class="form-message" id="formMessage" role="status"></p>
+        </form>
+        <div class="result-panel">
+          <div class="result-header"><div><span class="panel-kicker">RESULTADO</span><h3 id="resultTitle">Raíz aproximada</h3></div><span class="converged" id="convergence"><i class="fa-solid fa-circle-check"></i> Convergió</span></div>
+          <div class="result-value" id="resultValue">1.5213797068</div>
+          <div class="result-details"><span><small>Iteraciones</small><strong id="resultIterations">21</strong></span><span><small>Error final</small><strong id="resultError">4.77 × 10⁻⁷</strong></span><span><small>Residuo |f(x)|</small><strong id="resultResidual">0.00</strong></span></div>
+          <div class="mini-chart"><canvas id="resultChart" aria-label="Convergencia del método"></canvas></div>
+        </div>
+      </div>
+      <div class="table-section"><div class="table-heading"><div><span class="panel-kicker">TRAZA DEL ALGORITMO</span><h3>Iteraciones recientes</h3></div><button class="icon-button" id="downloadCsv" type="button" title="Descargar iteraciones"><i class="fa-solid fa-download"></i></button></div><div class="table-scroll"><table><thead id="tableHead"></thead><tbody id="iterationBody"></tbody></table></div></div>
+    </section>
+
+    <section class="view" id="practica" data-section="practica">
+      <div class="section-heading"><p class="eyebrow"><span>04</span> CONSOLIDA</p><h2>Prueba lo que<br><em>ya sabes.</em></h2><p>Resuelve estos retos y recibe retroalimentación inmediata.</p></div>
+      <div class="exercise-grid"><article class="exercise-card"><span class="difficulty intermediate">INTERMEDIO</span><span class="exercise-number">01</span><h3>Verifica un intervalo</h3><p>Para f(x) = x³ − 4x − 9, determina si [2, 3] es un intervalo válido para Bisección.</p><button class="exercise-answer" data-answer="correct">Revisar respuesta <i class="fa-solid fa-arrow-right"></i></button><p class="feedback" aria-live="polite"></p></article><article class="exercise-card"><span class="difficulty intermediate">INTERMEDIO</span><span class="exercise-number">02</span><h3>Elige el método</h3><p>Necesitas robustez y solo conoces los valores de la función. ¿Qué método elegirías?</p><button class="exercise-answer" data-answer="correct">Revisar respuesta <i class="fa-solid fa-arrow-right"></i></button><p class="feedback" aria-live="polite"></p></article><article class="exercise-card"><span class="difficulty advanced">AVANZADO</span><span class="exercise-number">03</span><h3>Analiza el residuo</h3><p>Si una aproximación tiene un error pequeño, ¿garantiza que el residuo también lo sea?</p><button class="exercise-answer" data-answer="correct">Revisar respuesta <i class="fa-solid fa-arrow-right"></i></button><p class="feedback" aria-live="polite"></p></article><article class="exercise-card"><span class="difficulty advanced">AVANZADO</span><span class="exercise-number">04</span><h3>Newton paso a paso</h3><p>Calcula x₁ usando x₀ = 1.5 para f(x) = x³ − x − 2.</p><button class="exercise-answer" data-answer="correct">Revisar respuesta <i class="fa-solid fa-arrow-right"></i></button><p class="feedback" aria-live="polite"></p></article></div>
+      <div class="self-check"><i class="fa-solid fa-clipboard-check"></i><div><span class="panel-kicker">AUTOEVALUACIÓN</span><h3>¿Ya puedes explicar por qué un método converge?</h3></div><div class="progress-track"><span></span></div><strong>0 / 6</strong><button class="icon-button" title="Comenzar autoevaluación"><i class="fa-solid fa-arrow-right"></i></button></div>
+    </section>
+
+    <section class="view" id="equipo" data-section="equipo">
+      <div class="section-heading"><p class="eyebrow"><span>05</span> ENTREGABLE 1</p><h2>Un equipo, una<br><em>pregunta común.</em></h2><p>Acta de asignación y ruta de trabajo para la primera semana.</p></div>
+      <div class="team-layout"><div class="team-card"><div class="team-card-head"><span class="panel-kicker">INTEGRANTES</span><span class="role-round">A · B · C · D</span></div><div class="member"><span class="member-letter">A</span><div><strong>Condori Idme Raul Wilfredo</strong><small>Validación y coordinación</small></div><i class="fa-solid fa-clipboard-check"></i></div><div class="member"><span class="member-letter">B</span><div><strong>Quispe Rupaylla Fabrizio Alonso</strong><small>Diseño didáctico y web</small></div><i class="fa-solid fa-pen-ruler"></i></div><div class="member"><span class="member-letter">C</span><div><strong>Suarez Huamani Marco Antonio</strong><small>Matemática y modelación</small></div><i class="fa-solid fa-square-root-variable"></i></div><div class="member"><span class="member-letter">D</span><div><strong>Chura Monroy Daniel Wilston</strong><small>Programación numérica</small></div><i class="fa-solid fa-code"></i></div></div><div class="deliverable-card"><span class="panel-kicker">RUTA DE LA SEMANA</span><h3>Del problema al prototipo.</h3><div class="timeline"><div class="timeline-item done"><span>01</span><div><strong>Definir el problema</strong><small>f(x) = x³ − x − 2 en [1, 2]</small></div></div><div class="timeline-item done"><span>02</span><div><strong>Asignar responsabilidades</strong><small>Roles A, B, C y D registrados</small></div></div><div class="timeline-item current"><span>03</span><div><strong>Construir el prototipo</strong><small>Calculadoras y teoría interactiva</small></div></div><div class="timeline-item"><span>04</span><div><strong>Validar y presentar</strong><small>Pruebas, evidencias y defensa</small></div></div></div><button class="button button-outline" id="printActa" type="button"><i class="fa-solid fa-print"></i> Imprimir acta</button></div></div>
+    </section>
+  </main>
+  <footer><span>RAÍZ · LABORATORIO DE MÉTODOS NUMÉRICOS</span><span>UNSA · 2026</span></footer>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
