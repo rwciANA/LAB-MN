@@ -18,6 +18,6 @@ Abrir `index.html` en un navegador moderno. Las librerías Chart.js y Font Aweso
 ## Integrante grupito mn
 
 - A: Condori Idme Raul Wilfredo — Validación y coordinación.
-- B: Quispe Rupaylla Fabrizio Alonso — Diseño didáctico y web.
-- C: Suarez Huamani Marco Antonio — Matemática y modelación.
+- B: Quispe Rupaylla Fabrizio Alonso — Matemática y modelación.
+- C: Suarez Huamani Marco Antonio — Diseño didáctico y web.
 - D: Chura Monroy Daniel Wilston — Programación numérica.
