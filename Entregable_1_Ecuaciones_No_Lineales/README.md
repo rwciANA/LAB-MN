@@ -15,7 +15,7 @@ Prototipo web educativo del módulo de Bisección y Newton para el laboratorio d
 
 Abrir `index.html` en un navegador moderno. Las librerías Chart.js y Font Awesome se cargan desde CDN, por lo que se requiere conexión a internet para mostrar gráficos e iconos.
 
-## Integrantes
+## Integrante grupito mn
 
 - A: Condori Idme Raul Wilfredo — Validación y coordinación.
 - B: Quispe Rupaylla Fabrizio Alonso — Diseño didáctico y web.
