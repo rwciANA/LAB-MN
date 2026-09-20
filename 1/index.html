@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-  <link rel="stylesheet" href="css/styles.css?v=2">
+  <link rel="stylesheet" href="css/styles.css?v=3">
 </head>
 <body>
   <header class="topbar">
@@ -104,6 +104,145 @@
           <button class="video-btn" type="button" data-video="sgg5eM15XMc" data-title="Newton-Raphson paso a paso"><i class="fa-brands fa-youtube"></i> Ver video corto</button>
         </article>
       </div>
+      <!-- FUNDAMENTOS COMPLETOS -->
+      <div class="theory-detail">
+
+        <article class="td-card">
+          <h3><i class="fa-solid fa-arrows-left-right"></i> Bisección · fundamentos completos</h3>
+          <div class="td-block">
+            <h4>¿PARA QUÉ SIRVE?</h4>
+            <p>Localiza una raíz de f(x) = 0 cuando se conoce un intervalo donde la función cambia de signo. En Ingeniería de Sistemas se emplea para calibrar parámetros de configuración, definir umbrales de activación y hallar puntos de equilibrio cuando solo se puede <em>evaluar</em> la función (no derivarla) o cuando se requiere certeza absoluta de que el método encontrará la raíz.</p>
+          </div>
+          <div class="td-block">
+            <h4>FUNDAMENTO MATEMÁTICO</h4>
+            <p>Se apoya en el <strong>teorema de Bolzano (valor intermedio)</strong>: si f es continua en [a, b] y f(a)·f(b) &lt; 0, entonces existe al menos un c ∈ (a, b) con f(c) = 0. Al partir el intervalo por la mitad, uno de los dos subintervalos conserva el cambio de signo y por tanto contiene la raíz: <strong>la raíz nunca se pierde</strong>. Esa es la garantía que ningún otro método de este tema ofrece.</p>
+          </div>
+          <div class="td-block">
+            <h4>ALGORITMO</h4>
+            <ol class="steps">
+              <li>Verificar f(a)·f(b) &lt; 0; si no, rechazar el intervalo (sin cambio de signo no hay garantía).</li>
+              <li>Calcular el punto medio c = (a + b)/2 y evaluar f(c).</li>
+              <li>Si |f(c)| ≤ tol o la cota (b − a)/2 ≤ tol, devolver c como raíz aproximada.</li>
+              <li>Si f(a)·f(c) &lt; 0 hacer b = c; en caso contrario hacer a = c.</li>
+              <li>Repetir desde el paso 2 hasta cumplir el criterio o agotar el máximo de iteraciones.</li>
+            </ol>
+          </div>
+          <div class="td-block">
+            <h4>ANÁLISIS DEL ERROR Y CONVERGENCIA</h4>
+            <p>Tras n iteraciones el error máximo posible es:</p>
+            <div class="formula-line">|cₙ − r| ≤ (b₀ − a₀) / 2ⁿ</div>
+            <p>Convergencia <strong>lineal con factor ½</strong>: cada iteración reduce el error a la mitad (≈ 1 dígito binario por paso). El número de iteraciones se puede conocer <em>de antemano</em>: n ≥ log₂((b₀ − a₀)/tol). Para el caso base [1, 2] con tol = 10⁻⁶ resulta n ≥ log₂(10⁶) ≈ 19.93 → <strong>20 iteraciones</strong>, exactamente lo que reporta la calculadora.</p>
+          </div>
+          <div class="td-block">
+            <h4>SUPUESTOS</h4>
+            <ul>
+              <li>f continua en el intervalo declarado.</li>
+              <li>Cambio de signo estricto: f(a)·f(b) &lt; 0.</li>
+              <li>La raíz buscada es de multiplicidad impar (cambia el signo).</li>
+            </ul>
+          </div>
+          <div class="td-block warn">
+            <h4><i class="fa-solid fa-triangle-exclamation"></i> LIMITACIONES</h4>
+            <ul>
+              <li>No encuentra raíces sin cambio de signo (multiplicidad par, como x² = 0).</li>
+              <li>Localiza una sola raíz por intervalo; para todas hay que subdividir.</li>
+              <li>Converge lento comparado con métodos de orden superior: ~20 pasos para 6 decimales.</li>
+              <li>No mejora por arte de magia: la cota depende solo del ancho inicial y n.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="td-card">
+          <h3><i class="fa-solid fa-bolt"></i> Newton-Raphson · fundamentos completos</h3>
+          <div class="td-block">
+            <h4>¿PARA QUÉ SIRVE?</h4>
+            <p>Encuentra raíces con muchísima rapidez cuando se dispone de la derivada y de una buena aproximación inicial. Es el método estándar en flujo de cargas de sistemas eléctricos, simulación de circuitos, optimización y resolución de ecuaciones no lineales en motores de cálculo. En el caso del módulo, determina el parámetro de calibración x que produce la respuesta objetivo.</p>
+          </div>
+          <div class="td-block">
+            <h4>FUNDAMENTO MATEMÁTICO</h4>
+            <p>Se deduce de la <strong>expansión de Taylor de primer orden</strong> alrededor de xₙ:</p>
+            <div class="formula-line">f(xₙ + h) ≈ f(xₙ) + f′(xₙ)·h &nbsp;⇒&nbsp; h = −f(xₙ)/f′(xₙ)</div>
+            <p>Igualando f ≈ 0, la corrección h da la iteración <strong>xₙ₊₁ = xₙ − f(xₙ)/f′(xₙ)</strong>. Geométricamente: la tangente a la curva en (xₙ, f(xₙ)) corta el eje x en el siguiente punto xₙ₊₁. Cada tangente "apunta" hacia la raíz con error cuadrático.</p>
+          </div>
+          <div class="td-block">
+            <h4>ALGORITMO</h4>
+            <ol class="steps">
+              <li>Elegir x₀ cerca de la raíz esperada (aquí x₀ = 1.5).</li>
+              <li>Evaluar f(xₙ) y f′(xₙ); si |f′| es nula o demasiado pequeña, detener y reportar fallo.</li>
+              <li>Calcular xₙ₊₁ = xₙ − f(xₙ)/f′(xₙ) y el cambio |xₙ₊₁ − xₙ|.</li>
+              <li>Si |f(xₙ₊₁)| ≤ tol o el cambio ≤ tol, devolver xₙ₊₁.</li>
+              <li>Repetir hasta el máximo de iteraciones, vigilando valores no finitos.</li>
+            </ol>
+          </div>
+          <div class="td-block">
+            <h4>ANÁLISIS DEL ERROR Y CONVERGENCIA</h4>
+            <p>Para una raíz simple r, el error eₙ = |xₙ − r| satisface:</p>
+            <div class="formula-line">eₙ₊₁ ≈ |f″(r) / (2f′(r))| · eₙ²</div>
+            <p>Convergencia <strong>cuadrática</strong>: los dígitos correctos se duplican en cada paso. En el caso base el cambio pasó de 2.17×10⁻² → 3.59×10⁻⁴ → residuo &lt; 10⁻⁶ en solo <strong>2 iteraciones</strong> (frente a 20 de Bisección). El factor de error |f″(r)/2f′(r)| = |6r/2(3r²−1)| ≈ 0.76 para r ≈ 1.5214.</p>
+          </div>
+          <div class="td-block">
+            <h4>SUPUESTOS</h4>
+            <ul>
+              <li>f derivable en una vecindad de la raíz, con f′(r) ≠ 0 (raíz simple).</li>
+              <li>x₀ elegido en la cuenca de atracción de la raíz buscada.</li>
+              <li>f′ no se anula durante el recorrido (o el salto es descontrolado).</li>
+            </ul>
+          </div>
+          <div class="td-block warn">
+            <h4><i class="fa-solid fa-triangle-exclamation"></i> LIMITACIONES</h4>
+            <ul>
+              <li><strong>No garantiza convergencia</strong>: con x₀ lejano puede divergir, oscilar entre puntos o saltar a otra raíz.</li>
+              <li>Falla si f′(xₙ) ≈ 0 (división enorme) — el módulo lo detecta con umbral 10⁻¹²; ejemplo: x₀ = 0 en x³ − 1.</li>
+              <li>En raíces múltiples la convergencia degrada a lineal.</li>
+              <li>Exige evaluar f y f′ en cada paso: costo mayor por iteración.</li>
+              <li>El residuo pequeño no prueba que xₙ esté cerca de la raíz si f′(r) es pequeña: hay que mirar el cambio entre iteraciones.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="td-card">
+          <h3><i class="fa-solid fa-ruler-combined"></i> Ficha común de errores (transversal del portal)</h3>
+          <div class="td-block">
+            <h4>¿POR QUÉ EXISTIR ESTA FICHA?</h4>
+            <p>Todos los temas del portal comparan resultados contra una referencia. Para que la comparación sea honesta hay que distinguir tres magnitudes que suelen confundirse y declarar tres tipos de tolerancia.</p>
+          </div>
+          <div class="td-block">
+            <h4>MAGNITUDES</h4>
+            <ul>
+              <li><strong>Error absoluto:</strong> Ea = |x_verdadero − x_aproximado|. Mide distancia en las mismas unidades del dato.</li>
+              <li><strong>Error relativo:</strong> Er = Ea / |x_verdadero| (×100 para porcentaje). Adimensional y comparable entre magnitudes distintas. <em>No está definido si la referencia es 0</em>: en ese caso usar solo error absoluto.</li>
+              <li><strong>Residuo:</strong> |f(x_aproximado)|. Mide cuánto falla la <em>ecuación</em>, no qué tan lejos está el <em>punto</em>. Se relacionan por Ea ≈ |residuo| / |f′(r)|: por eso el caso base muestra residuo 4.40×10⁻⁶ con error ≤ 9.54×10⁻⁷ (dividido entre f′(r) ≈ 5.94).</li>
+            </ul>
+          </div>
+          <div class="td-block">
+            <h4>TRES TOLERANCIAS QUE SE DECLARAN POR SEPARADO</h4>
+            <ol class="steps">
+              <li><strong>Tolerancia de parada:</strong> cuándo el algoritmo se detiene (aquí 10⁻⁶).</li>
+              <li><strong>Tolerancia de comparación:</strong> qué diferencia se acepta contra la referencia independiente (aquí ≤ 10⁻⁶, y para referencias con unidades, absoluta + relativa·|ref|).</li>
+              <li><strong>Cifras mostradas:</strong> cuántos decimales se pintan (8 aquí). La precisión interna nunca se redondea; solo se redondea al presentar.</li>
+            </ol>
+          </div>
+        </article>
+
+        <article class="td-card">
+          <h3><i class="fa-solid fa-scale-balanced"></i> ¿Cuál elegir? Comparación de decisión</h3>
+          <div class="table-scroll">
+            <table class="compare-table">
+              <tr><th>Aspecto</th><th>Bisección</th><th>Newton-Raphson</th></tr>
+              <tr><td>Información que exige</td><td>Solo evaluar f con cambio de signo</td><td>f y su derivada f′</td></tr>
+              <tr><td>Garantía de convergencia</td><td>Sí, bajo los supuestos</td><td>No: depende de x₀</td></tr>
+              <tr><td>Orden de convergencia</td><td>Lineal (factor ½)</td><td>Cuadrática (dígitos se duplican)</td></tr>
+              <tr><td>Iteraciones para 10⁻⁶ en el caso base</td><td>20</td><td>2</td></tr>
+              <tr><td>Costo por iteración</td><td>1 evaluación de f</td><td>2 evaluaciones (f y f′)</td></tr>
+              <tr><td>Raíces de multiplicidad par</td><td>No las encuentra</td><td>Las encuentra pero converge lento</td></tr>
+              <tr><td>Uso recomendado</td><td>Certidumbre, función "caja negra", enclaustrar la raíz</td><td>Velocidad con aproximación inicial razonable</td></tr>
+            </table>
+          </div>
+          <p class="example-note">Estrategia profesional combinada: Bisección unas pocas iteraciones para enclaustrar la raíz y luego Newton para refinarla rápidamente. Así se obtiene velocidad sin perder la garantía.</p>
+        </article>
+
+      </div>
+
       <div class="learning-band">
         <div>
           <span class="band-label">AL FINAL DE ESTE MÓDULO</span>

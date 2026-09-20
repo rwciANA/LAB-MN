@@ -649,6 +649,25 @@ footer .back-portal { color: var(--orange); }
 .modal-head button { background: none; border: 0; font-size: 18px; cursor: pointer; color: var(--ink); }
 .modal-box iframe { width: 100%; aspect-ratio: 9/16; border: 0; border-radius: 12px; background: #000; display: block; }
 
+/* FUNDAMENTOS COMPLETOS (SEMANA 4) */
+.theory-detail { display: flex; flex-direction: column; gap: 20px; margin-top: 32px; }
+.td-card { background: var(--cream); border: 1px solid var(--line); border-radius: 16px; padding: 30px 34px; }
+.td-card > h3 { font: 800 19px "Space Grotesk", sans-serif; display: flex; gap: 12px; align-items: center; margin: 0 0 4px; }
+.td-card > h3 i { color: var(--orange); }
+.td-block { margin-top: 20px; }
+.td-block h4 { font-size: 10px; letter-spacing: .16em; color: var(--orange-dark); font-weight: 700; margin-bottom: 8px; }
+.td-block p, .td-block li { font-size: 14px; line-height: 1.65; color: var(--ink); }
+.td-block ul { padding-left: 20px; margin: 0; }
+.td-block li { margin-bottom: 6px; }
+ol.steps { padding-left: 22px; margin: 0; }
+ol.steps li { margin-bottom: 7px; font-size: 14px; line-height: 1.6; padding-left: 4px; }
+.formula-line { font: 600 15px "Space Grotesk", sans-serif; background: var(--paper); border: 1px solid var(--line); padding: 12px 16px; border-radius: 8px; text-align: center; margin: 12px 0; }
+.td-block.warn { background: #fdf1ea; border-left: 3px solid var(--orange); padding: 16px 18px; border-radius: 0 12px 12px 0; }
+.td-block.warn h4 { color: var(--orange-dark); }
+.td-block.warn li { margin-bottom: 5px; }
+.compare-table td:first-child { font-weight: 600; }
+.compare-table td { line-height: 1.45; }
+
 @media (max-width: 900px) {
   .hero-grid { grid-template-columns: 1fr; min-height: auto; }
   .hero-visual { display: none; }
