@@ -134,10 +134,10 @@
             <tr><td>4</td><td>1.5</td><td>1.625</td><td>1.5625</td><td>0.252197</td><td>[1.5, 1.5625]</td><td>6.25 × 10⁻²</td></tr>
             <tr><td>5</td><td>1.5</td><td>1.5625</td><td>1.53125</td><td>0.059113</td><td>[1.5, 1.53125]</td><td>3.13 × 10⁻²</td></tr>
             <tr><td>6</td><td>1.5</td><td>1.53125</td><td>1.515625</td><td>−0.034054</td><td>[1.515625, 1.53125]</td><td>1.56 × 10⁻²</td></tr>
-            <tr><td>21</td><td>1.521379</td><td>1.521380</td><td>1.52137971</td><td>≈ 0</td><td>—</td><td>4.77 × 10⁻⁷ &lt; 10⁻⁶ ✓</td></tr>
+            <tr><td>20</td><td>1.521379</td><td>1.521381</td><td>1.52138042</td><td>4.40 × 10⁻⁶</td><td>—</td><td>9.54 × 10⁻⁷ &lt; 10⁻⁶ ✓</td></tr>
           </table>
         </div>
-        <p class="example-note">Resultado: raíz ≈ 1.5213797068 en 21 iteraciones. En cada paso se conserva el intervalo con cambio de signo, por eso la convergencia está garantizada.</p>
+        <p class="example-note">Resultado: raíz ≈ 1.52138042 en 20 iteraciones (referencia 1.5213797068, diferencia 7.2 × 10⁻⁷ ≤ tolerancia). En cada paso se conserva el intervalo con cambio de signo, por eso la convergencia está garantizada. Obsérvese que el residuo |f(c)| puede ser mayor que la tolerancia sin que lo sea la cota de error: son magnitudes distintas.</p>
       </div>
       <div class="example-card">
         <h3>Ejemplo 2 · Newton desde x₀ = 1.5</h3>
@@ -146,11 +146,11 @@
           <table>
             <tr><th>i</th><th>xₙ</th><th>f(xₙ)</th><th>f′(xₙ)</th><th>xₙ₊₁</th><th>Cambio</th></tr>
             <tr><td>0</td><td>1.5</td><td>−0.125</td><td>5.75</td><td>1.5217391304</td><td>2.17 × 10⁻²</td></tr>
-            <tr><td>1</td><td>1.5217391304</td><td>2.14 × 10⁻³</td><td>5.947069</td><td>1.5213798</td><td>3.59 × 10⁻⁴</td></tr>
-            <tr><td>2</td><td>1.5213798</td><td>≈ 5.5 × 10⁻⁷ &lt; 10⁻⁶ ✓</td><td>5.94406</td><td>1.5213797068</td><td>—</td></tr>
+            <tr><td>1</td><td>1.5217391304</td><td>2.14 × 10⁻³</td><td>5.947070</td><td>1.5213798060</td><td>3.59 × 10⁻⁴</td></tr>
+            <tr><td>2</td><td>1.5213798060</td><td>5.89 × 10⁻⁷ &lt; 10⁻⁶ ✓</td><td>—</td><td>—</td><td>—</td></tr>
           </table>
         </div>
-        <p class="example-note">Newton alcanza la misma raíz en 2 iteraciones frente a las 21 de Bisección: convergencia cuadrática. Pero si x₀ cae en un punto con derivada pequeña (por ejemplo x₀ = 0 en x³ − 1), el método falla y el módulo lo advierte.</p>
+        <p class="example-note">Newton alcanza la raíz ≈ 1.5213798060 en solo 2 iteraciones frente a las 20 de Bisección: convergencia cuadrática. El criterio de parada aquí lo cumple el residuo |f(x₂)| = 5.89 × 10⁻⁷. Pero si x₀ cae en un punto con derivada pequeña (por ejemplo x₀ = 0 en x³ − 1), el método falla y el módulo lo advierte.</p>
       </div>
     </section>
 
