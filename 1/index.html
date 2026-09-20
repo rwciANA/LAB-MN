@@ -21,11 +21,13 @@
     <nav class="nav" id="mainNav" aria-label="Navegación principal">
       <a href="#inicio" data-view="inicio" class="active">Inicio</a>
       <a href="#teoria" data-view="teoria">Teoría</a>
+      <a href="#ejemplos" data-view="ejemplos">Ejemplos</a>
       <a href="#calculadoras" data-view="calculadoras">Calculadoras</a>
       <a href="#practica" data-view="practica">Práctica</a>
+      <a href="#referencias" data-view="referencias">Referencias</a>
       <a href="#equipo" data-view="equipo">Equipo</a>
     </nav>
-    <span class="status"><span class="status-dot"></span> Semana 1</span>
+    <span class="status"><a class="back-portal" href="../index.html"><i class="fa-solid fa-arrow-left"></i> Portal</a><span class="status-dot"></span> Semana 2</span>
   </header>
 
   <main>
@@ -113,10 +115,49 @@
       </div>
     </section>
 
+    <!-- EJEMPLOS -->
+    <section class="view" id="ejemplos" data-section="ejemplos">
+      <div class="section-heading">
+        <p class="eyebrow"><span>03</span> RESUELTOS PASO A PASO</p>
+        <h2>Un ejemplo por método,<br><em>sin caja negra.</em></h2>
+        <p>Cada fila reproduce lo que hace el algoritmo. Puedes verificarlo a mano.</p>
+      </div>
+      <div class="example-card">
+        <h3>Ejemplo 1 · Bisección en [1, 2]</h3>
+        <p>Comprobación inicial: f(1) = 1 − 1 − 2 = −2 &lt; 0 y f(2) = 8 − 2 − 2 = 4 &gt; 0. Hay cambio de signo y f es continua, así que existe raíz en [1, 2]. Criterio de parada: cota de error (b − a)/2 ≤ 10⁻⁶.</p>
+        <div class="table-scroll">
+          <table>
+            <tr><th>i</th><th>a</th><th>b</th><th>c = (a+b)/2</th><th>f(c)</th><th>Nuevo intervalo</th><th>Cota de error</th></tr>
+            <tr><td>1</td><td>1.0</td><td>2.0</td><td>1.5</td><td>−0.125</td><td>[1.5, 2]</td><td>5.0 × 10⁻¹</td></tr>
+            <tr><td>2</td><td>1.5</td><td>2.0</td><td>1.75</td><td>1.609375</td><td>[1.5, 1.75]</td><td>2.5 × 10⁻¹</td></tr>
+            <tr><td>3</td><td>1.5</td><td>1.75</td><td>1.625</td><td>0.666016</td><td>[1.5, 1.625]</td><td>1.25 × 10⁻¹</td></tr>
+            <tr><td>4</td><td>1.5</td><td>1.625</td><td>1.5625</td><td>0.252197</td><td>[1.5, 1.5625]</td><td>6.25 × 10⁻²</td></tr>
+            <tr><td>5</td><td>1.5</td><td>1.5625</td><td>1.53125</td><td>0.059113</td><td>[1.5, 1.53125]</td><td>3.13 × 10⁻²</td></tr>
+            <tr><td>6</td><td>1.5</td><td>1.53125</td><td>1.515625</td><td>−0.034054</td><td>[1.515625, 1.53125]</td><td>1.56 × 10⁻²</td></tr>
+            <tr><td>21</td><td>1.521379</td><td>1.521380</td><td>1.52137971</td><td>≈ 0</td><td>—</td><td>4.77 × 10⁻⁷ &lt; 10⁻⁶ ✓</td></tr>
+          </table>
+        </div>
+        <p class="example-note">Resultado: raíz ≈ 1.5213797068 en 21 iteraciones. En cada paso se conserva el intervalo con cambio de signo, por eso la convergencia está garantizada.</p>
+      </div>
+      <div class="example-card">
+        <h3>Ejemplo 2 · Newton desde x₀ = 1.5</h3>
+        <p>Fórmula: xₙ₊₁ = xₙ − f(xₙ)/f′(xₙ), con f′(x) = 3x² − 1. Criterio de parada: |f(xₙ₊₁)| ≤ 10⁻⁶ o |xₙ₊₁ − xₙ| ≤ 10⁻⁶.</p>
+        <div class="table-scroll">
+          <table>
+            <tr><th>i</th><th>xₙ</th><th>f(xₙ)</th><th>f′(xₙ)</th><th>xₙ₊₁</th><th>Cambio</th></tr>
+            <tr><td>0</td><td>1.5</td><td>−0.125</td><td>5.75</td><td>1.5217391304</td><td>2.17 × 10⁻²</td></tr>
+            <tr><td>1</td><td>1.5217391304</td><td>2.14 × 10⁻³</td><td>5.947069</td><td>1.5213798</td><td>3.59 × 10⁻⁴</td></tr>
+            <tr><td>2</td><td>1.5213798</td><td>≈ 5.5 × 10⁻⁷ &lt; 10⁻⁶ ✓</td><td>5.94406</td><td>1.5213797068</td><td>—</td></tr>
+          </table>
+        </div>
+        <p class="example-note">Newton alcanza la misma raíz en 2 iteraciones frente a las 21 de Bisección: convergencia cuadrática. Pero si x₀ cae en un punto con derivada pequeña (por ejemplo x₀ = 0 en x³ − 1), el método falla y el módulo lo advierte.</p>
+      </div>
+    </section>
+
     <!-- CALCULADORAS -->
     <section class="view" id="calculadoras" data-section="calculadoras">
       <div class="section-heading compact">
-        <p class="eyebrow"><span>03</span> EXPERIMENTA</p>
+        <p class="eyebrow"><span>04</span> EXPERIMENTA</p>
         <h2>Calcula. Observa.<br><em>Comprueba.</em></h2>
         <p>Modifica los parámetros y sigue cada paso del algoritmo.</p>
       </div>
@@ -179,7 +220,7 @@
     <!-- PRÁCTICA -->
     <section class="view" id="practica" data-section="practica">
       <div class="section-heading">
-        <p class="eyebrow"><span>04</span> CONSOLIDA</p>
+        <p class="eyebrow"><span>05</span> CONSOLIDA</p>
         <h2>Prueba lo que<br><em>ya sabes.</em></h2>
         <p>Resuelve estos retos y recibe retroalimentación inmediata.</p>
       </div>
@@ -219,10 +260,32 @@
       </div>
     </section>
 
+    <!-- REFERENCIAS -->
+    <section class="view" id="referencias" data-section="referencias">
+      <div class="section-heading">
+        <p class="eyebrow"><span>06</span> FUENTES</p>
+        <h2>De dónde sale<br><em>cada dato.</em></h2>
+        <p>Contenidos, imágenes y herramientas usadas en este módulo.</p>
+      </div>
+      <div class="example-card">
+        <h3>Referencias técnicas y de contenido</h3>
+        <ul class="ref-list">
+          <li>[1] MDN Web Docs. <em>Learn web development</em>. developer.mozilla.org — ruta formativa de HTML, CSS y JavaScript.</li>
+          <li>[2] GNU Octave. <em>Manual oficial</em>. docs.octave.org — referencia independiente de cálculo para contrastar resultados.</li>
+          <li>[3] GitHub Docs. <em>What is GitHub Pages</em>. docs.github.com — publicación del portal.</li>
+          <li>[4] Burden, R. y Faires, J. <em>Análisis Numérico</em>. Cengage — algoritmo y análisis de error de Bisección y Newton.</li>
+          <li>[5] Chapra, S. y Canale, R. <em>Métodos numéricos para ingeniería</em>. Pearson — ejemplos de convergencia y criterio de parada.</li>
+          <li>[6] Chart.js v4 (CDN) — gráficos de la función y de convergencia.</li>
+          <li>[7] Font Awesome v6 (CDN) — iconografía de la interfaz.</li>
+        </ul>
+        <p class="example-note">Los datos del caso son sintéticos. El uso de asistencia de IA para el desarrollo quedó registrado en el historial de commits del repositorio.</p>
+      </div>
+    </section>
+
     <!-- EQUIPO -->
     <section class="view" id="equipo" data-section="equipo">
       <div class="section-heading">
-        <p class="eyebrow"><span>05</span> EQUIPO</p>
+        <p class="eyebrow"><span>07</span> EQUIPO</p>
         <h2>Un equipo, una<br><em>pregunta común.</em></h2>
         <p>Acta de asignación y ruta de trabajo para la primera semana.</p>
       </div>
@@ -269,6 +332,7 @@
 
   <footer>
     <span>ITERA · LABORATORIO DE MÉTODOS NUMÉRICOS</span>
+    <a class="back-portal" href="../index.html"><i class="fa-solid fa-arrow-left"></i> Volver al portal</a>
     <span>UNSA · 2026</span>
   </footer>
 

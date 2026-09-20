@@ -586,6 +586,24 @@ footer {
   border-top: 1px solid var(--line);
 }
 
+/* EJEMPLOS Y REFERENCIAS (SEMANA 2) */
+.example-card {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+.example-card h3 { font: 700 17px "Space Grotesk", sans-serif; margin: 0 0 10px; }
+.example-card p { font-size: 14px; color: var(--ink); line-height: 1.6; margin: 0 0 14px; }
+.example-note { font-size: 12px; color: var(--muted); background: var(--paper); border-left: 3px solid var(--orange); padding: 10px 14px; border-radius: 0 8px 8px 0; }
+.ref-list { list-style: none; padding: 0; }
+.ref-list li { font-size: 13px; padding: 8px 0; border-bottom: 1px solid var(--line); line-height: 1.5; }
+.ref-list li:last-child { border-bottom: 0; }
+.back-portal { font-size: 11px; font-weight: 700; color: var(--orange-dark); text-decoration: none; margin-right: 12px; display: inline-flex; align-items: center; gap: 5px; }
+.back-portal:hover { color: var(--orange); }
+footer .back-portal { color: var(--orange); }
+
 @media (max-width: 900px) {
   .hero-grid { grid-template-columns: 1fr; min-height: auto; }
   .hero-visual { display: none; }
