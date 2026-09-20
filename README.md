@@ -1,6 +1,6 @@
 <div align="center">
 
-# Laboratorio de Métodos Numéricos
+# ITERA · Laboratorio de Métodos Numéricos
 
 ### Portal educativo · UNSA · Ingeniería de Sistemas
 
