@@ -132,6 +132,14 @@ function testFunction(method, a, b, tolerance, maxIterations) {
   }
 }
 
+// ============ TABS DE TEORÍA ============
+document.querySelectorAll(".theory-tab").forEach(tab =>
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".theory-tab").forEach(t => t.classList.toggle("active", t === tab));
+    document.querySelectorAll(".theory-panel").forEach(p => p.classList.toggle("active", p.dataset.panel === tab.dataset.theory));
+  })
+);
+
 // ============ MODAL DE VIDEOS ============
 function openVideoModal(videoId, title) {
   $("#modalTitle").textContent = title;
