@@ -20,13 +20,13 @@ pkg load symbolic; syms x;
 vpa(solve(x^3 - x - 2 == 0, x, 'Real'), 12)   % 1.52137970680...
 ```
 
-## Registro de evidencia
+## Registro de evidencia (ejecutado en semana 3 con scripts/biseccion.py)
 
-| ID | Salida observada (llenar al ejecutar) | ¿Cumple? | Fecha |
-|----|----------------------------------------|----------|-------|
-| T-01 | | | |
-| T-02 | | | |
-| T-03 | | | |
-| T-04 | | | |
+| ID | Salida observada | ¿Cumple? | Fecha |
+|----|------------------|----------|-------|
+| T-01 | raíz 1.5213804245, 20 iteraciones, estado CONVERGIÓ | Sí (|1.5213804245 − 1.5213797068| = 7.18e-7 ≤ 1e-6) | Semana 3 |
+| T-02 | raíz 1.5213797018, 27 iteraciones, estado CONVERGIÓ | Sí (diferencia 5.0e-9 ≤ 1e-8) | Semana 3 |
+| T-03 | "ERROR: los extremos deben tener signos opuestos", 0 filas | Sí | Semana 3 |
+| T-04 | "ERROR: los extremos deben tener signos opuestos", 0 filas | Sí | Semana 3 |
 
-> Registrar la salida real obtenida; no copiar el valor esperado como observado.
+> Salida observada registrada al ejecutar el script; coincide con la calculadora web del módulo.
