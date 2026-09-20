@@ -147,6 +147,54 @@ document.querySelectorAll(".theory-tab").forEach(tab =>
   })
 );
 
+// ============ WIZARD DE TEORÍA (paso a paso con botones) ============
+const wizards = [];
+document.querySelectorAll(".theory-panel").forEach(panel => {
+  const steps = Array.from(panel.querySelectorAll(".tstep"));
+  const video = panel.querySelector(".video-btn");
+  if (!steps.length) return;
+  panel.classList.add("wiz");
+  const prog = document.createElement("div");
+  prog.className = "wizard-progress";
+  prog.innerHTML = '<span class="wiz-count"></span><div class="wiz-bar"><span></span></div><div class="wiz-dots"></div>';
+  const navw = document.createElement("div");
+  navw.className = "wizard-nav";
+  navw.innerHTML = '<button type="button" class="button button-outline wiz-prev"><i class="fa-solid fa-arrow-left"></i> Anterior</button><button type="button" class="button button-primary wiz-next">Siguiente <i class="fa-solid fa-arrow-right"></i></button>';
+  panel.insertBefore(prog, steps[0]);
+  steps[steps.length - 1].after(navw);
+  const dotsWrap = prog.querySelector(".wiz-dots");
+  steps.forEach(() => { const d = document.createElement("span"); d.className = "wiz-dot"; dotsWrap.appendChild(d); });
+  const dots = Array.from(dotsWrap.children);
+  const bar = prog.querySelector(".wiz-bar span");
+  const count = prog.querySelector(".wiz-count");
+  const prev = navw.querySelector(".wiz-prev");
+  const next = navw.querySelector(".wiz-next");
+  let idx = 0;
+  function render() {
+    steps.forEach((s, i) => s.classList.toggle("wz-active", i === idx));
+    dots.forEach((d, i) => { d.classList.toggle("now", i === idx); d.classList.toggle("done", i < idx); });
+    bar.style.width = `${((idx + 1) / steps.length) * 100}%`;
+    count.textContent = `PASO ${idx + 1} DE ${steps.length}`;
+    prev.style.visibility = idx === 0 ? "hidden" : "visible";
+    const last = idx === steps.length - 1;
+    next.innerHTML = last ? 'Ir a la calculadora <i class="fa-solid fa-bullseye"></i>' : 'Siguiente <i class="fa-solid fa-arrow-right"></i>';
+    if (video) video.classList.toggle("wz-show", last);
+  }
+  prev.addEventListener("click", () => { if (idx > 0) { idx -= 1; render(); } });
+  next.addEventListener("click", () => { if (idx < steps.length - 1) { idx += 1; render(); } else { switchView("calculadoras"); } });
+  render();
+  wizards.push({ reset: () => { idx = 0; render(); } });
+});
+document.querySelectorAll(".theory-tab").forEach(tab =>
+  tab.addEventListener("click", () => wizards.forEach(w => w.reset()))
+);
+document.addEventListener("keydown", event => {
+  const activePanel = document.querySelector(".theory-panel.active");
+  if (!activePanel || !document.querySelector("#teoria.active-view")) return;
+  if (event.key === "ArrowRight") activePanel.querySelector(".wiz-next").click();
+  if (event.key === "ArrowLeft") activePanel.querySelector(".wiz-prev").click();
+});
+
 // ============ MODAL DE VIDEOS ============
 function openVideoModal(videoId, title) {
   $("#modalTitle").textContent = title;
