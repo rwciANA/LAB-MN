@@ -118,5 +118,19 @@ $("#downloadCsv").addEventListener("click", () => {
   anchor.download = `iteraciones-${state.method}.csv`; anchor.click(); URL.revokeObjectURL(anchor.href);
 });
 
+function testFunction(method, a, b, tolerance, maxIterations) {
+  if (!method) return { success: false, error: "Uso: testFunction('biseccion', 1, 2, 0.000001, 100) o testFunction('newton', 1.5, null, 0.000001, 100)" };
+  try {
+    const tol = tolerance === undefined ? 0.000001 : tolerance;
+    const max = maxIterations === undefined ? 100 : maxIterations;
+    const rows = method === "biseccion" ? solveBisection(a, b, tol, max) : solveNewton(a, tol, max);
+    const last = rows[rows.length - 1];
+    const root = method === "biseccion" ? last.x : last.next;
+    return { success: true, method, root, iterations: last.iteration, residual: Math.abs(f(root)), error: last.error, rows };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+}
+
 initHeroChart();
 runCalculator();
