@@ -1,0 +1,30 @@
+% Metodo 1 (Biseccion) - referencia independiente en GNU Octave - Semana 3
+% Uso: octave biseccion_reference.oct  (o ejecutar dentro de Octave)
+
+function [c, n, estado] = biseccion(f, a, b, tol, maxit)
+  if f(a) * f(b) >= 0
+    error("Los extremos deben tener signos opuestos");
+  endif
+  estado = "LIMITE ALCANZADO";
+  for n = 1:maxit
+    c = (a + b) / 2;
+    fc = f(c);
+    err = abs(b - a) / 2;
+    printf("%3d  %12.8f  %12.6f  %10.2e\n", n, c, fc, err);
+    if abs(fc) <= tol || err <= tol
+      estado = "CONVIO";
+      return
+    endif
+    if f(a) * fc < 0
+      b = c;
+    else
+      a = c;
+    endif
+  endfor
+endfunction
+
+f = @(x) x.^3 - x - 2;
+printf("== Caso base [1,2], tol=1e-6 ==\n");
+[c, n, estado] = biseccion(f, 1, 2, 1e-6, 100);
+printf("Resultado: c = %.10f en %d iteraciones (%s)\n", c, n, estado);
+printf("Diferencia con referencia 1.5213797068: %.2e\n", abs(c - 1.5213797068));
