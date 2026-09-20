@@ -132,5 +132,22 @@ function testFunction(method, a, b, tolerance, maxIterations) {
   }
 }
 
+// ============ MODAL DE VIDEOS ============
+function openVideoModal(videoId, title) {
+  $("#modalTitle").textContent = title;
+  $("#modalFrame").src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+  $("#videoModal").classList.add("open");
+}
+function closeVideoModal() {
+  $("#videoModal").classList.remove("open");
+  $("#modalFrame").src = "";
+}
+document.querySelectorAll(".video-btn").forEach(btn =>
+  btn.addEventListener("click", () => openVideoModal(btn.dataset.video, btn.dataset.title))
+);
+$("#modalClose").addEventListener("click", closeVideoModal);
+$("#videoModal").addEventListener("click", event => { if (event.target.id === "videoModal") closeVideoModal(); });
+document.addEventListener("keydown", event => { if (event.key === "Escape") closeVideoModal(); });
+
 initHeroChart();
 runCalculator();
