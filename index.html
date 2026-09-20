@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ITERA - Plataforma integral de métodos numéricos para autodidactas.">
+  <title>ITERA | Plataforma de Métodos Numéricos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <style>
+    :root{
+      --coral:#f4581c; --coral-dark:#d8430c; --peach:#fdeae0; --peach-2:#fce4d6;
+      --ink:#16283c; --ink-2:#3d4f63; --muted:#7b8794; --bg:#fdfbf7; --card:#ffffff;
+      --line:#f0e5da; --blue:#bcd6ea; --navy:#132435;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--ink)}
+    h1,h2,h3,h4{font-family:"Manrope",sans-serif}
+    a{text-decoration:none;color:inherit}
+    .wrap{max-width:1200px;margin:auto;padding:0 24px}
+
+    /* TOPBAR */
+    .topbar{position:sticky;top:0;z-index:20;background:rgba(253,251,247,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+    .topbar .wrap{display:flex;align-items:center;gap:28px;height:72px}
+    .brand{display:flex;align-items:center;gap:10px;margin-right:auto}
+    .brand-mark{width:40px;height:40px;border-radius:50%;background:var(--coral);color:#fff;display:grid;place-items:center;font-size:17px}
+    .brand strong{font:800 20px "Manrope";letter-spacing:.02em;display:block}
+    .brand small{font-size:10px;color:var(--muted);display:block}
+    .nav{display:flex;gap:22px}
+    .nav a{font-size:13px;font-weight:600;color:var(--ink-2);padding:6px 2px;border-bottom:2px solid transparent}
+    .nav a:hover,.nav a.active{color:var(--ink);border-color:var(--coral)}
+    .top-actions{display:flex;align-items:center;gap:14px}
+    .search{background:none;border:0;font-size:16px;color:var(--ink-2);cursor:pointer}
+    .btn{display:inline-flex;align-items:center;gap:8px;border-radius:10px;font-weight:700;font-size:13px;padding:12px 20px;cursor:pointer;border:0;transition:.2s}
+    .btn-coral{background:var(--coral);color:#fff}
+    .btn-coral:hover{background:var(--coral-dark)}
+    .btn-ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
+    .btn-ghost:hover{border-color:var(--coral);color:var(--coral)}
+    .menu-toggle{display:none;background:none;border:0;font-size:20px;color:var(--ink)}
+
+    /* HERO */
+    .hero{padding:64px 0 40px}
+    .hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center}
+    .eyebrow{font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--coral)}
+    .hero h1{font-size:46px;line-height:1.12;font-weight:800;margin:16px 0 18px}
+    .hero h1 span{color:var(--coral)}
+    .hero p.lead{font-size:15px;line-height:1.7;color:var(--ink-2);max-width:460px}
+    .hero-actions{display:flex;gap:14px;margin:26px 0 30px}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .stat{display:flex;gap:10px;align-items:flex-start}
+    .stat i{width:34px;height:34px;flex:none;border-radius:9px;background:var(--peach);color:var(--coral);display:grid;place-items:center;font-size:14px}
+    .stat b{font:800 15px "Manrope";display:block}
+    .stat span{font-size:11px;color:var(--muted);line-height:1.35;display:block}
+
+    .hero-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 24px 60px rgba(22,40,60,.08);position:relative}
+    .hero-card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+    .hero-card-top .t{display:flex;gap:10px;align-items:center;font:700 14px "Manrope";font-style:italic}
+    .hero-card-top .t i{color:var(--coral)}
+    .hero-card-top .n{background:var(--peach);color:var(--coral);font:700 12px "Manrope";padding:5px 12px;border-radius:8px}
+    .formula{text-align:center;font:600 15px "Manrope";margin:6px 0 4px}
+    .hero-card-body{display:grid;grid-template-columns:1fr 92px;gap:14px;align-items:center}
+    .legend{display:flex;gap:14px;justify-content:flex-end;font-size:10px;color:var(--ink-2);margin-bottom:4px}
+    .legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
+    .mini-table{width:100%;border-collapse:collapse;font-size:11px;text-align:center}
+    .mini-table th{background:var(--peach);color:var(--coral);font-weight:700;padding:4px}
+    .mini-table td{border:1px solid var(--line);padding:4px;color:var(--ink-2)}
+    .hand{position:absolute;right:-14px;bottom:64px;font:600 19px "Caveat";color:var(--coral);transform:rotate(-8deg);max-width:150px;line-height:1.1}
+    .tool-row{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:16px}
+    .tool{border:1px solid var(--line);border-radius:12px;background:#fff;padding:10px 4px;text-align:center;font-size:10px;font-weight:600;color:var(--ink-2)}
+    .tool i{display:block;font-size:15px;color:var(--coral);margin-bottom:6px}
+    .tool.active{background:var(--peach);border-color:var(--peach-2);color:var(--coral)}
+
+    /* SECTIONS */
+    section{padding:56px 0}
+    .sec-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px}
+    .sec-head h2{font-size:28px;font-weight:800}
+    .sec-head p{font-size:13px;color:var(--muted);margin-top:6px}
+    .link-coral{font-size:13px;font-weight:700;color:var(--coral)}
+
+    .modules{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+    .mod{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:8px;transition:.2s}
+    .mod:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(22,40,60,.08)}
+    .mod .num{font:800 18px "Manrope";color:var(--coral)}
+    .mod .ico{align-self:flex-end;font-size:20px;color:var(--ink);margin-top:-30px}
+    .mod h3{font-size:14px;font-weight:800;line-height:1.3}
+    .mod p{font-size:11px;color:var(--muted);line-height:1.45}
+    .mod svg{width:100%;height:64px;margin:4px 0}
+    .mod a{font-size:12px;font-weight:700;color:var(--coral);margin-top:auto}
+    .mod a.soon{color:var(--muted);cursor:default}
+
+    .chain{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;align-items:start}
+    .step{text-align:center;position:relative}
+    .step i{width:44px;height:44px;border-radius:12px;background:var(--peach);color:var(--coral);display:grid;place-items:center;font-size:16px;margin:0 auto 10px}
+    .step b{font:700 12px "Manrope";display:block;line-height:1.3}
+    .step span{font-size:10px;color:var(--muted);display:block;margin-top:4px;line-height:1.4}
+    .step:not(:last-child):after{content:"\f061";font-family:"Font Awesome 6 Free";font-weight:900;position:absolute;right:-11px;top:14px;color:var(--coral);font-size:12px}
+
+    .featured{display:grid;grid-template-columns:1.2fr 1fr;gap:28px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px}
+    .tabs{display:flex;gap:18px;border-bottom:1px solid var(--line);margin-bottom:18px;flex-wrap:wrap}
+    .tabs span{font-size:12px;font-weight:600;color:var(--muted);padding:8px 2px;border-bottom:2px solid transparent}
+    .tabs span.active{color:var(--coral);border-color:var(--coral)}
+    .featured h3{font-size:20px;font-weight:800;margin-bottom:10px}
+    .featured p{font-size:13px;color:var(--ink-2);line-height:1.65;margin-bottom:18px}
+
+    .exp{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+    .exp .stat i{background:#fff;border:1px solid var(--line)}
+    .quote-card{background:var(--peach);border-radius:16px;padding:22px;margin-top:22px;display:flex;gap:16px;align-items:center}
+    .quote-card i.fa-quote-left{color:var(--coral);font-size:22px}
+    .quote-card p{font-size:13px;font-style:italic;color:var(--ink-2);line-height:1.6}
+    .quote-card b{display:block;margin-top:8px;font-size:12px;color:var(--ink)}
+    .quote-card span{font-size:11px;color:var(--muted)}
+    .stars{color:var(--coral);font-size:11px;margin-top:6px}
+
+    .band{background:linear-gradient(180deg,#fff, var(--peach));border-block:1px solid var(--line);text-align:center;padding:64px 0}
+    .band .hand-big{font:600 34px "Caveat";color:var(--ink);transform:rotate(-3deg);display:inline-block}
+    .band .hand-big em{color:var(--coral);font-style:normal}
+    .band-icons{display:flex;gap:56px;justify-content:center;margin-top:30px}
+    .band-icons div{font-size:13px;font-weight:700;color:var(--ink-2)}
+    .band-icons i{display:block;font-size:22px;color:var(--ink);margin:0 auto 10px}
+
+    footer{background:var(--navy);color:#c8d4e0;padding:52px 0 28px}
+    footer .wrap{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1.4fr;gap:28px}
+    footer .brand strong{color:#fff}
+    footer .brand small{color:#8fa1b3}
+    footer h4{font-size:12px;color:#fff;margin-bottom:14px}
+    footer ul{list-style:none}
+    footer li{margin-bottom:9px}
+    footer li a{font-size:12px;color:#9fb0c1}
+    footer li a:hover{color:#fff}
+    .foot-cta{background:var(--coral);border-radius:12px;padding:16px;color:#fff}
+    .foot-cta b{font:700 13px "Manrope";display:block;margin-bottom:4px}
+    .foot-cta span{font-size:11px;opacity:.85}
+    .socials{display:flex;gap:12px;margin-top:16px}
+    .socials a{width:32px;height:32px;border-radius:50%;background:#1d3448;color:#c8d4e0;display:grid;place-items:center;font-size:13px}
+    .socials a:hover{background:var(--coral);color:#fff}
+    .foot-bottom{border-top:1px solid #1d3448;margin-top:36px;padding-top:18px;font-size:11px;color:#7d90a3;display:flex;justify-content:space-between}
+
+    @media(max-width:1000px){
+      .nav{display:none}
+      .menu-toggle{display:block}
+      .hero .wrap{grid-template-columns:1fr}
+      .modules{grid-template-columns:repeat(2,1fr)}
+      .chain{grid-template-columns:repeat(3,1fr);row-gap:26px}
+      .step:not(:last-child):after{display:none}
+      .featured{grid-template-columns:1fr}
+      .exp{grid-template-columns:repeat(2,1fr)}
+      footer .wrap{grid-template-columns:1fr 1fr}
+      .stats{grid-template-columns:repeat(2,1fr)}
+      .tool-row{grid-template-columns:repeat(4,1fr)}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="#inicio">
+        <span class="brand-mark"><i class="fa-solid fa-wave-square"></i></span>
+        <span><strong>ITERA</strong><small>Plataforma integral de métodos numéricos</small></span>
+      </a>
+      <nav class="nav">
+        <a href="#inicio" class="active">Inicio</a>
+        <a href="#modulos">Módulos</a>
+        <a href="#incluye">Temas</a>
+        <a href="1/#teoria">Teoría</a>
+        <a href="1/#calculadoras">Calculadoras</a>
+        <a href="1/#practica">Ejercicios</a>
+        <a href="#experiencia">Recursos</a>
+      </nav>
+      <div class="top-actions">
+        <button class="search" aria-label="Buscar"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <a class="btn btn-coral" href="1/">Comenzar ahora <i class="fa-solid fa-arrow-right"></i></a>
+        <button class="menu-toggle" aria-label="Menú"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero" id="inicio">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">APRENDE · PRACTICA · APLICA</p>
+        <h1>Aprende Métodos Numéricos de manera <span>clara, práctica y completa.</span></h1>
+        <p class="lead">Una plataforma interactiva que combina teoría, calculadoras, ejercicios resueltos y propuestos, y recursos descargables para cada tema y subtema.</p>
+        <div class="hero-actions">
+          <a class="btn btn-coral" href="#modulos"><i class="fa-solid fa-play"></i> Explorar módulos</a>
+          <a class="btn btn-ghost" href="#incluye"><i class="fa-solid fa-circle-play"></i> Ver cómo funciona</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><i class="fa-solid fa-cubes"></i><div><b>5</b><span>módulos completos</span></div></div>
+          <div class="stat"><i class="fa-solid fa-book-open"></i><div><b>+50</b><span>temas y subtemas</span></div></div>
+          <div class="stat"><i class="fa-solid fa-calculator"></i><div><b>Calculadoras</b><span>interactivas</span></div></div>
+          <div class="stat"><i class="fa-solid fa-list-ol"></i><div><b>Aprendizaje</b><span>paso a paso</span></div></div>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-card-top">
+          <span class="t"><i class="fa-solid fa-code"></i> Interpolación de Lagrange</span>
+          <span class="n">n = 4</span>
+        </div>
+        <p class="formula">P(x) = Σ yᵢ · L(x)</p>
+        <div class="hero-card-body">
+          <div>
+            <div class="legend"><span><i style="background:#16283c"></i>Datos</span><span><i style="background:var(--coral)"></i>Polinomio</span></div>
+            <svg viewBox="0 0 320 180" role="img" aria-label="Gráfica del polinomio de Lagrange">
+              <line x1="34" y1="160" x2="308" y2="160" stroke="#16283c" stroke-width="1.4"/>
+              <line x1="34" y1="160" x2="34" y2="16" stroke="#16283c" stroke-width="1.4"/>
+              <path d="M34,160 L34,154 M96,160 L96,154 M158,160 L158,154 M220,160 L220,154 M282,160 L282,154" stroke="#16283c" stroke-width="1"/>
+              <text x="92" y="174" font-size="9" fill="#7b8794">1</text>
+              <text x="154" y="174" font-size="9" fill="#7b8794">2</text>
+              <text x="216" y="174" font-size="9" fill="#7b8794">3</text>
+              <text x="278" y="174" font-size="9" fill="#7b8794">4</text>
+              <path d="M50,128 C80,100 92,94 112,96 C142,100 158,102 178,94 C208,82 232,58 252,34" fill="none" stroke="#f4581c" stroke-width="2.4"/>
+              <circle cx="50" cy="128" r="4.5" fill="#fff" stroke="#16283c" stroke-width="1.6"/>
+              <circle cx="112" cy="96" r="4.5" fill="#fff" stroke="#16283c" stroke-width="1.6"/>
+              <circle cx="178" cy="94" r="4.5" fill="#fff" stroke="#16283c" stroke-width="1.6"/>
+              <circle cx="252" cy="34" r="4.5" fill="#fff" stroke="#16283c" stroke-width="1.6"/>
+            </svg>
+          </div>
+          <table class="mini-table">
+            <tr><th>x</th><th>y</th></tr>
+            <tr><td>0</td><td>1</td></tr>
+            <tr><td>1</td><td>2</td></tr>
+            <tr><td>2</td><td>2</td></tr>
+            <tr><td>3</td><td>4</td></tr>
+          </table>
+        </div>
+        <span class="hand">De los datos a la solución real</span>
+        <div class="tool-row">
+          <div class="tool active"><i class="fa-solid fa-file-lines"></i>Teoría</div>
+          <div class="tool"><i class="fa-solid fa-calculator"></i>Calculadora</div>
+          <div class="tool"><i class="fa-solid fa-pen-to-square"></i>Resueltos</div>
+          <div class="tool"><i class="fa-solid fa-pencil"></i>Propuestos</div>
+          <div class="tool"><i class="fa-solid fa-video"></i>Video</div>
+          <div class="tool"><i class="fa-solid fa-circle-question"></i>Quiz</div>
+          <div class="tool"><i class="fa-solid fa-download"></i>Recursos</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="modulos">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><h2>Módulos principales</h2><p>Cinco módulos, del fundamento a la aplicación, con ejemplos reales y herramientas interactivas.</p></div>
+        <a class="link-coral" href="#modulos">Ver todos los módulos <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="modules">
+        <article class="mod">
+          <span class="num">01</span><span class="ico"><i class="fa-solid fa-wave-square"></i></span>
+          <h3>Ecuaciones no lineales y errores</h3>
+          <p>Bisección y Newton</p>
+          <svg viewBox="0 0 120 64"><line x1="8" y1="46" x2="112" y2="46" stroke="#16283c" stroke-width="1.2"/><path d="M12,54 C40,54 48,10 70,14 C92,18 100,40 112,38" fill="none" stroke="#f4581c" stroke-width="2"/></svg>
+          <a href="1/">Explorar <i class="fa-solid fa-arrow-right"></i></a>
+        </article>
+        <article class="mod">
+          <span class="num">02</span><span class="ico"><i class="fa-solid fa-table-cells"></i></span>
+          <h3>Sistemas de ecuaciones lineales</h3>
+          <p>Eliminación con pivoteo parcial y Gauss-Seidel</p>
+          <svg viewBox="0 0 120 64"><text x="22" y="22" font-size="10" fill="#16283c" font-family="monospace">2  2  0</text><text x="22" y="36" font-size="10" fill="#16283c" font-family="monospace">-1 2  2</text><text x="22" y="50" font-size="10" fill="#16283c" font-family="monospace">0 -1  2</text><path d="M16,10 L12,10 L12,54 L16,54 M76,10 L80,10 L80,54 L76,54" fill="none" stroke="#16283c" stroke-width="1.4"/></svg>
+          <a class="soon">Próximamente</a>
+        </article>
+        <article class="mod">
+          <span class="num">03</span><span class="ico"><i class="fa-solid fa-chart-line"></i></span>
+          <h3>Interpolación y ajuste de curvas</h3>
+          <p>Interpolación de Lagrange y regresión lineal</p>
+          <svg viewBox="0 0 120 64"><circle cx="20" cy="48" r="2.6" fill="#16283c"/><circle cx="40" cy="40" r="2.6" fill="#16283c"/><circle cx="60" cy="36" r="2.6" fill="#16283c"/><circle cx="80" cy="24" r="2.6" fill="#16283c"/><circle cx="100" cy="16" r="2.6" fill="#16283c"/><line x1="14" y1="52" x2="108" y2="12" stroke="#f4581c" stroke-width="2"/></svg>
+          <a class="soon">Próximamente</a>
+        </article>
+        <article class="mod">
+          <span class="num">04</span><span class="ico"><i class="fa-solid fa-integral"></i></span>
+          <h3>Integración numérica</h3>
+          <p>Trapecio compuesto y Simpson compuesto</p>
+          <svg viewBox="0 0 120 64"><path d="M12,54 L12,34 L32,26 L52,18 L72,14 L92,16 L108,22 L108,54 Z" fill="#bcd6ea" stroke="none"/><path d="M12,34 C40,22 70,12 108,22" fill="none" stroke="#f4581c" stroke-width="2"/><line x1="8" y1="54" x2="112" y2="54" stroke="#16283c" stroke-width="1.2"/></svg>
+          <a class="soon">Próximamente</a>
+        </article>
+        <article class="mod">
+          <span class="num">05</span><span class="ico"><i class="fa-solid fa-gears"></i></span>
+          <h3>Ecuaciones diferenciales</h3>
+          <p>Euler explícito y Runge-Kutta de orden 4</p>
+          <svg viewBox="0 0 120 64"><path d="M12,54 C50,50 80,44 110,38" fill="none" stroke="#bcd6ea" stroke-width="2"/><path d="M12,54 C50,44 80,32 110,24" fill="none" stroke="#8fb8d8" stroke-width="2"/><path d="M12,54 C50,36 80,20 110,10" fill="none" stroke="#f4581c" stroke-width="2"/></svg>
+          <a class="soon">Próximamente</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="incluye">
+    <div class="wrap">
+      <div class="sec-head"><div><h2>¿Qué incluye cada tema?</h2><p>Cada subtema está diseñado como una ruta de aprendizaje completa.</p></div></div>
+      <div class="chain">
+        <div class="step"><i class="fa-solid fa-file-lines"></i><b>Teoría</b><span>Explicación clara y con ejemplos</span></div>
+        <div class="step"><i class="fa-solid fa-calculator"></i><b>Calculadora</b><span>Herramientas interactivas</span></div>
+        <div class="step"><i class="fa-solid fa-pen-to-square"></i><b>Ejercicios resueltos</b><span>Paso a paso detallado</span></div>
+        <div class="step"><i class="fa-solid fa-pencil"></i><b>Ejercicios propuestos</b><span>Para practicar de forma guiada</span></div>
+        <div class="step"><i class="fa-solid fa-video"></i><b>Video de retroalimentación</b><span>Explicaciones y consejos clave</span></div>
+        <div class="step"><i class="fa-solid fa-circle-question"></i><b>Quiz</b><span>Evalúa tu comprensión</span></div>
+        <div class="step"><i class="fa-solid fa-download"></i><b>Recursos descargables</b><span>Notas, plantillas y material extra</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="destacado">
+    <div class="wrap">
+      <div class="sec-head"><div><h2>Tema destacado</h2><p>Explora cómo se ve un tema por dentro.</p></div></div>
+      <div class="featured">
+        <div>
+          <div class="tabs"><span class="active">Teoría</span><span>Calculadora</span><span>Resueltos</span><span>Propuestos</span><span>Video</span><span>Quiz</span></div>
+          <h3>Ecuaciones no lineales y errores</h3>
+          <p>Encuentra raíces de ecuaciones no lineales con Bisección y Newton: observa cada iteración, el error y el residuo en tablas y gráficos interactivos, y comprende cuándo cada método converge.</p>
+          <a class="btn btn-coral" href="1/">Explorar este tema <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <svg viewBox="0 0 320 180" role="img" aria-label="Curva del caso base">
+          <line x1="30" y1="150" x2="300" y2="150" stroke="#16283c" stroke-width="1.3"/>
+          <line x1="30" y1="150" x2="30" y2="14" stroke="#16283c" stroke-width="1.3"/>
+          <path d="M40,40 C90,120 120,168 170,150 C220,132 250,60 290,26" fill="none" stroke="#f4581c" stroke-width="2.4"/>
+          <circle cx="152" cy="150" r="5" fill="#fff" stroke="#16283c" stroke-width="1.8"/>
+          <text x="140" y="170" font-size="10" fill="#7b8794">raíz</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section id="experiencia">
+    <div class="wrap">
+      <div class="sec-head"><div><h2>Tu experiencia de aprendizaje</h2><p>Más que videos, una plataforma completa para dominar los métodos numéricos.</p></div></div>
+      <div class="exp">
+        <div class="stat"><i class="fa-solid fa-chart-column"></i><div><b>Sigue tu progreso</b><span>Comprende tus avances en tiempo real</span></div></div>
+        <div class="stat"><i class="fa-solid fa-lightbulb"></i><div><b>Resuelve paso a paso</b><span>Comprende cada detalle del procedimiento</span></div></div>
+        <div class="stat"><i class="fa-solid fa-chart-line"></i><div><b>Visualiza gráficas</b><span>Analiza resultados interactivos</span></div></div>
+        <div class="stat"><i class="fa-solid fa-list-check"></i><div><b>Practica por subtema</b><span>Ejercicios con distintos niveles de dificultad</span></div></div>
+        <div class="stat"><i class="fa-solid fa-circle-play"></i><div><b>Refuerza con videos</b><span>Aclara dudas y profundiza</span></div></div>
+        <div class="stat"><i class="fa-solid fa-download"></i><div><b>Descarga recursos</b><span>Apuntes, plantillas y más material</span></div></div>
+      </div>
+      <div class="quote-card">
+        <i class="fa-solid fa-quote-left"></i>
+        <div>
+          <p>"ITERA hace que los métodos numéricos sean realmente comprensibles. La combinación de teoría, práctica y herramientas interactivas es excelente."</p>
+          <b>Carlos M.</b><span>Estudiante de Ingeniería</span>
+          <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="band">
+    <div class="wrap">
+      <span class="hand-big">El conocimiento numérico <em>transforma el futuro.</em></span>
+      <div class="band-icons">
+        <div><i class="fa-solid fa-graduation-cap"></i>Aprende</div>
+        <div><i class="fa-solid fa-gear"></i>Practica</div>
+        <div><i class="fa-solid fa-chart-simple"></i>Aplica</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <div>
+        <a class="brand" href="#inicio">
+          <span class="brand-mark"><i class="fa-solid fa-wave-square"></i></span>
+          <span><strong>ITERA</strong><small>Plataforma integral de métodos numéricos</small></span>
+        </a>
+        <div class="socials">
+          <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          <a href="https://github.com/rwciANA/LAB-MN" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div><h4>Enlaces útiles</h4><ul><li><a href="#modulos">Módulos</a></li><li><a href="#incluye">Temas</a></li><li><a href="1/#calculadoras">Calculadoras</a></li></ul></div>
+      <div><h4>Recursos</h4><ul><li><a href="1/">Documentación</a></li><li><a href="#experiencia">Plantillas</a></li><li><a href="#destacado">Preguntas frecuentes</a></li></ul></div>
+      <div><h4>Acerca de</h4><ul><li><a href="1/#equipo">Nuestro equipo</a></li><li><a href="#">Contacto</a></li><li><a href="#">Blog</a></li></ul></div>
+      <div class="foot-cta"><b>Comienza tu aprendizaje hoy <i class="fa-solid fa-arrow-right"></i></b><span>Métodos numéricos al alcance de todos.</span></div>
+    </div>
+    <div class="wrap foot-bottom"><span>UNSA · Ingeniería de Sistemas · Laboratorio de Métodos Numéricos</span><span>© 2026 ITERA</span></div>
+  </footer>
+</body>
+</html>
