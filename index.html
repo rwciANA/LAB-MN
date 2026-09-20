@@ -30,6 +30,8 @@
     .brand strong{font:800 20px "Manrope";letter-spacing:.02em;display:block}
     .brand small{font-size:10px;color:var(--muted);display:block}
     .nav{display:flex;gap:22px}
+    .nav a i,.nav-mobile-head,.nav-search,.nav-mobile-cta,.nav-mobile-socials,.nav-close{display:none}
+    .nav-backdrop{display:none}
     .nav a{font-size:13px;font-weight:600;color:var(--ink-2);padding:6px 2px;border-bottom:2px solid transparent}
     .nav a:hover,.nav a.active{color:var(--ink);border-color:var(--coral)}
     .top-actions{display:flex;align-items:center;gap:14px}
@@ -139,7 +141,32 @@
     .foot-bottom{border-top:1px solid #1d3448;margin-top:36px;padding-top:18px;font-size:11px;color:#7d90a3;display:flex;justify-content:space-between}
 
     @media(max-width:1000px){
-      .nav{display:none}
+      .nav{
+        display:flex; flex-direction:column; gap:6px;
+        position:fixed; top:14px; left:14px; right:14px;
+        max-height:calc(100vh - 28px); overflow-y:auto;
+        background:#fff; border:1px solid var(--line); border-radius:22px;
+        padding:16px 16px 20px;
+        box-shadow:0 24px 70px rgba(22,40,60,.3);
+        z-index:60;
+        opacity:0; transform:translateY(-10px); pointer-events:none; transition:.25s;
+      }
+      .nav.open{opacity:1; transform:none; pointer-events:auto}
+      .nav a{height:auto; justify-content:flex-start; padding:12px 10px; font-size:14px; border-radius:10px; border-bottom:0}
+      .nav a:hover{background:var(--peach)}
+      .nav a i{display:inline-block; width:22px; color:var(--coral); font-size:15px}
+      .nav-mobile-head{display:flex; align-items:center; gap:10px; padding:2px 4px 12px; border-bottom:1px solid var(--line); margin-bottom:8px}
+      .nav-mobile-head strong{font:800 18px "Manrope"; flex:1}
+      .nav-close{margin-left:auto; background:var(--bg); border:1px solid var(--line); width:36px; height:36px; border-radius:50%; font-size:16px; cursor:pointer; color:var(--ink)}
+      .nav-search{display:flex; align-items:center; gap:10px; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:11px 14px; margin-bottom:10px; color:var(--muted); font-size:13px}
+      .nav-search input{border:0; background:none; outline:0; font:500 13px "Inter"; width:100%; color:var(--ink)}
+      .nav-mobile-cta{display:inline-flex; justify-content:center; margin-top:12px}
+      .nav-mobile-socials{display:flex; justify-content:center; gap:12px; margin-top:14px}
+      .nav-mobile-socials a{width:34px; height:34px; border-radius:50%; background:var(--bg); border:1px solid var(--line); color:var(--ink-2); display:grid; place-items:center; font-size:13px}
+      .nav-mobile-socials a:hover{background:var(--coral); color:#fff}
+      .nav-backdrop{display:block; position:fixed; inset:0; background:rgba(22,40,60,.45); z-index:55; opacity:0; pointer-events:none; transition:.25s}
+      .nav-backdrop.show{opacity:1; pointer-events:auto}
+      .top-actions .search,.top-actions .btn-coral{display:none}
       .menu-toggle{display:block}
       .hero .wrap{grid-template-columns:1fr}
       .modules{grid-template-columns:repeat(2,1fr)}
@@ -160,15 +187,29 @@
         <span class="brand-mark"><i class="fa-solid fa-wave-square"></i></span>
         <span><strong>ITERA</strong><small>Plataforma integral de métodos numéricos</small></span>
       </a>
-      <nav class="nav">
-        <a href="#inicio" class="active">Inicio</a>
-        <a href="#modulos">Módulos</a>
-        <a href="#incluye">Temas</a>
-        <a href="1/#teoria">Teoría</a>
-        <a href="1/#calculadoras">Calculadoras</a>
-        <a href="1/#practica">Ejercicios</a>
-        <a href="#experiencia">Recursos</a>
+      <nav class="nav" id="mainNav">
+        <div class="nav-mobile-head">
+          <span class="brand-mark"><i class="fa-solid fa-wave-square"></i></span>
+          <strong>ITERA</strong>
+          <button class="nav-close" id="navClose" type="button" aria-label="Cerrar menú"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <label class="nav-search"><i class="fa-solid fa-magnifying-glass"></i><input type="search" placeholder="¿Qué deseas aprender?" aria-label="Buscar"></label>
+        <a href="#inicio" class="active"><i class="fa-solid fa-house"></i>Inicio</a>
+        <a href="#modulos"><i class="fa-solid fa-cubes"></i>Módulos</a>
+        <a href="#incluye"><i class="fa-solid fa-layer-group"></i>Temas</a>
+        <a href="1/#teoria"><i class="fa-solid fa-book-open"></i>Teoría</a>
+        <a href="1/#calculadoras"><i class="fa-solid fa-calculator"></i>Calculadoras</a>
+        <a href="1/#practica"><i class="fa-solid fa-pen-to-square"></i>Ejercicios</a>
+        <a href="#experiencia"><i class="fa-solid fa-download"></i>Recursos</a>
+        <a href="#footer"><i class="fa-solid fa-envelope"></i>Contacto</a>
+        <a class="btn btn-coral nav-mobile-cta" href="1/">Comenzar ahora <i class="fa-solid fa-arrow-right"></i></a>
+        <div class="socials nav-mobile-socials">
+          <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          <a href="https://github.com/rwciANA/LAB-MN" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
       </nav>
+      <div class="nav-backdrop" id="navBackdrop"></div>
       <div class="top-actions">
         <button class="search" aria-label="Buscar"><i class="fa-solid fa-magnifying-glass"></i></button>
         <a class="btn btn-coral" href="1/">Comenzar ahora <i class="fa-solid fa-arrow-right"></i></a>
@@ -355,7 +396,7 @@
     </div>
   </div>
 
-  <footer>
+  <footer id="footer">
     <div class="wrap">
       <div>
         <a class="brand" href="#inicio">
@@ -375,5 +416,18 @@
     </div>
     <div class="wrap foot-bottom"><span>UNSA · Ingeniería de Sistemas · Laboratorio de Métodos Numéricos</span><span>© 2026 ITERA</span></div>
   </footer>
+  <script>
+    const navEl = document.getElementById("mainNav");
+    const backdropEl = document.getElementById("navBackdrop");
+    function toggleNav(open) {
+      navEl.classList.toggle("open", open);
+      backdropEl.classList.toggle("show", open);
+    }
+    document.querySelector(".menu-toggle").addEventListener("click", () => toggleNav(!navEl.classList.contains("open")));
+    document.getElementById("navClose").addEventListener("click", () => toggleNav(false));
+    backdropEl.addEventListener("click", () => toggleNav(false));
+    navEl.querySelectorAll("a").forEach(a => a.addEventListener("click", () => toggleNav(false)));
+    document.addEventListener("keydown", e => { if (e.key === "Escape") toggleNav(false); });
+  </script>
 </body>
 </html>

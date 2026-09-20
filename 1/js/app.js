@@ -90,11 +90,18 @@ function switchView(view) {
   document.querySelectorAll(".view").forEach(section => section.classList.toggle("active-view", section.dataset.section === view));
   document.querySelectorAll(".nav a").forEach(link => link.classList.toggle("active", link.dataset.view === view));
   $("#mainNav").classList.remove("open");
+  $("#navBackdrop").classList.remove("show");
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 document.querySelectorAll("[data-view]").forEach(link => link.addEventListener("click", event => { event.preventDefault(); switchView(link.dataset.view); history.replaceState(null, "", `#${link.dataset.view}`); }));
-$("#menuToggle").addEventListener("click", () => $("#mainNav").classList.toggle("open"));
+function toggleNav(open) {
+  $("#mainNav").classList.toggle("open", open);
+  $("#navBackdrop").classList.toggle("show", open);
+}
+$("#menuToggle").addEventListener("click", () => toggleNav(!$("#mainNav").classList.contains("open")));
+$("#navClose").addEventListener("click", () => toggleNav(false));
+$("#navBackdrop").addEventListener("click", () => toggleNav(false));
 $("#calculatorForm").addEventListener("submit", event => { event.preventDefault(); runCalculator(); });
 document.querySelectorAll(".calc-tab").forEach(tab => tab.addEventListener("click", () => { state.method = tab.dataset.calculator; document.querySelectorAll(".calc-tab").forEach(item => item.classList.toggle("active", item === tab)); $("#methodPill").textContent = state.method.toUpperCase(); $("#bisectionInputs").classList.toggle("hidden", state.method !== "biseccion"); $("#newtonInputs").classList.toggle("hidden", state.method !== "newton"); runCalculator(); }));
 
