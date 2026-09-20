@@ -49,6 +49,15 @@ Supuestos:
 2. Implementar Bisección y Newton con criterios de parada definidos, analizar el error y contrastar los resultados con una referencia independiente.
 3. Explicar el procedimiento mediante teoría breve, ejemplos resueltos, tablas, gráficos y ejercicios con retroalimentación.
 
+## Ficha matemática del método 1 · Bisección (Semana 2)
+
+- **Idea:** dividir por la mitad un intervalo [a, b] donde f cambia de signo; el punto medio c = (a+b)/2 aproxima la raíz y la cota de error es (b−a)/2.
+- **Condición de uso:** f continua en [a, b] y f(a)·f(b) < 0.
+- **Criterio de parada:** |f(c)| ≤ tol o (b−a)/2 ≤ tol; máximo 100 iteraciones.
+- **Convergencia:** lineal, garantizada bajo las condiciones anteriores.
+- **Referencia manual:** raíz ≈ 1.5213797068; primer paso c = 1.5, f(1.5) = −0.125, intervalo [1.5, 2]. Ver `ejemplo_manual_biseccion.md`.
+- **Limitaciones:** lento comparado con Newton; no sirve si la raíz no cambia de signo (doble).
+
 ## Objetivos
 - Determinar un parámetro de configuración a partir de una ecuación no lineal.
 - Explicar cuándo un método converge.
