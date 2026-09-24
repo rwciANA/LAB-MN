@@ -4,12 +4,23 @@
 
 | Letra | Integrante | Rol (sem 4-6) | Rol anterior (sem 1-3) |
 |-------|------------|---------------|------------------------|
-| A | Condori Idme Raul Wilfredo | Validación y coordinación (V) | V |
+| A | Condori Idme Raul Wilfredo | Matemática y modelación (M) | V |
 | B | Quispe Rupaylla Fabrizio Alonso | Programación numérica (P) | D |
-| C | Suarez Huamani Marco Antonio | Matemática y modelación (M) | M |
-| D | Chura Monroy Daniel Wilston | Diseño didáctico y web (D) | P |
+| C | Suarez Huamani Marco Antonio | Diseño didáctico y web (D) | M |
+| D | Chura Monroy Daniel Wilston | Validación y coordinación (V) | P |
 
-**Transferencia ejecutada:** el nuevo responsable (B) ejecutó el ejemplo reproducible de `nota_transferencia.md` (`python 1/scripts/biseccion.py`) y verificó la salida esperada antes de asumir el rol.
+## Tabla de rotación completa (cada 3 semanas)
+
+| Semanas | A Condori | B Quispe | C Suarez | D Chura |
+|---------|-----------|----------|----------|---------|
+| 1 a 3 | V | D | M | P |
+| 4 a 6 | M | P | D | V |
+| 7 a 9 | D | V | P | M |
+| 10 a 12 | P | M | V | D |
+
+Al finalizar el proyecto, cada integrante habrá desempeñado los cuatro roles.
+
+**Transferencia ejecutada:** los nuevos responsables (A en M, C en D, D en V) deben ejecutar el ejemplo reproducible de `nota_transferencia.md` (`python 1/scripts/biseccion.py`) y verificar la salida esperada antes de asumir su rol.
 
 ## Reglas de trabajo
 1. Cada tarea tendrá responsable, revisor, fecha y evidencia.
