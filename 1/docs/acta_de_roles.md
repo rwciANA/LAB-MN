@@ -5,18 +5,18 @@
 | Letra | Integrante | Rol |
 |-------|------------|-----|
 | A | Condori Idme Raul Wilfredo | Validación y coordinación (V) |
-| B | Quispe Rupaylla Fabrizio Alonso | Diseño didáctico y web (D) |
-| C | Suarez Huamani Marco Antonio | Matemática y modelación (M) |
+| B | Quispe Rupaylla Fabrizio Alonso | Matemática y modelación (M) |
+| C | Suarez Huamani Marco Antonio | Diseño didáctico y web (D) |
 | D | Chura Monroy Daniel Wilston | Programación numérica (P) |
 
 ## Plan de rotación (pendiente de aplicar cuando la docente indique la semana 4)
 
 | Semanas | A Condori | B Quispe | C Suarez | D Chura |
 |---------|-----------|----------|----------|---------|
-| 1 a 3 | V | D | M | P |
-| 4 a 6 | M | P | D | V |
-| 7 a 9 | D | V | P | M |
-| 10 a 12 | P | M | V | D |
+| 1 a 3 | V | M | D | P |
+| 4 a 6 | M | D | P | V |
+| 7 a 9 | D | P | V | M |
+| 10 a 12 | P | V | M | D |
 
 Al finalizar el proyecto, cada integrante habrá desempeñado los cuatro roles.
 

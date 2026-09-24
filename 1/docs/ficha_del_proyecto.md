@@ -16,8 +16,8 @@
 | Letra | Nombre | Rol |
 |-------|--------|-----|
 | A | Condori Idme Raul Wilfredo | Validación y coordinación (V) |
-| B | Quispe Rupaylla Fabrizio Alonso | Diseño didáctico y web (D) |
-| C | Suarez Huamani Marco Antonio | Matemática y modelación (M) |
+| B | Quispe Rupaylla Fabrizio Alonso | Matemática y modelación (M) |
+| C | Suarez Huamani Marco Antonio | Diseño didáctico y web (D) |
 | D | Chura Monroy Daniel Wilston | Programación numérica (P) |
 
 ## Caso base
