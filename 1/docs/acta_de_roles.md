@@ -1,15 +1,15 @@
 # Acta de Asignación de Roles · Tema 1
 
-## Bloque actual: semanas 4 a 6 (rotación aplicada en semana 4)
+## Bloque actual: semanas 1 a 3 (vigente)
 
-| Letra | Integrante | Rol (sem 4-6) | Rol anterior (sem 1-3) |
-|-------|------------|---------------|------------------------|
-| A | Condori Idme Raul Wilfredo | Matemática y modelación (M) | V |
-| B | Quispe Rupaylla Fabrizio Alonso | Programación numérica (P) | D |
-| C | Suarez Huamani Marco Antonio | Diseño didáctico y web (D) | M |
-| D | Chura Monroy Daniel Wilston | Validación y coordinación (V) | P |
+| Letra | Integrante | Rol |
+|-------|------------|-----|
+| A | Condori Idme Raul Wilfredo | Validación y coordinación (V) |
+| B | Quispe Rupaylla Fabrizio Alonso | Diseño didáctico y web (D) |
+| C | Suarez Huamani Marco Antonio | Matemática y modelación (M) |
+| D | Chura Monroy Daniel Wilston | Programación numérica (P) |
 
-## Tabla de rotación completa (cada 3 semanas)
+## Plan de rotación (pendiente de aplicar cuando la docente indique la semana 4)
 
 | Semanas | A Condori | B Quispe | C Suarez | D Chura |
 |---------|-----------|----------|----------|---------|
@@ -20,7 +20,7 @@
 
 Al finalizar el proyecto, cada integrante habrá desempeñado los cuatro roles.
 
-**Transferencia ejecutada:** los nuevos responsables (A en M, C en D, D en V) deben ejecutar el ejemplo reproducible de `nota_transferencia.md` (`python 1/scripts/biseccion.py`) y verificar la salida esperada antes de asumir su rol.
+**Transferencia pendiente:** al aplicar la rotación, los nuevos responsables ejecutarán el ejemplo reproducible de `nota_transferencia.md` (`python 1/scripts/biseccion.py`) y verificarán la salida esperada antes de asumir su rol.
 
 ## Reglas de trabajo
 1. Cada tarea tendrá responsable, revisor, fecha y evidencia.
