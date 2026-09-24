@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-  <link rel="stylesheet" href="css/styles.css?v=7">
+  <link rel="stylesheet" href="css/styles.css?v=8">
 </head>
 <body>
   <header class="topbar">
@@ -81,12 +81,14 @@
       <div class="section-heading">
         <p class="eyebrow"><span>02</span> FUNDAMENTOS</p>
         <h2>Dos caminos hacia<br><em>la misma raíz.</em></h2>
-        <p>Elige un método arriba y recorre su teoría paso a paso: para qué sirve, la idea, el algoritmo, el error y sus límites.</p>
+        <p>Elige una pestaña y recorre el tema paso a paso: para qué sirve, la idea, el algoritmo, el error y sus límites.</p>
       </div>
 
       <div class="theory-tabs" role="tablist">
-        <button class="theory-tab active" type="button" data-theory="biseccion" role="tab"><i class="fa-solid fa-arrows-left-right"></i> Método 1 · Bisección</button>
-        <button class="theory-tab" type="button" data-theory="newton" role="tab"><i class="fa-solid fa-bolt"></i> Método 2 · Newton-Raphson</button>
+        <button class="theory-tab active" type="button" data-theory="biseccion" role="tab"><i class="fa-solid fa-arrows-left-right"></i> Bisección</button>
+        <button class="theory-tab" type="button" data-theory="newton" role="tab"><i class="fa-solid fa-bolt"></i> Newton-Raphson</button>
+        <button class="theory-tab" type="button" data-theory="polinomios" role="tab"><i class="fa-solid fa-superscript"></i> Raíces y polinomios</button>
+        <button class="theory-tab" type="button" data-theory="errores" role="tab"><i class="fa-solid fa-ruler-combined"></i> Errores y tolerancia</button>
       </div>
 
       <!-- PANEL BISECCIÓN -->
@@ -271,6 +273,176 @@
         <button class="video-btn" type="button" data-video="sgg5eM15XMc" data-title="Newton-Raphson paso a paso"><i class="fa-brands fa-youtube"></i> Ver video corto (60 s)</button>
       </div>
 
+      <!-- PANEL RAÍCES Y POLINOMIOS -->
+      <div class="theory-panel" data-panel="polinomios">
+        <div class="tstep">
+          <span class="tnum">01</span>
+          <div>
+            <h3>¿Qué es una raíz?</h3>
+            <p>x* es <strong>raíz</strong> de una función cuando f(x*) = 0: el punto exacto donde la curva toca el eje X. Resolver f(x) = 0 es, literalmente, <strong>buscar raíces</strong>.</p>
+            <p class="tuse"><i class="fa-solid fa-sitemap"></i> En Sistemas: el umbral donde una respuesta cruza un objetivo, un punto de equilibrio, el parámetro que calibra una configuración.</p>
+            <svg class="idea-svg" viewBox="0 0 360 150" role="img" aria-label="Curva tocando el eje X en tres puntos">
+              <line x1="20" y1="95" x2="340" y2="95" stroke="#16283c" stroke-width="1.4"/>
+              <path d="M35,20 C80,30 95,95 130,97 C170,99 175,135 215,132 C255,129 262,60 300,40 C318,31 330,28 338,26" fill="none" stroke="#f4581c" stroke-width="2.4"/>
+              <circle cx="128" cy="96" r="5" fill="#fff" stroke="#16283c" stroke-width="1.8"/>
+              <circle cx="218" cy="133" r="0" fill="none"/>
+              <circle cx="272" cy="93" r="5" fill="#fff" stroke="#16283c" stroke-width="1.8"/>
+              <text x="120" y="84" font-size="11" font-weight="700" fill="#16283c">x₁</text>
+              <text x="264" y="81" font-size="11" font-weight="700" fill="#16283c">x₂</text>
+              <text x="30" y="112" font-size="9" fill="#7b8794">donde la curva cruza el eje = raíz</text>
+            </svg>
+          </div>
+        </div>
+        <div class="tstep">
+          <span class="tnum">02</span>
+          <div>
+            <h3>El teorema fundamental del álgebra</h3>
+            <p>Un polinomio de grado n tiene <strong>exactamente n raíces en los números complejos</strong> (contando multiplicidad). Por tanto, en los reales como máximo n. Con coeficientes reales, las complejas aparecen en <strong>pares conjugados</strong> a ± b·i.</p>
+            <div class="formula-line">p(x) = aₙxⁿ + aₙ₋₁xⁿ⁻¹ + ⋯ + a₁x + a₀ &nbsp;⇒&nbsp; n raíces en ℂ</div>
+            <p>Nuestro caso base es grado 3: x³ − x − 2 ⇒ debe tener 3 raíces (una real + un par complejo, lo verás en el paso 05).</p>
+          </div>
+        </div>
+        <div class="tstep">
+          <span class="tnum">03</span>
+          <div>
+            <h3>Multiplicidad: la palabra clave</h3>
+            <p>Una raíz r tiene <strong>multiplicidad k</strong> si el polinomio se factoriza como p(x) = (x − r)ᵏ · q(x) con q(r) ≠ 0. No es un detalle teórico: decide qué método puede encontrarla.</p>
+            <ul>
+              <li><strong>Multiplicidad impar (1, 3, …):</strong> la curva <em>cruza</em> el eje y cambia de signo.</li>
+              <li><strong>Multiplicidad par (2, 4, …):</strong> la curva <em>toca</em> el eje y rebota, sin cambiar de signo.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tstep">
+          <span class="tnum">04</span>
+          <div>
+            <h3>Par vs impar: el punto ciego de Bisección</h3>
+            <svg class="idea-svg" viewBox="0 0 360 150" role="img" aria-label="Raíz impar cruza, raíz par toca y rebota">
+              <line x1="20" y1="95" x2="165" y2="95" stroke="#16283c" stroke-width="1.2"/>
+              <path d="M40,135 C75,130 95,98 105,93 C118,87 135,60 155,45" fill="none" stroke="#f4581c" stroke-width="2.4"/>
+              <circle cx="103" cy="94" r="5" fill="#fff" stroke="#16283c" stroke-width="1.6"/>
+              <text x="55" y="30" font-size="11" font-weight="700" fill="#16283c">x³ → impar: cruza ✓</text>
+              <line x1="200" y1="95" x2="345" y2="95" stroke="#16283c" stroke-width="1.2"/>
+              <path d="M215,40 C240,88 258,94 272,94 C286,94 305,88 330,40" fill="none" stroke="#f4581c" stroke-width="2.4"/>
+              <circle cx="272" cy="94" r="5" fill="#fff" stroke="#16283c" stroke-width="1.6"/>
+              <text x="215" y="30" font-size="11" font-weight="700" fill="#16283c">x² → par: toca ✗</text>
+              <text x="30" y="145" font-size="9" fill="#7b8794">sin cambio de signo, f(a)·f(b) ≥ 0 y Bisección no ve la raíz</text>
+            </svg>
+            <ul>
+              <li><strong>Bisección</strong> solo encuentra raíces de multiplicidad <em>impar</em> (necesita el cambio de signo).</li>
+              <li><strong>Newton</strong> sí encuentra las pares, pero pierde su superpoder: la convergencia degrada de cuadrática a lineal con factor (1 − 1/k). Para una doble (k=2), cada paso solo reduce el error a la mitad.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tstep">
+          <span class="tnum">05</span>
+          <div>
+            <h3>Nuestras 3 raíces completas</h3>
+            <p>Factorizando x³ − x − 2 con la raíz real x₁ = 1.5213797068:</p>
+            <div class="formula-line">x³ − x − 2 = (x − x₁)·(x² + x₁x + (x₁² − 1))</div>
+            <p>El discriminante de la cuadrática es 4 − 3x₁² ≈ −2.94 &lt; 0 ⇒ sus dos raíces son <strong>complejas conjugadas</strong>:</p>
+            <div class="formula-line">x₂,₃ ≈ −0.76069 ± 0.85782 i</div>
+            <p>Bisección y Newton trabajan sobre la recta real: convergen a la <strong>única raíz real</strong>. El par complejo existe (el teorema lo garantiza) pero es inalcanzable sin aritmética compleja.</p>
+          </div>
+        </div>
+        <div class="tstep">
+          <span class="tnum">06</span>
+          <div class="pc-grid">
+            <div class="pc good">
+              <h4><i class="fa-solid fa-circle-check"></i> Qué sabes por conocer el grado</h4>
+              <ul>
+                <li>Cuántas raíces reales puede haber como máximo.</li>
+                <li>Cota para elegir intervalos: todas están en |x| ≤ 1 + max|aᵢ/aₙ|.</li>
+                <li>Deflación: hallada r, divides entre (x − r) y buscas las restantes.</li>
+              </ul>
+            </div>
+            <div class="pc bad">
+              <h4><i class="fa-solid fa-triangle-exclamation"></i> Cuidados</h4>
+              <ul>
+                <li>La deflación acumula error: refina al final con el polinomio original.</li>
+                <li>Raíz doble = punto ciego de Bisección, lentitud de Newton.</li>
+                <li>Métodos reales nunca reportarán raíces complejas: no es un bug, es el dominio.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL ERRORES Y TOLERANCIA -->
+      <div class="theory-panel" data-panel="errores">
+        <div class="tstep">
+          <span class="tnum">01</span>
+          <div>
+            <h3>Error absoluto: la distancia real</h3>
+            <p>Cuánto te equivocaste, en las mismas unidades del dato:</p>
+            <div class="formula-line">Ea = |x_verdadero − x_aproximado|</div>
+            <p>Caso base: x_v = 1.5213797068, x_a = 1.5213804245 ⇒ <strong>Ea = 7.18 × 10⁻⁷</strong>. Simple y honesto, pero no dice si el error es "bueno" o "malo" sin contexto.</p>
+          </div>
+        </div>
+        <div class="tstep">
+          <span class="tnum">02</span>
+          <div>
+            <h3>Error relativo: la proporción</h3>
+            <p>El error comparado contra el tamaño del valor. Adimensional, se puede traducir a porcentaje y comparar magnitudes distintas:</p>
+            <div class="formula-line">Er = Ea / |x_verdadero| &nbsp;·100 para %</div>
+            <p>Caso base: Er = 7.18×10⁻⁷ / 1.5214 ≈ <strong>4.7 × 10⁻⁷ (0.000047%)</strong>. <strong>Atención:</strong> si la referencia es 0, Er no está definido: usa solo error absoluto.</p>
+          </div>
+        </div>
+        <div class="tstep">
+          <span class="tnum">03</span>
+          <div>
+            <h3>Las 3 tolerancias (no es una, son tres)</h3>
+            <ol>
+              <li><strong>De parada:</strong> cuándo el algoritmo se detiene (aquí 10⁻⁶).</li>
+              <li><strong>De comparación:</strong> qué diferencia aceptas contra la referencia: |salida − ref| ≤ tol_abs + tol_rel·|ref|.</li>
+              <li><strong>Cifras mostradas:</strong> cuántos decimales pintas (8). La precisión interna <em>nunca</em> se redondea.</li>
+            </ol>
+            <p>Confundirlas es el error clásico del principiante: detenerse con tol 10⁻⁶ y luego comparar contra la referencia exigiendo 10⁻¹².</p>
+          </div>
+        </div>
+        <div class="tstep">
+          <span class="tnum">04</span>
+          <div>
+            <h3>Residuo ≠ error (el error conceptual más común)</h3>
+            <p>El <strong>residuo</strong> |f(x_a)| mide cuánto falla la <em>ecuación</em>; el <strong>error</strong> |x_a − r| mide qué tan lejos está el <em>punto</em>. Se relacionan por la pendiente:</p>
+            <div class="formula-line">Ea ≈ |residuo| / |f′(r)|</div>
+            <p>Prueba con tu propio caso base: residuo 4.40×10⁻⁶, f′(r) ≈ 5.944 ⇒ Ea ≈ 7.4×10⁻⁷ ✓ coincide con el error real. Con pendiente pequeña, un residuo diminuto puede esconder un error enorme. En la calculadora verás ambas magnitudes <strong>por separado</strong>, a propósito.</p>
+          </div>
+        </div>
+        <div class="tstep">
+          <span class="tnum">05</span>
+          <div>
+            <h3>¿Cómo verificas si no conoces el valor verdadero?</h3>
+            <ol>
+              <li><strong>Referencia independiente:</strong> calcula con otra herramienta (Octave, Python) y compara con tu tolerancia declarada.</li>
+              <li><strong>Cota matemática:</strong> en Bisección, (b−a)/2ⁿ acota el error <em>sin conocer la raíz</em> — es la ventaja de su simplicidad.</li>
+              <li><strong>Contraste entre métodos:</strong> si Bisección y Newton coinciden dentro de 10⁻⁶, la confianza sube sin necesidad de referencia externa.</li>
+            </ol>
+          </div>
+        </div>
+        <div class="tstep">
+          <span class="tnum">06</span>
+          <div class="pc-grid">
+            <div class="pc good">
+              <h4><i class="fa-solid fa-circle-check"></i> Buenas prácticas</h4>
+              <ul>
+                <li>Declarar las 3 tolerancias en todo informe.</li>
+                <li>Registrar la salida observada, nunca copiar la esperada.</li>
+                <li>Reportar cota de error y residuo juntos.</li>
+              </ul>
+            </div>
+            <div class="pc bad">
+              <h4><i class="fa-solid fa-triangle-exclamation"></i> Errores típicos</h4>
+              <ul>
+                <li>"Mi respuesta tiene error 0 porque f(x) = 0" → confunde residuo con error.</li>
+                <li>Redondear internamente para que "coincida" con la referencia.</li>
+                <li>Aceptar error relativo cuando la referencia es 0.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="learning-band">
         <div>
           <span class="band-label">AL FINAL DE ESTE MÓDULO</span>
@@ -390,41 +562,156 @@
     <section class="view" id="practica" data-section="practica">
       <div class="section-heading">
         <p class="eyebrow"><span>05</span> CONSOLIDA</p>
-        <h2>Prueba lo que<br><em>ya sabes.</em></h2>
-        <p>Resuelve estos retos y recibe retroalimentación inmediata.</p>
+        <h2>De la vida real<br><em>a la ecuación.</em></h2>
+        <p>Cuatro problemas cotidianos: plantea la ecuación, resuelve y comprueba. Cada solución completa está detrás del botón.</p>
       </div>
       <div class="exercise-grid">
+
         <article class="exercise-card">
           <span class="difficulty intermediate">INTERMEDIO</span>
           <span class="exercise-number">01</span>
-          <h3>Verifica un intervalo</h3>
-          <p>Para f(x) = x³ − 4x − 9, ¿es [2, 3] un intervalo válido para Bisección?</p>
-          <button class="exercise-answer" data-answer="intervalo">Revisar respuesta <i class="fa-solid fa-arrow-right"></i></button>
-          <p class="feedback" aria-live="polite"></p>
+          <h3>Tiempos de entrega</h3>
+          <p>Una app de delivery modela su tiempo de respuesta como T(x) = x³ − x minutos, donde x es el nivel de congestión normalizado. Operaciones exige T(x) = 2. ¿Qué nivel de congestión cumple el objetivo?</p>
+          <button class="solution-toggle" type="button">Ver solución completa <i class="fa-solid fa-chevron-down"></i></button>
+          <div class="solution">
+            <h4>1 · Plantear: de la situación a la ecuación</h4>
+            <p>x³ − x = 2 ⇒ <strong>f(x) = x³ − x − 2 = 0</strong>, con x &gt; 0. Es exactamente el caso base del módulo.</p>
+            <h4>2 · Elegir método y validar</h4>
+            <p>f(1) = −2 y f(2) = 4: hay cambio de signo en [1, 2] y f es continua ⇒ Bisección aplica con garantía.</p>
+            <h4>3 · Ejecutar (primeros pasos)</h4>
+            <p>c₁ = 1.5, f(1.5) = −0.125 ⇒ nuevo intervalo [1.5, 2].<br>
+            c₂ = 1.75, f(1.75) = 1.609 ⇒ [1.5, 1.75].<br>
+            c₃ = 1.625, f(1.625) = 0.666 ⇒ [1.5, 1.625]…</p>
+            <h4>4 · Conclusión en contexto</h4>
+            <p>A la iteración 20 la cota de error baja de 10⁻⁶: <strong>x* ≈ 1.5214</strong>. Con congestión ≈ 1.52 la app responde en 2 minutos. Verificable en la calculadora con a=1, b=2.</p>
+          </div>
         </article>
+
         <article class="exercise-card">
           <span class="difficulty intermediate">INTERMEDIO</span>
           <span class="exercise-number">02</span>
-          <h3>Elige el método</h3>
-          <p>Necesitas robustez y solo conoces valores de la función, no su derivada. ¿Qué método elegirías?</p>
-          <button class="exercise-answer" data-answer="biseccion">Revisar respuesta <i class="fa-solid fa-arrow-right"></i></button>
-          <p class="feedback" aria-live="polite"></p>
+          <h3>El juego sin documentación</h3>
+          <p>Un estudio detecta en qué nivel de dificultad un juego "es justo": la función está oculta (solo puedes consultar valor de entrada → respuesta de salida). No conoces su fórmula ni su derivada. ¿Qué método usas y cuántas consultas necesitas para asegurar 6 decimales en [1, 2]?</p>
+          <button class="solution-toggle" type="button">Ver solución completa <i class="fa-solid fa-chevron-down"></i></button>
+          <div class="solution">
+            <h4>1 · Analizar la información disponible</h4>
+            <p>Solo evaluaciones de f ⇒ Newton queda descartado (exige f′). Bisección solo necesita valores de la función.</p>
+            <h4>2 · Decisión</h4>
+            <p><strong>Bisección</strong>: robusta y con cota de error garantizada en cada paso — justo lo que pide un proceso de QA.</p>
+            <h4>3 · Costo</h4>
+            <p>n ≥ log₂((b₀−a₀)/tol) = log₂(10⁶) ≈ 19.93 ⇒ <strong>20 iteraciones = 21 consultas</strong> (una por punto medio más la validación inicial). Independiente de la fórmula oculta.</p>
+            <h4>4 · Conclusión</h4>
+            <p>Bisección es más cara por paso pero única viable: la garantía no se negocia cuando no puedes derivar lo que no conoces.</p>
+          </div>
         </article>
+
         <article class="exercise-card">
           <span class="difficulty advanced">AVANZADO</span>
           <span class="exercise-number">03</span>
-          <h3>Analiza el residuo</h3>
-          <p>Si una aproximación tiene error pequeño, ¿garantiza que el residuo también lo sea?</p>
-          <button class="exercise-answer" data-answer="residuo">Revisar respuesta <i class="fa-solid fa-arrow-right"></i></button>
-          <p class="feedback" aria-live="polite"></p>
+          <h3>El tráfico subió</h3>
+          <p>El mismo modelo T(x) = x³ − x del delivery, pero tras un pico de demanda el objetivo ahora es T(x) = 3. Plantea la ecuación y resuelve con Newton desde x₀ = 1.6. ¿Coincide con Bisección?</p>
+          <button class="solution-toggle" type="button">Ver solución completa <i class="fa-solid fa-chevron-down"></i></button>
+          <div class="solution">
+            <h4>1 · Plantear</h4>
+            <p>x³ − x = 3 ⇒ <strong>f(x) = x³ − x − 3 = 0</strong>; f′(x) = 3x² − 1. f(1) = −3, f(2) = 3: la raíz está en [1, 2].</p>
+            <h4>2 · Newton paso a paso (verificado por script)</h4>
+            <p>x₁ = 1.6 − (−0.504)/6.68 = <strong>1.6754491</strong><br>
+            x₂ = 1.6754491 − 0.02775/7.42139 = <strong>1.6717094</strong><br>
+            x₃ = 1.6717094 − 7.02×10⁻⁵/7.38384 = <strong>1.6716999</strong>, con |f(x₃)| ≤ 10⁻⁶ ⇒ parada.</p>
+            <h4>3 · Contraste</h4>
+            <p>Bisección sobre el mismo problema converge a 1.6717005 (20 iteraciones). Newton con 3 iteraciones coincide en 5 decimales: 1.67170.</p>
+            <h4>4 · Conclusión</h4>
+            <p>Congestión ≈ <strong>1.6717</strong> produce respuesta de 3 minutos. El costo de subir el objetivo: de 1.52 a 1.67 (+10%), útil para dimensionar infraestructura.</p>
+          </div>
         </article>
+
         <article class="exercise-card">
           <span class="difficulty advanced">AVANZADO</span>
           <span class="exercise-number">04</span>
-          <h3>Newton paso a paso</h3>
-          <p>Calcula x₁ usando x₀ = 1.5 para f(x) = x³ − x − 2.</p>
-          <button class="exercise-answer" data-answer="newton">Revisar respuesta <i class="fa-solid fa-arrow-right"></i></button>
-          <p class="feedback" aria-live="polite"></p>
+          <h3>Calibración perfecta</h3>
+          <p>Un sistema de control tiene pérdida L(x) = (x − 2)². Se busca la calibración x que anula la pérdida: L(x) = 0. Intenta Bisección en [1, 3] y explica qué pasa. Luego resuelve con Newton desde x₀ = 3.</p>
+          <button class="solution-toggle" type="button">Ver solución completa <i class="fa-solid fa-chevron-down"></i></button>
+          <div class="solution">
+            <h4>1 · Plantear</h4>
+            <p>f(x) = x² − 4x + 4 = (x − 2)² = 0 ⇒ raíz <strong>doble</strong> en x = 2 (multiplicidad 2).</p>
+            <h4>2 · Bisección falla — y es matemática, no un bug</h4>
+            <p>f(1) = 1 &gt; 0 y f(3) = 1 &gt; 0: no hay cambio de signo. La parábola toca el eje pero no lo cruza. Bisección rechaza el intervalo: es <strong>ciego a raíces de multiplicidad par</strong>.</p>
+            <h4>3 · Newton funciona pero pierde velocidad</h4>
+            <p>xₙ₊₁ = xₙ − (xₙ−2)²/(2(xₙ−2)) = (xₙ + 2)/2. Desde 3: 2.5 → 2.25 → 2.125 → 2.0625 → 2.03125… El error es 0.5ⁿ: <strong>convergencia lineal con factor (1 − 1/k) = ½</strong>. Para 10⁻⁶ se necesitan ~20 pasos.</p>
+            <h4>4 · Conclusión</h4>
+            <p>Antes de correr un método, analiza la multiplicidad: la cota |x| ≤ 1 + max|aᵢ/aₙ| y un esbozo de la curva te ahorran elegir una herramienta ciega.</p>
+          </div>
+        </article>
+      </div>
+
+      <!-- AUTOEVALUACIÓN -->
+      <div class="quiz-bar">
+        <div><span class="panel-kicker">AUTOEVALUACIÓN</span><h3>6 preguntas, tres formatos</h3></div>
+        <strong class="quiz-score">0 / 6</strong>
+        <button class="button button-outline quiz-reset" type="button"><i class="fa-solid fa-rotate-left"></i> Reiniciar</button>
+      </div>
+      <div class="quiz-grid">
+
+        <article class="quiz-card" data-type="opcion" data-answer="b" data-explain="Bisección necesita f(a)·f(b) &lt; 0: el teorema de Bolzano garantiza una raíz donde la función cambia de signo. La derivada solo la pide Newton.">
+          <div class="quiz-head"><span class="quiz-n">1</span><span class="quiz-kind">OPCIÓN MÚLTIPLE</span></div>
+          <p class="quiz-q">¿Qué condición exige Bisección para poder iniciar en [a, b]?</p>
+          <div class="quiz-options">
+            <label><input type="radio" name="q1" value="a"> f′(x) ≠ 0 en todo el intervalo</label>
+            <label><input type="radio" name="q1" value="b"> f(a) · f(b) &lt; 0 (cambio de signo)</label>
+            <label><input type="radio" name="q1" value="c"> f(a) = f(b)</label>
+            <label><input type="radio" name="q1" value="d"> Que a y b sean enteros</label>
+          </div>
+          <button class="button button-outline quiz-check" type="button">Comprobar</button>
+          <p class="quiz-feedback" aria-live="polite"></p>
+        </article>
+
+        <article class="quiz-card" data-type="opcion" data-answer="f" data-explain="FALSO. El residuo |f(x)| y el error |x − r| son magnitudes distintas: Ea ≈ |residuo|/|f′(r)|. Con pendiente pequeña, un residuo diminuto esconde un error grande.">
+          <div class="quiz-head"><span class="quiz-n">2</span><span class="quiz-kind">VERDADERO O FALSO</span></div>
+          <p class="quiz-q">"Si el residuo |f(x_a)| es muy pequeño, entonces el error |x_a − r| también lo es."</p>
+          <div class="quiz-options">
+            <label><input type="radio" name="q2" value="v"> Verdadero</label>
+            <label><input type="radio" name="q2" value="f"> Falso</label>
+          </div>
+          <button class="button button-outline quiz-check" type="button">Comprobar</button>
+          <p class="quiz-feedback" aria-live="polite"></p>
+        </article>
+
+        <article class="quiz-card" data-type="numerica" data-answer="-0.125" data-tol="0.001" data-explain="f(1.5) = 1.5³ − 1.5 − 2 = 3.375 − 3.5 = −0.125. Por eso el intervalo pasa a [1.5, 2]: el cambio de signo queda con b = 2.">
+          <div class="quiz-head"><span class="quiz-n">3</span><span class="quiz-kind">NUMÉRICA · TOL 0.001</span></div>
+          <p class="quiz-q">En el primer paso de Bisección sobre [1, 2] con f(x) = x³ − x − 2, ¿cuánto vale f(1.5)?</p>
+          <div class="quiz-input-row"><input class="quiz-input" type="number" step="any" placeholder="Escribe el valor…" aria-label="Respuesta numérica pregunta 3"><button class="button button-outline quiz-check" type="button">Comprobar</button></div>
+          <p class="quiz-feedback" aria-live="polite"></p>
+        </article>
+
+        <article class="quiz-card" data-type="opcion" data-answer="a" data-explain="x₁ = 1.5 − f(1.5)/f′(1.5) = 1.5 − (−0.125)/5.75 = 1.5 + 0.0217391 = 1.5217391. ¡Solo un paso y ya está en la 4ª cifra correcta!">
+          <div class="quiz-head"><span class="quiz-n">4</span><span class="quiz-kind">OPCIÓN MÚLTIPLE</span></div>
+          <p class="quiz-q">Newton con x₀ = 1.5 para f(x) = x³ − x − 2. ¿Cuál es x₁?</p>
+          <div class="quiz-options">
+            <label><input type="radio" name="q4" value="a"> 1.5217391</label>
+            <label><input type="radio" name="q4" value="b"> 1.4782609</label>
+            <label><input type="radio" name="q4" value="c"> 1.6250000</label>
+            <label><input type="radio" name="q4" value="d"> 1.5000000</label>
+          </div>
+          <button class="button button-outline quiz-check" type="button">Comprobar</button>
+          <p class="quiz-feedback" aria-live="polite"></p>
+        </article>
+
+        <article class="quiz-card" data-type="opcion" data-answer="f" data-explain="FALSO. El teorema fundamental del álgebra promete 3 raíces COMPLEJAS contando multiplicidad. Con coeficientes reales, las complejas van en pares conjugados: x³ − x − 2 tiene 1 real y 2 complejas (−0.7607 ± 0.8578i).">
+          <div class="quiz-head"><span class="quiz-n">5</span><span class="quiz-kind">VERDADERO O FALSO</span></div>
+          <p class="quiz-q">"Todo polinomio de grado 3 con coeficientes reales tiene 3 raíces reales."</p>
+          <div class="quiz-options">
+            <label><input type="radio" name="q5" value="v"> Verdadero</label>
+            <label><input type="radio" name="q5" value="f"> Falso</label>
+          </div>
+          <button class="button button-outline quiz-check" type="button">Comprobar</button>
+          <p class="quiz-feedback" aria-live="polite"></p>
+        </article>
+
+        <article class="quiz-card" data-type="numerica" data-answer="20" data-tol="0" data-explain="n ≥ log₂((2−1)/10⁻⁶) = log₂(10⁶) ≈ 19.93 ⇒ 20 iteraciones. La cota (b−a)/2ⁿ ≤ tol se cumple recién en n = 20 (9.54×10⁻⁷).">
+          <div class="quiz-head"><span class="quiz-n">6</span><span class="quiz-kind">NUMÉRICA · ENTERO</span></div>
+          <p class="quiz-q">¿Cuántas iteraciones de Bisección en [1, 2] garantiza una cota de error ≤ 10⁻⁶? (entero)</p>
+          <div class="quiz-input-row"><input class="quiz-input" type="number" step="1" placeholder="n = ?" aria-label="Respuesta numérica pregunta 6"><button class="button button-outline quiz-check" type="button">Comprobar</button></div>
+          <p class="quiz-feedback" aria-live="polite"></p>
         </article>
       </div>
     </section>
@@ -513,6 +800,6 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="js/app.js?v=6"></script>
+  <script src="js/app.js?v=8"></script>
 </body>
 </html>

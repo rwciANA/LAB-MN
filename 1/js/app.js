@@ -105,17 +105,42 @@ $("#navBackdrop").addEventListener("click", () => toggleNav(false));
 $("#calculatorForm").addEventListener("submit", event => { event.preventDefault(); runCalculator(); });
 document.querySelectorAll(".calc-tab").forEach(tab => tab.addEventListener("click", () => { state.method = tab.dataset.calculator; document.querySelectorAll(".calc-tab").forEach(item => item.classList.toggle("active", item === tab)); $("#methodPill").textContent = state.method.toUpperCase(); $("#bisectionInputs").classList.toggle("hidden", state.method !== "biseccion"); $("#newtonInputs").classList.toggle("hidden", state.method !== "newton"); runCalculator(); }));
 
-document.querySelectorAll(".exercise-answer").forEach(button => button.addEventListener("click", () => {
-  const feedback = button.parentElement.querySelector(".feedback");
-  const answers = {
-    intervalo: "Correcto. f(2) = 8 - 8 - 9 = -9 y f(3) = 27 - 12 - 9 = 6. Hay cambio de signo, por lo que el intervalo es válido.",
-    biseccion: "Correcto. Bisección es robusto y solo requiere evaluar la función, ideal cuando no se conoce la derivada.",
-    residuo: "No necesariamente. Un error pequeño en la aproximación de la raíz puede coincidir con un residuo aceptable, pero dependen de la pendiente de la función.",
-    newton: "Correcto. x₁ = 1.5 - (1.5³ - 1.5 - 2) / (3(1.5)² - 1) = 1.521739."
-  };
-  feedback.textContent = answers[button.dataset.answer] || "Respuesta verificada.";
-  button.innerHTML = "Respuesta revisada <i class=\"fa-solid fa-check\"></i>";
+// ============ SOLUCIONES DE EJERCICIOS ============
+document.querySelectorAll(".solution-toggle").forEach(button => button.addEventListener("click", () => {
+  const solution = button.nextElementSibling;
+  const open = solution.classList.toggle("open");
+  button.classList.toggle("open", open);
+  button.innerHTML = open ? "Ocultar solución <i class=\"fa-solid fa-chevron-up\"></i>" : "Ver solución completa <i class=\"fa-solid fa-chevron-down\"></i>";
 }));
+
+// ============ AUTOEVALUACIÓN (6 preguntas) ============
+const quizDone = new Set();
+function updateQuizScore() { document.querySelectorAll(".quiz-score").forEach(el => { el.textContent = quizDone.size + " / 6"; }); }
+document.querySelectorAll(".quiz-card").forEach((card, i) => {
+  const feedback = card.querySelector(".quiz-feedback");
+  card.querySelector(".quiz-check").addEventListener("click", () => {
+    let ok = false;
+    if (card.dataset.type === "numerica") {
+      const given = parseFloat(card.querySelector(".quiz-input").value);
+      if (isNaN(given)) { feedback.textContent = "Escribe un valor numérico primero."; feedback.className = "quiz-feedback warn"; return; }
+      ok = Math.abs(given - parseFloat(card.dataset.answer)) <= parseFloat(card.dataset.tol);
+    } else {
+      const sel = card.querySelector("input:checked");
+      if (!sel) { feedback.textContent = "Elige una opción primero."; feedback.className = "quiz-feedback warn"; return; }
+      ok = sel.value === card.dataset.answer;
+    }
+    if (ok) { quizDone.add(i); updateQuizScore(); feedback.textContent = "Correcto. " + card.dataset.explain; feedback.className = "quiz-feedback good"; }
+    else { feedback.textContent = "No es. " + card.dataset.explain; feedback.className = "quiz-feedback bad"; }
+  });
+});
+document.querySelector(".quiz-reset").addEventListener("click", () => {
+  quizDone.clear(); updateQuizScore();
+  document.querySelectorAll(".quiz-card").forEach(card => {
+    const feedback = card.querySelector(".quiz-feedback");
+    feedback.textContent = ""; feedback.className = "quiz-feedback";
+    card.querySelectorAll("input").forEach(inp => { inp.value = ""; inp.checked = false; });
+  });
+});
 
 $("#downloadCsv").addEventListener("click", () => {
   const header = state.method === "biseccion" ? "iteracion,a,b,c,fx,error" : "iteracion,x,fx,derivada,siguiente,error";
