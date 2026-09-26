@@ -1,64 +1,66 @@
-# Ficha del Proyecto · Tema 1
+# Ficha del Proyecto · Módulo 1 (Versión Final)
 
-## Información general
+## 1. Información General
 
 | Campo | Valor |
-|-------|-------|
+|---|---|
 | **Universidad** | Universidad Nacional de San Agustín (UNSA) |
 | **Escuela** | Ingeniería de Sistemas |
 | **Curso** | Laboratorio de Métodos Numéricos |
-| **Módulo** | Ecuaciones no lineales y errores |
-| **Equipo** | 1 |
-| **Semana** | 1 |
+| **Módulo** | Módulo 1 · Ecuaciones No Lineales y Errores (Bisección y Newton-Raphson) |
+| **Equipo** | Equipo 1 |
+| **Semestre** | 2026-B |
+| **Versión** | 1.0.0 (Entrega Final) |
 
-## Integrantes y Roles
+---
 
-| Letra | Nombre | Rol |
-|-------|--------|-----|
-| A | Condori Idme Raul Wilfredo | Validación y coordinación (V) |
-| B | Quispe Rupaylla Fabrizio Alonso | Matemática y modelación (M) |
-| C | Suarez Huamani Marco Antonio | Diseño didáctico y web (D) |
-| D | Chura Monroy Daniel Wilston | Programación numérica (P) |
+## 2. Integrantes y Asignación de Roles
 
-## Caso base
+| Letra | Nombre | Rol H1 (Sem 1-3) | Rol H2 (Sem 4-6) | Rol H3 (Sem 7-12) |
+|---|---|---|---|---|
+| **A** | Condori Idme Raul Wilfredo | Validación y coordinación (V) | Matemática y modelación (M) | Validación y coordinación (V) |
+| **B** | Quispe Rupaylla Fabrizio Alonso | Matemática y modelación (M) | Diseño didáctico y web (D) | Matemática y modelación (M) |
+| **C** | Suarez Huamani Marco Antonio | Diseño didáctico y web (D) | Programación numérica (P) | Diseño didáctico y web (D) |
+| **D** | Chura Monroy Daniel Wilston | Programación numérica (P) | Validación y coordinación (V) | Programación numérica (P) |
 
-Se estudia la función:
-$$ f(x) = x^3 - x - 2 $$
-con intervalo inicial `[1, 2]`. Como `f(1) = -2` y `f(2) = 4`, existe un cambio de signo y Bisección puede aplicarse. La raíz de referencia es aproximadamente `1.5213797068`.
+---
 
-### Variables, unidades y supuestos
+## 3. Formulación del Caso Base y Aplicado
 
-| Variable | Descripción | Unidad | Rango declarado |
-|----------|-------------|--------|-----------------|
-| x | Parámetro de configuración (respuesta normalizada) | Adimensional | [1, 2] en el caso base |
-| f(x) | Residuo de la ecuación de calibración | Adimensional | Según intervalo |
+En la calibración de parámetros para servidores cloud de alta concurrencia, la curva de respuesta normalizada del sistema está modelada por $g(x) = x^3 - x$. Para alcanzar un rendimiento objetivo de 2 unidades, se debe encontrar $x > 0$ tal que:
+$$ f(x) = x^3 - x - 2 = 0 $$
+- **Intervalo inicial de Bisección:** $[1, 2]$ ($f(1) = -2 < 0$, $f(2) = 4 > 0$).
+- **Semilla inicial de Newton:** $x_0 = 1.5$.
+- **Raíz de referencia teórica:** $r \approx 1.5213797068045376...$
 
-Supuestos:
-- El modelo `f(x) = x³ − x − 2` es sintético y representa una respuesta normalizada de calibración.
-- La función es continua en el intervalo declarado, condición necesaria para Bisección.
-- La derivada `f'(x) = 3x² − 1` existe y es evaluable en todo punto usado por Newton.
+### Variables y Supuestos
+- $x$: Parámetro de capacidad de servidor (adimensional, positivo).
+- $f(x)$: Residuo de la ecuación de calibración (adimensional).
+- Supuesto 1: $f(x)$ es continua en todo su dominio.
+- Supuesto 2: $f'(x) = 3x^2 - 1$ es diferenciable y evaluable en todo punto de iteración.
+- Tolerancia por defecto: $\text{tol} = 10^{-6}$; máximo de iteraciones: 100.
 
-### Límites de entrada acordados
-- Tolerancia mínima aceptada: `1e-9`; valor por defecto `1e-6`.
-- Máximo de iteraciones: entre 1 y 500; valor por defecto 100.
-- Bisección exige `f(a) · f(b) < 0`; Newton exige derivada no nula ni demasiado pequeña.
+---
 
-## Resultados de aprendizaje
+## 4. Fichas Matemáticas de los Métodos
 
-1. Formular un problema aplicado de ecuaciones no lineales, identificando variables, unidades, supuestos y restricciones, y justificar la elección del método.
-2. Implementar Bisección y Newton con criterios de parada definidos, analizar el error y contrastar los resultados con una referencia independiente.
-3. Explicar el procedimiento mediante teoría breve, ejemplos resueltos, tablas, gráficos y ejercicios con retroalimentación.
+### Método 1: Bisección (Método Cerrado)
+- **Idea:** Reducción a la mitad del intervalo $[a, b]$ que encierra la raíz.
+- **Precondición:** $f(a) \cdot f(b) < 0$ (Teorema de Bolzano).
+- **Criterio de parada:** $|f(c)| \le \text{tol}$ o $\frac{b-a}{2} \le \text{tol}$.
+- **Convergencia:** Global y lineal ($p=1$), con cota $|c_n - r| \le \frac{b-a}{2^n}$.
+- **Iteraciones para $10^{-6}$ en $[1, 2]$:** 20 iteraciones ($c_{20} = 1.52138042$, error $9.54 \times 10^{-7}$).
 
-## Ficha matemática del método 1 · Bisección (Semana 2)
+### Método 2: Newton-Raphson (Método Abierto)
+- **Idea:** Búsqueda mediante la recta tangente $x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$.
+- **Precondición:** $f'(x_n) \neq 0$ y $x_0$ cercano a la raíz.
+- **Criterio de parada:** $|f(x_{n+1})| \le \text{tol}$ o $|x_{n+1} - x_n| \le \text{tol}$.
+- **Convergencia:** Local y cuadrática ($p=2$) para raíces simples.
+- **Iteraciones para $10^{-6}$ desde $x_0=1.5$:** 2 iteraciones ($x_2 = 1.52137981$, residuo $5.89 \times 10^{-7}$).
 
-- **Idea:** dividir por la mitad un intervalo [a, b] donde f cambia de signo; el punto medio c = (a+b)/2 aproxima la raíz y la cota de error es (b−a)/2.
-- **Condición de uso:** f continua en [a, b] y f(a)·f(b) < 0.
-- **Criterio de parada:** |f(c)| ≤ tol o (b−a)/2 ≤ tol; máximo 100 iteraciones.
-- **Convergencia:** lineal, garantizada bajo las condiciones anteriores.
-- **Referencia manual:** raíz ≈ 1.5213797068; primer paso c = 1.5, f(1.5) = −0.125, intervalo [1.5, 2]. Ver `ejemplo_manual_biseccion.md`.
-- **Limitaciones:** lento comparado con Newton; no sirve si la raíz no cambia de signo (doble).
+---
 
-## Objetivos
-- Determinar un parámetro de configuración a partir de una ecuación no lineal.
-- Explicar cuándo un método converge.
-- Implementar Bisección y Newton con tolerancias de `10⁻⁶`.
+## 5. Criterios de Evaluación y Aceptación
+- **Rigor Matemático:** Exactitud en $10^{-6}$ contrastada contra Python y Octave.
+- **Funcionamiento y Robustez:** Manejo controlado de derivadas nulas e intervalos inválidos sin excepciones no capturadas.
+- **Valor Didáctico:** Gráficos vectoriales con valores numéricos explícitos, retroalimentación inmediata en autoevaluaciones y enfoque práctico para Ingeniería de Sistemas.
