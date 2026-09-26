@@ -1,0 +1,39 @@
+% =========================================================================
+% newton_reference.oct
+% Script de referencia independiente para Newton-Raphson en GNU Octave
+% Caso base: f(x) = x^3 - x - 2 = 0, x0 = 1.5, tol = 1e-6
+% =========================================================================
+
+f = @(x) x.^3 - x - 2;
+df = @(x) 3*x.^2 - 1;
+
+x0 = 1.5;
+tol = 1e-6;
+maxit = 100;
+
+x = x0;
+printf("Iter |      x_n      |     f(x_n)    |    f'(x_n)    |    x_{n+1}    |     Error\n");
+printf("-------------------------------------------------------------------------------\n");
+
+for i = 1:maxit
+    fx = f(x);
+    dfx = df(x);
+    
+    if abs(dfx) < 1e-12
+        printf("Error: derivada casi nula en iteracion %d\n", i);
+        break;
+    endif
+    
+    x_next = x - (fx / dfx);
+    err = abs(x_next - x);
+    
+    printf("%4d | %13.8f | %13.6e | %13.6f | %13.8f | %13.4e\n", i, x, fx, dfx, x_next, err);
+    
+    if (abs(f(x_next)) <= tol || err <= tol)
+        printf("\nCONVERGIO en iteracion %d con raiz = %13.10f\n", i, x_next);
+        printf("Residuo final |f(r)| = %13.6e\n", abs(f(x_next)));
+        break;
+    endif
+    
+    x = x_next;
+endfor
