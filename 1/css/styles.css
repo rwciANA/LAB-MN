@@ -925,3 +925,105 @@ ol.steps li { margin-bottom: 7px; font-size: 14px; line-height: 1.6; padding-lef
   .comparison-grid { grid-template-columns: 1fr; }
 }
 
+/* =========================================================================
+   ESTILOS PARA DIVISIÓN EN MÉTODOS CERRADOS Y ABIERTOS
+   ========================================================================= */
+
+.paradigm-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin: 24px 0;
+}
+.paradigm-box {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 22px;
+  border: 1.5px solid var(--line);
+  box-shadow: 0 4px 16px rgba(32,37,42,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.paradigm-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(32,37,42,0.08);
+}
+.paradigm-box.closed {
+  border-left: 5px solid var(--blue);
+}
+.paradigm-box.open {
+  border-left: 5px solid var(--orange);
+}
+.paradigm-box .p-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 700 16px "Space Grotesk", sans-serif;
+}
+.paradigm-box.closed .p-head { color: var(--blue); }
+.paradigm-box.open .p-head { color: var(--orange-dark); }
+.paradigm-box p {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0;
+}
+.paradigm-box .button {
+  margin-top: auto;
+  align-self: flex-start;
+  font-size: 12px;
+  padding: 9px 18px;
+}
+
+.paradigm-banner {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 28px;
+}
+.paradigm-banner i {
+  font-size: 24px;
+  margin-top: 2px;
+}
+.paradigm-banner h4 {
+  font: 700 15px "Space Grotesk", sans-serif;
+  margin: 0 0 6px;
+}
+.paradigm-banner p {
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin: 0;
+}
+.paradigm-banner.closed {
+  background: rgba(24,94,115,0.08);
+  border: 1.5px solid rgba(24,94,115,0.25);
+  color: var(--blue);
+}
+.paradigm-banner.closed i { color: var(--blue); }
+.paradigm-banner.open {
+  background: rgba(239,108,69,0.08);
+  border: 1.5px solid rgba(239,108,69,0.25);
+  color: var(--orange-dark);
+}
+.paradigm-banner.open i { color: var(--orange); }
+
+.view-actions-center {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+
+@media (max-width: 800px) {
+  .paradigm-cards { grid-template-columns: 1fr; }
+}
+
+

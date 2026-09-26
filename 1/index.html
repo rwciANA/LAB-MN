@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Módulo 1: Ecuaciones No Lineales y Errores (Bisección y Newton-Raphson) - Métodos Numéricos para Ingeniería de Sistemas UNSA.">
-  <title>ITERA | Módulo 1: Ecuaciones No Lineales y Errores</title>
+  <meta name="description" content="Módulo 1: Ecuaciones No Lineales y Errores - División explícita entre Métodos Cerrados (Bisección) y Métodos Abiertos (Newton-Raphson) para Ingeniería de Sistemas UNSA.">
+  <title>ITERA | Métodos Cerrados y Métodos Abiertos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-  <link rel="stylesheet" href="css/styles.css?v=10">
+  <link rel="stylesheet" href="css/styles.css?v=11">
 </head>
 <body>
   <header class="topbar">
     <a class="brand" href="#inicio" data-view="inicio" aria-label="Ir al inicio">
       <span class="brand-mark"><i class="fa-solid fa-wave-square"></i></span>
-      <span><strong>ITERA</strong><small>MÓDULO 1 · ECUACIONES NO LINEALES</small></span>
+      <span><strong>ITERA</strong><small>MÓDULO 1 · MÉTODOS CERRADOS Y ABIERTOS</small></span>
     </a>
     <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
     <nav class="nav" id="mainNav" aria-label="Navegación principal">
@@ -25,106 +25,120 @@
         <button class="nav-close" id="navClose" type="button" aria-label="Cerrar menú"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <a href="#inicio" data-view="inicio" class="active"><i class="fa-solid fa-house"></i>Inicio</a>
-      <a href="#teoria" data-view="teoria"><i class="fa-solid fa-book-open"></i>Teoría</a>
-      <a href="#ejemplos" data-view="ejemplos"><i class="fa-solid fa-list-ol"></i>Ejemplos</a>
-      <a href="#calculadoras" data-view="calculadoras"><i class="fa-solid fa-calculator"></i>Calculadoras</a>
+      <a href="#cerrados" data-view="cerrados"><i class="fa-solid fa-lock"></i>Métodos Cerrados</a>
+      <a href="#abiertos" data-view="abiertos"><i class="fa-solid fa-lock-open"></i>Métodos Abiertos</a>
       <a href="#comparacion" data-view="comparacion"><i class="fa-solid fa-code-compare"></i>Comparación</a>
+      <a href="#calculadoras" data-view="calculadoras"><i class="fa-solid fa-calculator"></i>Calculadoras</a>
       <a href="#practica" data-view="practica"><i class="fa-solid fa-pen-to-square"></i>Práctica</a>
       <a href="#referencias" data-view="referencias"><i class="fa-solid fa-quote-right"></i>Referencias</a>
       <a href="#equipo" data-view="equipo"><i class="fa-solid fa-users"></i>Equipo</a>
       <a href="../index.html"><i class="fa-solid fa-arrow-left"></i>Portal General</a>
     </nav>
     <div class="nav-backdrop" id="navBackdrop"></div>
-    <span class="status"><a class="back-portal" href="../index.html"><i class="fa-solid fa-arrow-left"></i> Portal</a><span class="status-dot"></span> Versión Final v1.0.0</span>
+    <span class="status"><a class="back-portal" href="../index.html"><i class="fa-solid fa-arrow-left"></i> Portal</a><span class="status-dot"></span> Versión v1.1.0</span>
   </header>
 
   <main>
-    <!-- 01. INICIO / PORTADA -->
+    <!-- ==========================================
+         01. INICIO / PORTADA
+         ========================================== -->
     <section class="view active-view" id="inicio" data-section="inicio">
       <div class="hero-grid">
         <div class="hero-copy">
           <p class="eyebrow"><span>01</span> MÉTODOS NUMÉRICOS · INGENIERÍA DE SISTEMAS (UNSA)</p>
-          <h1>Ecuaciones No Lineales y Errores</h1>
-          <p class="lead"><strong>Objetivo:</strong> Determinar un parámetro de configuración a partir de una ecuación no lineal y explicar cuándo un método converge.</p>
+          <h1>Métodos Cerrados vs. Métodos Abiertos</h1>
+          <p class="lead"><strong>Objetivo:</strong> Determinar un parámetro de configuración a partir de una ecuación no lineal y explicar cuándo y por qué un método numérico converge o diverge.</p>
           <div class="target-badge">
             <i class="fa-solid fa-graduation-cap"></i>
-            <span><strong>Público objetivo:</strong> Estudiantes de Ingeniería de Sistemas (4.° a 6.° ciclo) con aplicación a calibración de servidores, optimización y redes.</span>
+            <span><strong>Público objetivo:</strong> Estudiantes de Ingeniería de Sistemas (4.° a 6.° ciclo) con aplicaciones en calibración de servidores, optimización de infraestructura y balanceo de carga.</span>
           </div>
-          <div class="hero-actions">
-            <a class="button button-primary" href="#calculadoras" data-view="calculadoras"><i class="fa-solid fa-play"></i> Probar calculadoras</a>
-            <a class="button button-outline" href="#comparacion" data-view="comparacion"><i class="fa-solid fa-code-compare"></i> Ver comparación</a>
-            <a class="text-link" href="#teoria" data-view="teoria">Comenzar por la teoría <i class="fa-solid fa-arrow-right"></i></a>
+
+          <!-- Tarjetas de División de Paradigmas -->
+          <div class="paradigm-cards">
+            <div class="paradigm-box closed">
+              <div class="p-head"><i class="fa-solid fa-lock"></i> <strong>Método Cerrado</strong></div>
+              <p><strong>Bisección:</strong> Requiere un intervalo $[a, b]$ con cambio de signo ($f(a)\cdot f(b) < 0$). Convergencia global garantizada por Bolzano. Cota determinista $(b-a)/2^n$.</p>
+              <a class="button button-outline" href="#cerrados" data-view="cerrados">Ver Método Cerrado <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="paradigm-box open">
+              <div class="p-head"><i class="fa-solid fa-lock-open"></i> <strong>Método Abierto</strong></div>
+              <p><strong>Newton-Raphson:</strong> Parte de una sola semilla $x_0$ y utiliza la derivada $f'(x)$. Convergencia cuadrática local ($p=2$). Duplica cifras significativas por paso.</p>
+              <a class="button button-primary" href="#abiertos" data-view="abiertos">Ver Método Abierto <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
           </div>
+
           <div class="problem-chip">
-            <span class="chip-label">CASO APLICADO</span>
+            <span class="chip-label">CASO APLICADO A SERVIDORES</span>
             <code>g(x) = x³ − x = 2 &nbsp;⇒&nbsp; f(x) = x³ − x − 2 = 0</code>
-            <span class="chip-range">[1, 2]</span>
+            <span class="chip-range">x ∈ [1, 2]</span>
           </div>
         </div>
+
         <div class="hero-visual">
           <div class="coordinate-card">
             <div class="card-top"><span>RESPUESTA DE CALIBRACIÓN EN VIVO</span><span class="live-dot">●</span></div>
             <div class="graph-wrap"><canvas id="heroChart" aria-label="Gráfica de f(x) = x³ − x − 2"></canvas></div>
             <div class="graph-footer">
               <span><i class="fa-solid fa-minus"></i> f(x) = x³ − x − 2</span>
-              <span class="root-value">Raíz exacta ≈ 1.5213797068</span>
+              <span class="root-value">Raíz real ≈ 1.5213797068</span>
             </div>
           </div>
-          <div class="floating-note note-one"><strong>Bisección</strong><span>Cerrado · 20 iter</span></div>
-          <div class="floating-note note-two"><strong>Newton</strong><span>Abierto · 2 iter</span></div>
+          <div class="floating-note note-one"><strong>🔒 Cerrado</strong><span>Bisección: 20 iter</span></div>
+          <div class="floating-note note-two"><strong>🔓 Abierto</strong><span>Newton: 2 iter</span></div>
         </div>
       </div>
+
       <div class="metrics">
-        <div><strong>02</strong><span>métodos interactivos</span></div>
-        <div><strong>03</strong><span>resultados de aprendizaje</span></div>
-        <div><strong>01</strong><span>caso aplicado a servidores</span></div>
-        <div><strong>08</strong><span>pruebas validadas</span></div>
+        <div><strong>01</strong><span>Método Cerrado (Bisección)</span></div>
+        <div><strong>01</strong><span>Método Abierto (Newton)</span></div>
+        <div><strong>01</strong><span>Caso Aplicado a Servidores</span></div>
+        <div><strong>08</strong><span>Pruebas de Validación PASS</span></div>
       </div>
     </section>
 
-    <!-- 02. TEORÍA -->
-    <section class="view" id="teoria" data-section="teoria">
+    <!-- ==========================================
+         02. MÉTODOS CERRADOS (BISECCIÓN)
+         ========================================== -->
+    <section class="view" id="cerrados" data-section="cerrados">
       <div class="section-heading">
-        <p class="eyebrow"><span>02</span> FUNDAMENTOS MATEMÁTICOS Y COMPUTACIONALES</p>
-        <h2>Métodos Numéricos para Ecuaciones No Lineales</h2>
-        <p>Aprende cómo operan los métodos cerrados y abiertos, sus criterios de convergencia, órdenes de error y límites computacionales.</p>
+        <p class="eyebrow"><span>02</span> PARADIGMA CERRADO · INTERVALARES (BRACKETING)</p>
+        <h2>Método Cerrado: Bisección</h2>
+        <p>Los métodos cerrados encierran la raíz dentro de un intervalo acotado $[a, b]$ y garantizan convergencia incondicional siempre que exista cambio de signo.</p>
       </div>
 
-      <div class="theory-tabs" role="tablist">
-        <button class="theory-tab active" type="button" data-theory="biseccion" role="tab"><i class="fa-solid fa-arrows-left-right"></i> Bisección (Cerrado)</button>
-        <button class="theory-tab" type="button" data-theory="newton" role="tab"><i class="fa-solid fa-bolt"></i> Newton-Raphson (Abierto)</button>
-        <button class="theory-tab" type="button" data-theory="comparativa" role="tab"><i class="fa-solid fa-table-columns"></i> Abiertos vs. Cerrados</button>
-        <button class="theory-tab" type="button" data-theory="errores" role="tab"><i class="fa-solid fa-ruler-combined"></i> Ficha de Errores</button>
-        <button class="theory-tab" type="button" data-theory="polinomios" role="tab"><i class="fa-solid fa-superscript"></i> Raíces y Polinomios</button>
+      <div class="paradigm-banner closed">
+        <i class="fa-solid fa-shield-halved"></i>
+        <div>
+          <h4>Propiedad Fundamental de los Métodos Cerrados:</h4>
+          <p>Exigen evaluar dos puntos $a$ y $b$ tales que $f(a) \cdot f(b) < 0$. Por el <strong>Teorema de Bolzano</strong> (Valor Intermedio), la continuidad asegura que la curva cruza el eje horizontal. <em>Nunca divergen</em>, pero son ciegos a raíces de multiplicidad par ($f(x) \ge 0$).</p>
+        </div>
       </div>
 
-      <!-- PANEL BISECCIÓN -->
-      <div class="theory-panel active" data-panel="biseccion">
-        <div class="tstep">
+      <div class="theory-panel active">
+        <!-- Paso 1 -->
+        <div class="tstep wz-active">
           <span class="tnum">01</span>
           <div>
-            <h3>Definición y Fundamento (Método Cerrado)</h3>
-            <p>El método de <strong>Bisección</strong> es un algoritmo cerrado que requiere un intervalo inicial $[a, b]$ donde la función es continua y cambia de signo ($f(a) \cdot f(b) < 0$).</p>
-            <p><strong>Teorema de Bolzano:</strong> Si $f$ es continua en $[a,b]$ y $f(a) \cdot f(b) < 0$, entonces existe al menos un $r \in (a,b)$ tal que $f(r) = 0$.</p>
-            <p class="tuse"><i class="fa-solid fa-sitemap"></i> En Ingeniería de Sistemas: Se utiliza para calibrar parámetros críticos de configuración, límites de timeout en servidores o umbrales de balanceo de carga cuando la función es una "caja negra" no derivable.</p>
+            <h3>¿Qué es y para qué se usa en Ingeniería de Sistemas?</h3>
+            <p>El método de <strong>Bisección</strong> es un algoritmo cerrado que parte de un intervalo $[a, b]$ donde la función cambia de signo y divide el ancho a la mitad sucesivamente.</p>
+            <p class="tuse"><i class="fa-solid fa-server"></i> <strong>Aplicación en Sistemas:</strong> Se utiliza cuando se evalúan funciones "caja negra" (código ofuscado, simulaciones de latencia de red o servicios externos) de las cuales <em>no se dispone de su derivada analítica</em>.</p>
           </div>
         </div>
-        <div class="tstep">
+
+        <!-- Paso 2 -->
+        <div class="tstep wz-active">
           <span class="tnum">02</span>
           <div>
-            <h3>Gráfica Interactiva y Reducción del Intervalo</h3>
-            <p>El algoritmo divide el intervalo por la mitad en cada paso mediante $c = \frac{a+b}{2}$, descartando el subintervalo sin cambio de signo. Observa los <strong>valores numéricos exactos</strong> del primer paso en $f(x) = x^3 - x - 2$ sobre $[1, 2]$:</p>
+            <h3>Gráfica Vectorial con Valores Numéricos Exactos</h3>
+            <p>Observa el primer paso de Bisección sobre la ecuación del servidor $f(x) = x^3 - x - 2 = 0$ en $[1, 2]$ con <strong>todas las etiquetas numéricas</strong>:</p>
             <div class="interactive-diagram-box">
               <svg class="idea-svg" viewBox="0 0 460 210" role="img" aria-label="Bisección paso a paso con valores numéricos">
-                <!-- Eje X -->
                 <line x1="30" y1="120" x2="430" y2="120" stroke="#16283c" stroke-width="1.8"/>
                 <text x="415" y="140" font-size="11" font-weight="700" fill="#16283c">Eje X</text>
                 
-                <!-- Intervalo [1, 2] -->
-                <rect x="60" y="30" width="340" height="150" fill="rgba(239,108,69,0.08)" rx="6"/>
-                <text x="70" y="48" font-size="10" font-weight="700" fill="#c95131">INTERVALO INICIAL [a, b] = [1.0, 2.0]</text>
+                <rect x="60" y="30" width="340" height="150" fill="rgba(24,94,115,0.08)" rx="6"/>
+                <text x="70" y="48" font-size="10" font-weight="700" fill="#185e73">INTERVALO CERRADO [a, b] = [1.0, 2.0]</text>
                 
-                <!-- Puntos a=1, c=1.5, b=2 -->
                 <line x1="60" y1="110" x2="60" y2="130" stroke="#16283c" stroke-width="2.5"/>
                 <circle cx="60" cy="120" r="5" fill="#16283c"/>
                 <text x="45" y="145" font-size="12" font-weight="700" fill="#16283c">a = 1.0</text>
@@ -135,71 +149,71 @@
                 <text x="385" y="145" font-size="12" font-weight="700" fill="#16283c">b = 2.0</text>
                 <text x="380" y="162" font-size="10" fill="#70777a">f(2.0) = +4.0</text>
                 
-                <!-- Punto medio c = 1.5 -->
                 <line x1="230" y1="55" x2="230" y2="185" stroke="#ef6c45" stroke-width="2" stroke-dasharray="5 3"/>
                 <circle cx="230" cy="120" r="6" fill="#ef6c45"/>
                 <text x="210" y="75" font-size="12" font-weight="700" fill="#ef6c45">c₁ = 1.500000</text>
                 <text x="205" y="92" font-size="10" font-weight="600" fill="#c95131">f(1.5) = -0.125000</text>
                 <text x="205" y="107" font-size="10" fill="#70777a">Error = 0.500000</text>
                 
-                <!-- Raíz real -->
                 <circle cx="237" cy="120" r="5" fill="#327c62"/>
                 <text x="248" y="145" font-size="11" font-weight="700" fill="#327c62">Raíz r ≈ 1.521380</text>
                 
-                <!-- Flecha de nuevo intervalo -->
                 <rect x="230" y="172" width="170" height="24" fill="#327c62" rx="4"/>
                 <text x="240" y="188" font-size="10" font-weight="700" fill="#ffffff">Nuevo intervalo: [1.5, 2.0] ✓</text>
               </svg>
             </div>
           </div>
         </div>
-        <div class="tstep">
+
+        <!-- Paso 3 -->
+        <div class="tstep wz-active">
           <span class="tnum">03</span>
           <div>
-            <h3>Algoritmo Paso a Paso (7 Pasos)</h3>
+            <h3>Algoritmo Paso a Paso de Bisección (7 Pasos)</h3>
             <ol>
-              <li><strong>Entrada:</strong> Función $f(x)$, extremos $a$ y $b$, tolerancia $\text{tol} > 0$ y máximo de iteraciones $\text{maxit}$.</li>
-              <li><strong>Validación inicial:</strong> Comprobar que $a < b$ y que $f(a) \cdot f(b) < 0$. Si no, abortar con error de validación.</li>
+              <li><strong>Entrada:</strong> Función continua $f(x)$, extremos $a$ y $b$, tolerancia $\text{tol} > 0$ y máximo de iteraciones $\text{maxit}$.</li>
+              <li><strong>Validación estricta:</strong> Comprobar $a < b$ y $f(a) \cdot f(b) < 0$. Si no, abortar con error de cambio de signo.</li>
               <li><strong>Bucle iterativo ($i = 1$ hasta $\text{maxit}$):</strong></li>
-              <li><strong>Cálculo del punto medio:</strong> $c = \frac{a + b}{2}$, evaluar $f(c)$ y calcular cota de error $E_n = \frac{|b - a|}{2}$.</li>
+              <li><strong>Punto medio:</strong> $c = \frac{a + b}{2}$, evaluar $f(c)$ y calcular cota $E_n = \frac{|b - a|}{2}$.</li>
               <li><strong>Criterio de parada:</strong> Si $|f(c)| \le \text{tol}$ o $E_n \le \text{tol}$, retornar $c$ y estado "Convergió".</li>
-              <li><strong>Reducción de intervalo:</strong> Si $f(a) \cdot f(c) < 0$, actualizar $b = c$; si no, actualizar $a = c$.</li>
-              <li><strong>Fin de bucle:</strong> Si se alcanza $\text{maxit}$ sin cumplir tolerancia, retornar $c$ con estado "Límite alcanzado".</li>
+              <li><strong>Selección de subintervalo:</strong> Si $f(a) \cdot f(c) < 0$, actualizar $b = c$; si no, $a = c$.</li>
+              <li><strong>Fin de bucle:</strong> Si $i = \text{maxit}$, retornar $c$ con estado "Límite alcanzado".</li>
             </ol>
           </div>
         </div>
-        <div class="tstep">
+
+        <!-- Paso 4 -->
+        <div class="tstep wz-active">
           <span class="tnum">04</span>
           <div>
-            <h3>Criterios de Convergencia y Cota de Error</h3>
-            <p>La convergencia de Bisección es <strong>global y estrictamente lineal</strong> ($p = 1$) con factor de reducción asintótico $\mu = 1/2$.</p>
-            <div class="formula-line">|c_n - r| \le \frac{b_0 - a_0}{2^n} \implies n \ge \log_2\left(\frac{b_0 - a_0}{\text{tol}}\right) = \frac{\ln((b_0 - a_0)/\text{tol})}{\ln 2}</div>
-            <p><strong>Cálculo para el caso base:</strong> Con $[1, 2]$ y $\text{tol} = 10^{-6}$:</p>
-            <p>$$ n \ge \log_2\left(\frac{2 - 1}{10^{-6}}\right) = \log_2(10^6) \approx 19.9315 \implies \mathbf{20 \text{ iteraciones}} $$</p>
-            <p>En $n=20$, la cota es $\frac{1}{2^{20}} = \frac{1}{1048576} \approx 9.537 \times 10^{-7} \le 10^{-6}$, garantizando el éxito.</p>
+            <h3>Convergencia Lineal y Cota Teórica Determinista</h3>
+            <p>La convergencia es **lineal ($p = 1$)** con factor de reducción constante $\mu = 1/2$. El número exacto de pasos necesarios se calcula a priori:</p>
+            <div class="formula-line">|c_n - r| \le \frac{b_0 - a_0}{2^n} \le \text{tol} \implies n \ge \log_2\left(\frac{b_0 - a_0}{\text{tol}}\right)</div>
+            <p>Para nuestro caso base ($a=1, b=2, \text{tol}=10^{-6}$):</p>
+            <p>$$ n \ge \log_2(10^6) \approx 19.9315 \implies \mathbf{20 \text{ iteraciones}} $$</p>
           </div>
         </div>
-        <div class="tstep">
+
+        <!-- Paso 5 -->
+        <div class="tstep wz-active">
           <span class="tnum">05</span>
           <div>
-            <h3>Fortalezas y Limitaciones</h3>
+            <h3>Fortalezas y Limitaciones del Paradigma Cerrado</h3>
             <div class="pc-grid">
               <div class="pc good">
-                <h4><i class="fa-solid fa-circle-check"></i> Fortalezas</h4>
+                <h4><i class="fa-solid fa-circle-check"></i> Ventajas</h4>
                 <ul>
-                  <li><strong>Convergencia 100% garantizada</strong> si se cumple el Teorema de Bolzano.</li>
-                  <li>No requiere derivadas ni continuidad de la derivada $f'$.</li>
-                  <li>El número exacto de pasos necesarios se conoce a priori antes de ejecutar.</li>
-                  <li>Inmune a problemas de división entre cero o derivadas pequeñas.</li>
+                  <li><strong>Convergencia 100% garantizada:</strong> Imposible que diverja si se cumple Bolzano.</li>
+                  <li>No requiere derivadas ni continuidad de $f'$.</li>
+                  <li>Inmune a divisiones por cero o pendientes planas.</li>
                 </ul>
               </div>
               <div class="pc bad">
                 <h4><i class="fa-solid fa-triangle-exclamation"></i> Limitaciones</h4>
                 <ul>
-                  <li><strong>Convergencia lenta:</strong> Requiere ~20 pasos para 6 decimales.</li>
-                  <li><strong>Punto ciego:</strong> Incapaz de hallar raíces de multiplicidad par (como $x^2 = 0$ o $(x-2)^2=0$) donde no hay cambio de signo.</li>
-                  <li>Requiere un intervalo cerrado válido $[a, b]$ como precondición estricta.</li>
-                  <li>Solo encuentra una raíz por intervalo, ignorando otras raíces intermedias.</li>
+                  <li><strong>Lento:</strong> Requiere 20 iteraciones para 6 cifras decimales.</li>
+                  <li><strong>Punto ciego:</strong> Falla ante raíces de multiplicidad par (ej. $(x-2)^2=0$) donde $f(a)\cdot f(b) \ge 0$.</li>
+                  <li>Requiere encerrar la raíz en $[a, b]$ previamente.</li>
                 </ul>
               </div>
             </div>
@@ -207,99 +221,122 @@
         </div>
       </div>
 
-      <!-- PANEL NEWTON-RAPHSON -->
-      <div class="theory-panel" data-panel="newton">
-        <div class="tstep">
+      <div class="view-actions-center">
+        <a class="button button-primary" href="#calculadoras" data-view="calculadoras"><i class="fa-solid fa-calculator"></i> Probar Calculadora de Bisección</a>
+        <a class="button button-outline" href="#abiertos" data-view="abiertos">Ir a Métodos Abiertos <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         03. MÉTODOS ABIERTOS (NEWTON-RAPHSON)
+         ========================================== -->
+    <section class="view" id="abiertos" data-section="abiertos">
+      <div class="section-heading">
+        <p class="eyebrow"><span>03</span> PARADIGMA ABIERTO · ITERACIÓN TANGENTE (OPEN METHODS)</p>
+        <h2>Método Abierto: Newton-Raphson</h2>
+        <p>Los métodos abiertos parten de una semilla $x_0$ sin encerrar la raíz y utilizan información de la pendiente ($f'(x)$) para dar saltos de alta velocidad.</p>
+      </div>
+
+      <div class="paradigm-banner open">
+        <i class="fa-solid fa-bolt"></i>
+        <div>
+          <h4>Propiedad Fundamental de los Métodos Abiertos:</h4>
+          <p>No necesitan un intervalo ni cambio de signo. Utilizan la aproximación lineal tangente mediante <strong>Series de Taylor</strong>. Tienen <strong>convergencia cuadrática local</strong> (duplican cifras correctas por iteración), pero son <em>sensibles a la semilla inicial y a derivadas nulas</em>.</p>
+        </div>
+      </div>
+
+      <div class="theory-panel active">
+        <!-- Paso 1 -->
+        <div class="tstep wz-active">
           <span class="tnum">01</span>
           <div>
-            <h3>Definición y Fundamento (Método Abierto)</h3>
-            <p>El método de <strong>Newton-Raphson</strong> es un algoritmo abierto que parte de una estimación inicial $x_0$ y utiliza la recta tangente a la curva para aproximar la raíz sucesivamente.</p>
-            <p><strong>Deducción mediante Serie de Taylor:</strong> Expandiendo $f(x)$ alrededor de $x_n$:</p>
+            <h3>Definición y Deducción por Serie de Taylor</h3>
+            <p>Aproximando la función por su recta tangente en el punto $x_n$:</p>
             <div class="formula-line">f(x_n + h) \approx f(x_n) + f'(x_n) \cdot h = 0 \implies h = -\frac{f(x_n)}{f'(x_n)} \implies x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}</div>
-            <p class="tuse"><i class="fa-solid fa-sitemap"></i> En Ingeniería de Sistemas: Es el núcleo numérico en motores de optimización de bases de datos, algoritmos de backpropagation y simulación de flujo en redes complejas.</p>
+            <p class="tuse"><i class="fa-solid fa-network-wired"></i> <strong>Aplicación en Sistemas:</strong> Optimización de tiempos de respuesta en motores de base de datos, algoritmos de flujo de carga y simulaciones de tráfico de red.</p>
           </div>
         </div>
-        <div class="tstep">
+
+        <!-- Paso 2 -->
+        <div class="tstep wz-active">
           <span class="tnum">02</span>
           <div>
-            <h3>Gráfica Interactiva Tangente con Valores Numéricos</h3>
-            <p>Observa la recta tangente en el punto inicial $x_0 = 1.5$ para $f(x) = x^3 - x - 2$ con <strong>valores numéricos exactos</strong>:</p>
+            <h3>Gráfica Vectorial con Recta Tangente y Valores Numéricos</h3>
+            <p>Observa el salto tangente desde $x_0 = 1.5$ sobre $f(x) = x^3 - x - 2$ con <strong>valores numéricos exactos</strong>:</p>
             <div class="interactive-diagram-box">
-              <svg class="idea-svg" viewBox="0 0 460 210" role="img" aria-label="Recta tangente de Newton con valores numéricos">
-                <!-- Ejes -->
+              <svg class="idea-svg" viewBox="0 0 460 210" role="img" aria-label="Newton-Raphson con valores numéricos">
                 <line x1="30" y1="130" x2="430" y2="130" stroke="#16283c" stroke-width="1.8"/>
                 <text x="415" y="150" font-size="11" font-weight="700" fill="#16283c">Eje X</text>
                 
-                <!-- Curva f(x) -->
                 <path d="M40,195 C120,185 180,165 240,130 C300,90 360,40 420,15" fill="none" stroke="#16283c" stroke-width="2.5"/>
                 <text x="350" y="30" font-size="11" font-weight="700" fill="#16283c">f(x) = x³ − x − 2</text>
                 
-                <!-- Punto inicial x0=1.5 -->
                 <circle cx="210" cy="155" r="5" fill="#ef6c45"/>
                 <line x1="210" y1="130" x2="210" y2="155" stroke="#ef6c45" stroke-width="1.5" stroke-dasharray="3 3"/>
                 <text x="180" y="120" font-size="12" font-weight="700" fill="#16283c">x₀ = 1.500000</text>
                 <text x="110" y="175" font-size="10" font-weight="600" fill="#c95131">f(1.5) = -0.125000</text>
                 <text x="110" y="190" font-size="10" fill="#70777a">f'(1.5) = 5.750000</text>
                 
-                <!-- Recta tangente -->
                 <line x1="160" y1="184" x2="310" y2="98" stroke="#ef6c45" stroke-width="2.2"/>
                 <text x="275" y="90" font-size="10" font-weight="700" fill="#ef6c45">Tangente: y - f(x₀) = f'(x₀)(x - x₀)</text>
                 
-                <!-- Punto de corte x1 -->
                 <circle cx="253" cy="130" r="6" fill="#327c62"/>
                 <text x="250" y="152" font-size="12" font-weight="700" fill="#327c62">x₁ = 1.5217391304</text>
                 <text x="250" y="168" font-size="10" fill="#327c62">Error |x₁ - x₀| = 0.021739</text>
                 
-                <!-- Raíz exacta -->
                 <circle cx="252" cy="130" r="3" fill="#16283c"/>
               </svg>
             </div>
           </div>
         </div>
-        <div class="tstep">
+
+        <!-- Paso 3 -->
+        <div class="tstep wz-active">
           <span class="tnum">03</span>
           <div>
-            <h3>Algoritmo Paso a Paso (6 Pasos)</h3>
+            <h3>Algoritmo Paso a Paso de Newton (6 Pasos)</h3>
             <ol>
-              <li><strong>Entrada:</strong> Función $f(x)$, su derivada $f'(x)$, semilla $x_0$, tolerancia $\text{tol} > 0$ y máximo de iteraciones $\text{maxit}$.</li>
-              <li><strong>Inicialización:</strong> Fijar $x = x_0$ e iniciar contador de iteración $i = 1$.</li>
-              <li><strong>Evaluación y control de derivada:</strong> Calcular $f(x)$ y $f'(x)$. Si $|f'(x)| < 10^{-12}$, abortar con error `"Derivada nula o demasiado pequeña"`.</li>
-              <li><strong>Cálculo del salto tangente:</strong> $x_{\text{next}} = x - \frac{f(x)}{f'(x)}$ y calcular error de paso $E_n = |x_{\text{next}} - x|$.</li>
+              <li><strong>Entrada:</strong> Función $f(x)$, derivada $f'(x)$, semilla $x_0$, tolerancia $\text{tol} > 0$ y máximo de iteraciones $\text{maxit}$.</li>
+              <li><strong>Inicialización:</strong> $x = x_0$, $i = 1$.</li>
+              <li><strong>Control de derivada:</strong> Evaluar $f(x)$ y $f'(x)$. Si $|f'(x)| < 10^{-12}$, abortar por división por cero.</li>
+              <li><strong>Salto tangente:</strong> $x_{\text{next}} = x - \frac{f(x)}{f'(x)}$ y error de paso $E_n = |x_{\text{next}} - x|$.</li>
               <li><strong>Criterio de parada:</strong> Si $|f(x_{\text{next}})| \le \text{tol}$ o $E_n \le \text{tol}$, retornar $x_{\text{next}}$ y estado "Convergió".</li>
-              <li><strong>Actualización:</strong> Asignar $x = x_{\text{next}}$ y repetir desde el paso 3 hasta alcanzar $\text{maxit}$.</li>
+              <li><strong>Actualización:</strong> $x = x_{\text{next}}$ y repetir hasta $\text{maxit}$.</li>
             </ol>
           </div>
         </div>
-        <div class="tstep">
+
+        <!-- Paso 4 -->
+        <div class="tstep wz-active">
           <span class="tnum">04</span>
           <div>
-            <h3>Criterios y Orden de Convergencia Cuadrática</h3>
-            <p>Para raíces simples ($f'(r) \neq 0$) con $f''$ continua y $x_0$ cercano a la raíz, el método presenta <strong>convergencia cuadrática ($p = 2$)</strong>:</p>
+            <h3>Convergencia Cuadrática Local</h3>
+            <p>Para raíces simples con $f'(r) \neq 0$, el error decae con orden **cuadrático ($p = 2$)**:</p>
             <div class="formula-line">e_{n+1} \approx \left| \frac{f''(r)}{2 f'(r)} \right| e_n^2</div>
-            <p><strong>Consecuencia práctica:</strong> ¡El número de cifras decimales correctas se duplica en cada iteración!</p>
-            <p>En nuestro caso base: $x_0 = 1.5 \to x_1 = 1.5217391304 \to x_2 = 1.5213798060$ (residuo $5.89 \times 10^{-7}$). Se alcanza la convergencia en tan solo <strong>2 iteraciones</strong>.</p>
+            <p>En el caso base: $x_0 = 1.5 \to x_1 = 1.52173913 \to x_2 = 1.52137981$ (residuo $5.89 \times 10^{-7}$). ¡Convergió en tan solo **2 iteraciones**!</p>
           </div>
         </div>
-        <div class="tstep">
+
+        <!-- Paso 5 -->
+        <div class="tstep wz-active">
           <span class="tnum">05</span>
           <div>
-            <h3>Casos de Divergencia y Limitaciones</h3>
+            <h3>Casos de Divergencia y Limitaciones del Paradigma Abierto</h3>
             <div class="pc-grid">
               <div class="pc good">
-                <h4><i class="fa-solid fa-circle-check"></i> Fortalezas</h4>
+                <h4><i class="fa-solid fa-circle-check"></i> Ventajas</h4>
                 <ul>
-                  <li><strong>Velocidad extraordinaria:</strong> Pocas iteraciones (2 a 5 pasos típicos).</li>
-                  <li>Puede encontrar raíces de multiplicidad par si $x_0$ es adecuado.</li>
-                  <li>No requiere encerrar la raíz en un intervalo predefinido.</li>
+                  <li><strong>Velocidad extraordinaria:</strong> Típicamente de 2 a 5 iteraciones.</li>
+                  <li>No requiere intervalo cerrado.</li>
+                  <li>Capaz de converger a raíces pares si $x_0$ es adecuado.</li>
                 </ul>
               </div>
               <div class="pc bad">
-                <h4><i class="fa-solid fa-triangle-exclamation"></i> Casos de Fallo</h4>
+                <h4><i class="fa-solid fa-triangle-exclamation"></i> Riesgos de Fallo</h4>
                 <ul>
-                  <li><strong>Derivada nula ($f'(x_n) = 0$):</strong> La tangente es horizontal y no corta el eje X (ej. $f(x)=x^3-1$ con $x_0=0$).</li>
-                  <li><strong>Ciclos oscilatorios:</strong> El algoritmo queda atrapado entre dos puntos sin converger.</li>
-                  <li><strong>Sensibilidad a $x_0$:</strong> Un punto inicial alejado puede divergir a $\pm\infty$ o saltar a otra raíz no deseada.</li>
-                  <li><strong>Raíces múltiples ($k > 1$):</strong> La convergencia se degrada de cuadrática a lineal con factor $1 - 1/k$.</li>
+                  <li><strong>Derivada nula ($f'(x) = 0$):</strong> Tangente horizontal que no corta el eje X (ej. $x_0 = 0$ en $x^3 - 1$).</li>
+                  <li><strong>Sensibilidad a $x_0$:</strong> Puede divergir a $\pm\infty$ o saltar a otra raíz si $x_0$ está lejos.</li>
+                  <li><strong>Raíces dobles:</strong> Pierde su velocidad y se degrada a orden lineal ($p = 1$).</li>
                 </ul>
               </div>
             </div>
@@ -307,227 +344,80 @@
         </div>
       </div>
 
-      <!-- PANEL COMPARATIVA ABIERTOS VS CERRADOS -->
-      <div class="theory-panel" data-panel="comparativa">
-        <div class="tstep">
-          <span class="tnum">01</span>
-          <div>
-            <h3>Métodos Abiertos vs. Métodos Cerrados: Análisis Comparativo</h3>
-            <p>En ingeniería de software y análisis numérico, la elección del algoritmo depende de la disponibilidad de derivadas, el costo de cómputo y los requerimientos de robustez:</p>
-            <div class="table-scroll">
-              <table class="styled-table">
-                <thead>
-                  <tr>
-                    <th>Criterio de Comparación</th>
-                    <th>Método Cerrado (Bisección)</th>
-                    <th>Método Abierto (Newton-Raphson)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>Requisito Inicial</strong></td>
-                    <td>Intervalo $[a,b]$ con cambio de signo ($f(a)\cdot f(b) < 0$)</td>
-                    <td>Un solo punto semilla $x_0$</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Teorema de Soporte</strong></td>
-                    <td>Teorema del Valor Intermedio (Bolzano)</td>
-                    <td>Teorema del Punto Fijo y Serie de Taylor</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Tipo de Convergencia</strong></td>
-                    <td><strong>Global</strong> (100% garantizada en el intervalo)</td>
-                    <td><strong>Local</strong> (depende de la cercanía de $x_0$)</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Orden de Convergencia ($p$)</strong></td>
-                    <td><strong>Lineal ($p = 1$)</strong>, factor $\mu = 0.5$</td>
-                    <td><strong>Cuadrático ($p = 2$)</strong> para raíces simples</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Iteraciones en Caso Base</strong></td>
-                    <td>20 iteraciones ($\text{tol} = 10^{-6}$)</td>
-                    <td>2 iteraciones ($\text{tol} = 10^{-6}$)</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Información Requerida</strong></td>
-                    <td>Únicamente evaluaciones de $f(x)$</td>
-                    <td>Evaluaciones de $f(x)$ y su derivada $f'(x)$</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Cota de Error</strong></td>
-                    <td>Determinista a priori: $E_n \le \frac{b-a}{2^n}$</td>
-                    <td>Asintótica a posteriori: $|x_{n+1} - x_n|$</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Robustez Operativa</strong></td>
-                    <td><strong>Máxima:</strong> Nunca diverge</td>
-                    <td><strong>Moderada:</strong> Falla con $f'(x)\approx 0$ o malos $x_0$</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Raíces de Multiplicidad Par</strong></td>
-                    <td>Incapaz (no hay cambio de signo)</td>
-                    <td>Posible (con convergencia lineal degradada)</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- PANEL FICHA DE ERRORES -->
-      <div class="theory-panel" data-panel="errores">
-        <div class="tstep">
-          <span class="tnum">01</span>
-          <div>
-            <h3>Ficha Común de Errores y Tolerancias</h3>
-            <p>La cuantificación precisa del error es el pilar de la verificación numérica en Ingeniería de Sistemas:</p>
-            <div class="table-scroll">
-              <table class="styled-table">
-                <thead>
-                  <tr>
-                    <th>Magnitud</th>
-                    <th>Fórmula Matemática</th>
-                    <th>Interpretación y Uso</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>Error Absoluto ($E_a$)</strong></td>
-                    <td>$$E_a = |x_{\text{verdadero}} - x_{\text{aprox}}|$$</td>
-                    <td>Distancia física al valor real. Mismas unidades que $x$.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Error Relativo ($E_r$)</strong></td>
-                    <td>$$E_r = \frac{|x_{\text{verdadero}} - x_{\text{aprox}}|}{|x_{\text{verdadero}}|}$$</td>
-                    <td>Fracción de error adimensional. <em>Indefinido si $x_{\text{verdadero}} = 0$</em>.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Error Porcentual ($E_p$)</strong></td>
-                    <td>$$E_p = E_r \times 100\%$$</td>
-                    <td>Desviación porcentual estandarizada.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Residuo ($R$)</strong></td>
-                    <td>$$R = |f(x_{\text{aprox}})|$$</td>
-                    <td>Falla de la ecuación en el eje Y. <strong>Residuo $\neq$ Error</strong>.</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="formula-line">Relación Crítica: E_a \approx \frac{|f(x_{\text{aprox}})|}{|f'(r)|} = \frac{\text{Residuo}}{|f'(r)|}</div>
-          </div>
-        </div>
-        <div class="tstep">
-          <span class="tnum">02</span>
-          <div>
-            <h3>Tipos y Propagación de Errores</h3>
-            <ul>
-              <li><strong>Error de Truncamiento:</strong> Surge al detener un proceso infinito tras $n$ iteraciones. En Bisección está acotado por $(b-a)/2^n$; en Newton por el resto de Taylor $O(h^2)$.</li>
-              <li><strong>Error de Redondeo:</strong> Originado por la representación en punto flotante de doble precisión (IEEE 754 de 64 bits). Se mitiga evitando restas entre números casi idénticos (cancelación catastrófica).</li>
-              <li><strong>Propagación en Iteraciones:</strong> Bisección es incondicionalmente estable (divide el error por 2 en cada paso). Newton es estable si $|f'(x)| > 10^{-12}$, pero propaga errores rápidamente si la derivada es diminuta.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- PANEL RAÍCES Y POLINOMIOS -->
-      <div class="theory-panel" data-panel="polinomios">
-        <div class="tstep">
-          <span class="tnum">01</span>
-          <div>
-            <h3>Teorema Fundamental del Álgebra y Raíces Complejas</h3>
-            <p>Todo polinomio de grado $n$ tiene exactamente $n$ raíces en $\mathbb{C}$ (contando multiplicidades). En nuestro caso base $f(x) = x^3 - x - 2 = 0$ (grado 3):</p>
-            <div class="formula-line">x^3 - x - 2 = (x - 1.5213797068)(x^2 + 1.5213797068 x + 1.314596) = 0</div>
-            <ul>
-              <li><strong>Raíz Real Única:</strong> $x_1 \approx 1.5213797068$ (encontrada por Bisección y Newton).</li>
-              <li><strong>Par Complejo Conjugado:</strong> $x_{2,3} \approx -0.76069 \pm 0.85782 i$ (discriminante $\Delta \approx -2.9438 < 0$).</li>
-            </ul>
-          </div>
-        </div>
+      <div class="view-actions-center">
+        <a class="button button-primary" href="#calculadoras" data-view="calculadoras"><i class="fa-solid fa-calculator"></i> Probar Calculadora de Newton</a>
+        <a class="button button-outline" href="#comparacion" data-view="comparacion">Ver Comparación Directa <i class="fa-solid fa-code-compare"></i></a>
       </div>
     </section>
 
-    <!-- 03. EJEMPLOS -->
-    <section class="view" id="ejemplos" data-section="ejemplos">
+    <!-- ==========================================
+         04. COMPARACIÓN (CERRADOS VS. ABIERTOS)
+         ========================================== -->
+    <section class="view" id="comparacion" data-section="comparacion">
       <div class="section-heading">
-        <p class="eyebrow"><span>03</span> EJEMPLOS RESUELTOS PASO A PASO</p>
-        <h2>Trazas Manuales y Casos de Fallo Controlado</h2>
-        <p>Verifica manualmente la secuencia de cálculo de cada método y comprende cómo responder ante situaciones anómalas.</p>
+        <p class="eyebrow"><span>04</span> TABLA COMPARATIVA Y TOMA DE DECISIONES</p>
+        <h2>Métodos Cerrados vs. Métodos Abiertos</h2>
+        <p>Contraste riguroso de desempeño sobre la calibración de servidor: $f(x) = x^3 - x - 2 = 0$.</p>
       </div>
 
-      <div class="example-card">
-        <h3>Ejemplo 1 · Bisección en [1, 2] sobre f(x) = x³ − x − 2</h3>
-        <p><strong>Validación:</strong> $f(1) = 1 - 1 - 2 = -2 < 0$ y $f(2) = 8 - 2 - 2 = +4 > 0$. Hay cambio de signo. Criterio de parada: cota de error $\frac{b-a}{2} \le 10^{-6}$.</p>
-        <div class="table-scroll">
-          <table class="styled-table">
-            <thead>
-              <tr><th>$i$</th><th>$a$</th><th>$b$</th><th>$c = (a+b)/2$</th><th>$f(c)$</th><th>Nuevo Intervalo</th><th>Cota de Error</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>1</td><td>1.000000</td><td>2.000000</td><td>1.50000000</td><td>-0.125000</td><td>[1.500000, 2.000000]</td><td>5.00 × 10⁻¹</td></tr>
-              <tr><td>2</td><td>1.500000</td><td>2.000000</td><td>1.75000000</td><td>+1.609375</td><td>[1.500000, 1.750000]</td><td>2.50 × 10⁻¹</td></tr>
-              <tr><td>3</td><td>1.500000</td><td>1.750000</td><td>1.62500000</td><td>+0.666016</td><td>[1.500000, 1.625000]</td><td>1.25 × 10⁻¹</td></tr>
-              <tr><td>4</td><td>1.500000</td><td>1.625000</td><td>1.56250000</td><td>+0.252197</td><td>[1.500000, 1.562500]</td><td>6.25 × 10⁻²</td></tr>
-              <tr><td>5</td><td>1.500000</td><td>1.562500</td><td>1.53125000</td><td>+0.059113</td><td>[1.500000, 1.531250]</td><td>3.13 × 10⁻²</td></tr>
-              <tr><td>20</td><td>1.521379</td><td>1.521381</td><td>1.52138042</td><td>+4.40 × 10⁻⁶</td><td>—</td><td>9.54 × 10⁻⁷ ≤ 10⁻⁶ ✓</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="example-note"><strong>Resultado:</strong> Raíz $x^* \approx 1.52138042$ en 20 iteraciones. Diferencia frente a referencia: $7.18 \times 10^{-7} \le 10^{-6}$.</p>
-      </div>
-
-      <div class="example-card">
-        <h3>Ejemplo 2 · Newton-Raphson desde x₀ = 1.5 sobre f(x) = x³ − x − 2</h3>
-        <p><strong>Fórmula:</strong> $x_{n+1} = x_n - \frac{x_n^3 - x_n - 2}{3x_n^2 - 1}$. Criterio de parada: $|f(x_{n+1})| \le 10^{-6}$ o $|x_{n+1} - x_n| \le 10^{-6}$.</p>
-        <div class="table-scroll">
-          <table class="styled-table">
-            <thead>
-              <tr><th>$i$</th><th>$x_n$</th><th>$f(x_n)$</th><th>$f'(x_n)$</th><th>$x_{n+1}$</th><th>Cambio $|x_{n+1} - x_n|$</th><th>Residuo $|f(x_{n+1})|$</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>1</td><td>1.50000000</td><td>-0.125000</td><td>5.750000</td><td>1.5217391304</td><td>2.17 × 10⁻²</td><td>2.14 × 10⁻³</td></tr>
-              <tr><td>2</td><td>1.5217391304</td><td>+2.14 × 10⁻³</td><td>5.947070</td><td>1.5213798060</td><td>3.59 × 10⁻⁴</td><td>5.89 × 10⁻⁷ ≤ 10⁻⁶ ✓</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="example-note"><strong>Resultado:</strong> Raíz $x^* \approx 1.5213798060$ en solo 2 iteraciones con residuo $5.89 \times 10^{-7}$.</p>
-      </div>
-
-      <div class="example-card">
-        <h3>Ejemplos de Fallo Controlado</h3>
-        <div class="pc-grid">
-          <div class="pc bad">
-            <h4><i class="fa-solid fa-triangle-exclamation"></i> Fallo en Bisección: [2, 3] sin cambio de signo</h4>
-            <p>$f(2) = +4 > 0$ y $f(3) = 27 - 3 - 2 = +22 > 0$. Como $f(2) \cdot f(3) = 88 > 0$, el Teorema de Bolzano no aplica. La calculadora emite inmediatamente el mensaje de validación: <code>"Los extremos deben tener signos opuestos"</code>.</p>
+      <div class="comparison-grid">
+        <div class="comparison-card">
+          <h3>Tabla Comparativa Criterio por Criterio</h3>
+          <div class="table-scroll">
+            <table class="styled-table">
+              <thead>
+                <tr>
+                  <th>Criterio</th>
+                  <th>Método Cerrado (Bisección)</th>
+                  <th>Método Abierto (Newton-Raphson)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Entrada Inicial</strong></td><td>Intervalo $[a, b] = [1.0, 2.0]$</td><td>Semilla $x_0 = 1.5$</td></tr>
+                <tr><td><strong>Precondición</strong></td><td>$f(a) \cdot f(b) < 0$ (Bolzano)</td><td>$|f'(x_n)| > 10^{-12}$</td></tr>
+                <tr><td><strong>Iteraciones ($\text{tol}=10^{-6}$)</strong></td><td><strong>20 iteraciones</strong></td><td><strong>2 iteraciones</strong></td></tr>
+                <tr><td><strong>Raíz Calculada</strong></td><td><code>1.5213804245</code></td><td><code>1.5213798060</code></td></tr>
+                <tr><td><strong>Error Final Estimado</strong></td><td>$9.54 \times 10^{-7}$ (cota)</td><td>$3.59 \times 10^{-4}$ (paso)</td></tr>
+                <tr><td><strong>Residuo Final $|f(x)|$</strong></td><td>$4.40 \times 10^{-6}$</td><td>$5.89 \times 10^{-7}$</td></tr>
+                <tr><td><strong>Orden de Convergencia</strong></td><td>Lineal ($p = 1$, $\mu = 0.5$)</td><td>Cuadrático ($p = 2$)</td></tr>
+                <tr><td><strong>Garantía de Éxito</strong></td><td>100% garantizado</td><td>Local (puede divergir con mal $x_0$)</td></tr>
+                <tr><td><strong>Requisito de Derivada</strong></td><td>No (solo evalúa $f(x)$)</td><td>Sí (evalúa $f(x)$ y $f'(x)$)</td></tr>
+              </tbody>
+            </table>
           </div>
-          <div class="pc bad">
-            <h4><i class="fa-solid fa-triangle-exclamation"></i> Fallo en Newton: x₀ = 0 con derivada nula</h4>
-            <p>Para $f(x) = x^3 - 1$, su derivada es $f'(x) = 3x^2$. En $x_0 = 0$, $f'(0) = 0$, provocando división por cero. El algoritmo detecta $|f'(x)| < 10^{-12}$ y emite el mensaje: <code>"La derivada se anuló o es demasiado pequeña"</code>.</p>
+        </div>
+
+        <div class="comparison-card">
+          <h3>Curvas de Convergencia en Escala Logarítmica</h3>
+          <p>Trayectoria del error $E_n$ vs. número de iteración con valores numéricos exactos:</p>
+          <div class="graph-wrap comp-chart-wrap">
+            <canvas id="comparisonChart" aria-label="Comparativa de convergencia Bisección vs Newton"></canvas>
           </div>
+          <p class="example-note"><strong>Criterio de Decisión para Ingeniería de Sistemas:</strong> Si se dispone de la derivada analítica y se busca máxima velocidad en tiempo real, se elige <strong>Newton-Raphson</strong>. Si la función es una caja negra o se requiere confiabilidad crítica sin riesgo de divergencia, se elige <strong>Bisección</strong>.</p>
         </div>
       </div>
     </section>
 
-    <!-- 04. CALCULADORAS -->
+    <!-- ==========================================
+         05. CALCULADORAS INTERACTIVAS
+         ========================================== -->
     <section class="view" id="calculadoras" data-section="calculadoras">
       <div class="section-heading compact">
-        <p class="eyebrow"><span>04</span> CALCULADORAS INTERACTIVAS INTEGRADAS</p>
-        <h2>Calcula. Observa. Comprueba.</h2>
-        <p>Modifica parámetros, ejecuta el algoritmo y descarga la traza de iteraciones en CSV.</p>
+        <p class="eyebrow"><span>05</span> EXPERIMENTACIÓN NUMÉRICA</p>
+        <h2>Calculadoras Interactivas Integradas</h2>
+        <p>Selecciona entre el paradigma cerrado o abierto, ajusta parámetros y descarga la traza de iteraciones en CSV.</p>
       </div>
 
       <div class="calculator-tabs" role="tablist">
-        <button class="calc-tab active" data-calculator="biseccion" role="tab"><i class="fa-solid fa-arrows-left-right"></i> Bisección (Cerrado)</button>
-        <button class="calc-tab" data-calculator="newton" role="tab"><i class="fa-solid fa-bolt"></i> Newton-Raphson (Abierto)</button>
+        <button class="calc-tab active" data-calculator="biseccion" role="tab"><i class="fa-solid fa-lock"></i> Método Cerrado: Bisección</button>
+        <button class="calc-tab" data-calculator="newton" role="tab"><i class="fa-solid fa-lock-open"></i> Método Abierto: Newton-Raphson</button>
       </div>
 
       <div class="calculator-layout">
         <form class="control-panel" id="calculatorForm">
           <div class="panel-heading">
-            <span class="panel-kicker">PARÁMETROS DE ENTRADA</span>
-            <span class="method-pill" id="methodPill">BISECCIÓN</span>
+            <span class="panel-kicker">CONFIGURACIÓN</span>
+            <span class="method-pill" id="methodPill">MÉTODO CERRADO: BISECCIÓN</span>
           </div>
           <label>Función Objetivo $f(x)$ <span class="label-note">Calibración de servidor</span>
             <input type="text" id="funcDisplay" value="x³ − x − 2" readonly>
@@ -568,7 +458,7 @@
 
       <div class="table-section">
         <div class="table-heading">
-          <div><span class="panel-kicker">TRAZA COMPLETA DE EJECUCIÓN</span><h3>Tabla de Iteraciones</h3></div>
+          <div><span class="panel-kicker">TRAZA COMPLETA</span><h3>Tabla de Iteraciones</h3></div>
           <button class="button button-outline" id="downloadCsv" type="button" title="Descargar CSV con todas las iteraciones"><i class="fa-solid fa-download"></i> Exportar CSV</button>
         </div>
         <div class="table-scroll">
@@ -580,145 +470,96 @@
       </div>
     </section>
 
-    <!-- 05. COMPARACIÓN (HITO 2) -->
-    <section class="view" id="comparacion" data-section="comparacion">
-      <div class="section-heading">
-        <p class="eyebrow"><span>05</span> ANÁLISIS COMPARATIVO EN EL CASO APLICADO</p>
-        <h2>Bisección vs. Newton-Raphson</h2>
-        <p>Comparación rigurosa de desempeño sobre la ecuación de calibración del servidor: $g(x) = x^3 - x = 2 \implies f(x) = x^3 - x - 2 = 0$.</p>
-      </div>
-
-      <div class="comparison-grid">
-        <div class="comparison-card">
-          <h3>Tabla Comparativa de Resultados</h3>
-          <div class="table-scroll">
-            <table class="styled-table">
-              <thead>
-                <tr>
-                  <th>Métrica / Criterio</th>
-                  <th>Bisección (Cerrado)</th>
-                  <th>Newton-Raphson (Abierto)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td><strong>Entrada Inicial</strong></td><td>$[a, b] = [1.0, 2.0]$</td><td>$x_0 = 1.5$</td></tr>
-                <tr><td><strong>Iteraciones para $\text{tol}=10^{-6}$</strong></td><td><strong>20 iteraciones</strong></td><td><strong>2 iteraciones</strong></td></tr>
-                <tr><td><strong>Raíz Calculada</strong></td><td><code>1.5213804245</code></td><td><code>1.5213798060</code></td></tr>
-                <tr><td><strong>Error Final Estimado</strong></td><td>$9.54 \times 10^{-7}$ (cota)</td><td>$3.59 \times 10^{-4}$ (paso)</td></tr>
-                <tr><td><strong>Residuo Final $|f(x)|$</strong></td><td>$4.40 \times 10^{-6}$</td><td>$5.89 \times 10^{-7}$</td></tr>
-                <tr><td><strong>Diferencia vs. Referencia</strong></td><td>$7.18 \times 10^{-7} \le 10^{-6}$</td><td>$9.92 \times 10^{-8} \le 10^{-6}$</td></tr>
-                <tr><td><strong>Orden de Convergencia</strong></td><td>Lineal ($p = 1$)</td><td>Cuadrático ($p = 2$)</td></tr>
-                <tr><td><strong>Robustez Operativa</strong></td><td>Incondicionalmente convergente</td><td>Sensible a derivadas nulas y $x_0$</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="comparison-card">
-          <h3>Curvas de Convergencia Comparativas</h3>
-          <p>Gráfica de error absoluto $E_n$ vs. número de iteración en escala logarítmica con valores numéricos:</p>
-          <div class="graph-wrap comp-chart-wrap">
-            <canvas id="comparisonChart" aria-label="Comparativa de convergencia Bisección vs Newton"></canvas>
-          </div>
-          <p class="example-note"><strong>Interpretación en Ingeniería de Sistemas:</strong> Newton-Raphson reduce el error de forma cuadrática ($10^{-2} \to 10^{-4} \to 10^{-7}$), requiriendo 10 veces menos iteraciones que Bisección. Sin embargo, en un entorno de producción automatizado, Bisección se prefiere como respaldo seguro por su garantía estricta de no divergencia.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 06. PRÁCTICA -->
+    <!-- ==========================================
+         06. PRÁCTICA Y AUTOEVALUACIÓN
+         ========================================== -->
     <section class="view" id="practica" data-section="practica">
       <div class="section-heading">
-        <p class="eyebrow"><span>06</span> CONSOLIDA TUS CONOCIMIENTOS</p>
-        <h2>Ejercicios Aplicados y Autoevaluación</h2>
-        <p>Plantea los modelos matemáticos para problemas de Ingeniería de Sistemas y valida tu aprendizaje interactivo.</p>
+        <p class="eyebrow"><span>06</span> BANCO DE PROBLEMAS Y TEST</p>
+        <h2>Ejercicios Resueltos y Autoevaluación</h2>
+        <p>Pon a prueba tu criterio para seleccionar entre métodos abiertos y cerrados en situaciones reales.</p>
       </div>
 
       <div class="exercise-grid">
         <article class="exercise-card">
-          <span class="difficulty intermediate">INTERMEDIO</span>
+          <span class="difficulty intermediate">MÉTODO CERRADO</span>
           <span class="exercise-number">01</span>
-          <h3>Tiempos de Respuesta en App de Delivery</h3>
-          <p>Una plataforma de entrega modela el tiempo de despacho como $T(x) = x^3 - x$ minutos ($x$ es el factor de carga en servidores). Se requiere $T(x) = 2$ min. ¿Qué factor $x > 0$ cumple la meta?</p>
-          <button class="solution-toggle" type="button">Ver solución completa <i class="fa-solid fa-chevron-down"></i></button>
-          <div class="solution">
-            <h4>1 · Formulación:</h4>
-            <p>$x^3 - x = 2 \implies \mathbf{f(x) = x^3 - x - 2 = 0}$. Corresponde exactamente al caso base.</p>
-            <h4>2 · Resolución con Bisección:</h4>
-            <p>En $[1, 2]$ con $\text{tol} = 10^{-6}$: tras 20 iteraciones se obtiene $\mathbf{x^* \approx 1.5214}$.</p>
-            <h4>3 · Conclusión ingenieril:</h4>
-            <p>Con un factor de carga de 1.5214, la plataforma garantiza el tiempo objetivo de 2 minutos.</p>
-          </div>
-        </article>
-
-        <article class="exercise-card">
-          <span class="difficulty intermediate">INTERMEDIO</span>
-          <span class="exercise-number">02</span>
-          <h3>Calibración de Servidor con Función "Caja Negra"</h3>
+          <h3>Calibración con Función Caja Negra</h3>
           <p>Un servicio web responde a consultas pero su código fuente está ofuscado (sin derivada). Se desea calibrar la respuesta con 6 decimales de precisión en $[1, 2]$. ¿Qué método utilizar y cuántas consultas se requieren?</p>
           <button class="solution-toggle" type="button">Ver solución completa <i class="fa-solid fa-chevron-down"></i></button>
           <div class="solution">
-            <h4>1 · Selección de método:</h4>
-            <p>Al no disponer de derivada $f'(x)$, Newton queda descartado. Se selecciona **Bisección**.</p>
-            <h4>2 · Cálculo de costo computacional:</h4>
-            <p>$$ n \ge \log_2\left(\frac{2-1}{10^{-6}}\right) = \log_2(10^6) \approx 19.93 \implies \mathbf{20 \text{ iteraciones}} $$</p>
-            <p>Se requieren 20 consultas a la caja negra más 2 evaluaciones iniciales de signo.</p>
+            <h4>1 · Decisión de Paradigma:</h4>
+            <p>Al carecer de derivada $f'(x)$, los métodos abiertos quedan descartados. Se debe usar el **Método Cerrado (Bisección)**.</p>
+            <h4>2 · Cálculo de Criterio:</h4>
+            <p>$$ n \ge \log_2(10^6) \approx 19.93 \implies \mathbf{20 \text{ iteraciones (21 consultas)}}$$</p>
           </div>
         </article>
 
         <article class="exercise-card">
-          <span class="difficulty advanced">AVANZADO</span>
-          <span class="exercise-number">03</span>
-          <h3>Pico de Tráfico y Escalabilidad</h3>
-          <p>Ante un pico de tráfico, el objetivo de tiempo sube a $T(x) = 3$ min ($f(x) = x^3 - x - 3 = 0$). Aplica Newton desde $x_0 = 1.6$ con $\text{tol} = 10^{-6}$.</p>
+          <span class="difficulty intermediate">MÉTODO ABIERTO</span>
+          <span class="exercise-number">02</span>
+          <h3>Pico de Tráfico y Velocidad en Servidores</h3>
+          <p>Ante un pico de tráfico, se requiere recalibrar el servidor resolviendo $f(x) = x^3 - x - 3 = 0$ en milisegundos. ¿Qué método usar desde $x_0 = 1.6$?</p>
           <button class="solution-toggle" type="button">Ver solución completa <i class="fa-solid fa-chevron-down"></i></button>
           <div class="solution">
-            <h4>1 · Iteraciones de Newton ($f'(x) = 3x^2 - 1$):</h4>
-            <p>$$ x_1 = 1.6 - \frac{1.6^3 - 1.6 - 3}{3(1.6)^2 - 1} = 1.6 - \frac{-0.504}{6.68} \approx \mathbf{1.6754491} $$</p>
-            <p>$$ x_2 = 1.6754491 - \frac{0.02775}{7.42139} \approx \mathbf{1.6717094} $$</p>
-            <p>$$ x_3 = 1.6717094 - \frac{7.02 \times 10^{-5}}{7.38384} \approx \mathbf{1.6716999} $$</p>
+            <h4>1 · Decisión de Paradigma:</h4>
+            <p>Se elige el **Método Abierto (Newton-Raphson)** por su convergencia cuadrática.</p>
             <h4>2 · Resultado:</h4>
-            <p>Converge en 3 iteraciones a $\mathbf{x^* \approx 1.67170}$ con residuo $< 10^{-6}$.</p>
+            <p>$x_1 = 1.6754491 \to x_2 = 1.6717094 \to x_3 = 1.6716999$. Converge en solo **3 iteraciones** a $x^* \approx 1.67170$.</p>
           </div>
         </article>
 
         <article class="exercise-card">
-          <span class="difficulty advanced">AVANZADO</span>
-          <span class="exercise-number">04</span>
-          <h3>Raíz Doble en Control de Pérdida</h3>
-          <p>Un modelo de pérdida $L(x) = (x - 2)^2 = 0$ tiene raíz doble en $x = 2$. Analiza qué ocurre al aplicar Bisección en $[1, 3]$ y Newton desde $x_0 = 3$.</p>
+          <span class="difficulty advanced">PUNTO CIEGO CERRADO</span>
+          <span class="exercise-number">03</span>
+          <h3>Raíz Doble en Modelo de Pérdida</h3>
+          <p>Se busca minimizar la pérdida $L(x) = (x - 2)^2 = 0$. Evalúa qué sucede con Bisección en $[1, 3]$ y con Newton desde $x_0 = 3$.</p>
           <button class="solution-toggle" type="button">Ver solución completa <i class="fa-solid fa-chevron-down"></i></button>
           <div class="solution">
-            <h4>1 · Bisección:</h4>
-            <p>$L(1) = 1 > 0$ y $L(3) = 1 > 0 \implies L(1)\cdot L(3) = 1 > 0$. **Bisección falla** al no existir cambio de signo.</p>
-            <h4>2 · Newton:</h4>
-            <p>$$ x_{n+1} = x_n - \frac{(x_n - 2)^2}{2(x_n - 2)} = \frac{x_n + 2}{2} $$</p>
-            <p>Sucesión desde $x_0=3$: $2.5 \to 2.25 \to 2.125 \to 2.0625 \dots$ El error se reduce con factor $(1 - 1/2) = 1/2$. Newton converge, pero **pierde su velocidad cuadrática y se vuelve lineal**.</p>
+            <h4>1 · Bisección (Falla):</h4>
+            <p>$L(1) = 1 > 0$ y $L(3) = 1 > 0 \implies$ No hay cambio de signo. Bisección no puede iniciar.</p>
+            <h4>2 · Newton (Degradado):</h4>
+            <p>Newton converge pero pierde su orden cuadrático, degradándose a **lineal** con factor $(1 - 1/2) = 1/2$.</p>
+          </div>
+        </article>
+
+        <article class="exercise-card">
+          <span class="difficulty advanced">FALLO ABIERTO</span>
+          <span class="exercise-number">04</span>
+          <h3>Derivada Nula en Método Abierto</h3>
+          <p>Para $f(x) = x^3 - 1$, intenta aplicar Newton desde $x_0 = 0$. Explica por qué falla y cómo mitigarlo.</p>
+          <button class="solution-toggle" type="button">Ver solución completa <i class="fa-solid fa-chevron-down"></i></button>
+          <div class="solution">
+            <h4>1 · Causa del Fallo:</h4>
+            <p>$f'(0) = 3(0)^2 = 0 \implies$ Tangente horizontal sin corte con el eje X. El algoritmo detecta $|f'(x)| < 10^{-12}$ y emite error controlado.</p>
+            <h4>2 · Mitigación:</h4>
+            <p>Seleccionar una semilla distinta (ej. $x_0 = 1.5$) o cambiar a un método cerrado como Bisección.</p>
           </div>
         </article>
       </div>
 
       <div class="quiz-bar">
-        <div><span class="panel-kicker">AUTOEVALUACIÓN INTERACTIVA</span><h3>6 Preguntas Clave</h3></div>
+        <div><span class="panel-kicker">AUTOEVALUACIÓN INTERACTIVA</span><h3>6 Preguntas sobre Abiertos y Cerrados</h3></div>
         <strong class="quiz-score">0 / 6</strong>
         <button class="button button-outline quiz-reset" type="button"><i class="fa-solid fa-rotate-left"></i> Reiniciar test</button>
       </div>
 
       <div class="quiz-grid">
         <article class="quiz-card" data-type="opcion" data-answer="b" data-explain="Bisección requiere f(a)·f(b) < 0 por el Teorema de Bolzano para garantizar la existencia de una raíz en el intervalo cerrado.">
-          <div class="quiz-head"><span class="quiz-n">1</span><span class="quiz-kind">OPCIÓN MÚLTIPLE</span></div>
-          <p class="quiz-q">¿Qué condición matemática indispensable exige Bisección para iniciar en [a, b]?</p>
+          <div class="quiz-head"><span class="quiz-n">1</span><span class="quiz-kind">MÉTODOS CERRADOS</span></div>
+          <p class="quiz-q">¿Qué condición matemática indispensable exige un método cerrado como Bisección?</p>
           <div class="quiz-options">
             <label><input type="radio" name="q1" value="a"> Que la derivada f'(x) ≠ 0 en todo el intervalo</label>
             <label><input type="radio" name="q1" value="b"> Que f(a) · f(b) &lt; 0 (cambio de signo en función continua)</label>
             <label><input type="radio" name="q1" value="c"> Que a y b sean enteros positivos</label>
-            <label><input type="radio" name="q1" value="d"> Que la segunda derivada sea positiva</label>
+            <label><input type="radio" name="q1" value="d"> Que la función sea polinomial</label>
           </div>
           <button class="button button-outline quiz-check" type="button">Comprobar</button>
           <p class="quiz-feedback" aria-live="polite"></p>
         </article>
 
-        <article class="quiz-card" data-type="opcion" data-answer="f" data-explain="FALSO. El residuo |f(x)| y el error |x - r| son conceptos distintos: Ea ≈ |residuo|/|f'(r)|. Con pendiente pequeña, un residuo diminuto puede esconder un error enorme.">
-          <div class="quiz-head"><span class="quiz-n">2</span><span class="quiz-kind">VERDADERO O FALSO</span></div>
+        <article class="quiz-card" data-type="opcion" data-answer="f" data-explain="FALSO. El residuo |f(x)| y el error |x - r| son magnitudes distintas: Ea ≈ |residuo|/|f'(r)|. Con pendiente pequeña, un residuo diminuto esconde un error enorme.">
+          <div class="quiz-head"><span class="quiz-n">2</span><span class="quiz-kind">ERRORES Y RESIDUOS</span></div>
           <p class="quiz-q">"Si el residuo |f(x_aprox)| es menor a 10⁻⁶, entonces el error de la raíz |x_aprox − r| siempre es menor a 10⁻⁶."</p>
           <div class="quiz-options">
             <label><input type="radio" name="q2" value="v"> Verdadero</label>
@@ -729,7 +570,7 @@
         </article>
 
         <article class="quiz-card" data-type="numerica" data-answer="-0.125" data-tol="0.001" data-explain="f(1.5) = (1.5)³ - 1.5 - 2 = 3.375 - 3.5 = -0.125. Por ello el nuevo intervalo pasa a ser [1.5, 2].">
-          <div class="quiz-head"><span class="quiz-n">3</span><span class="quiz-kind">NUMÉRICA · TOL 0.001</span></div>
+          <div class="quiz-head"><span class="quiz-n">3</span><span class="quiz-kind">CÁLCULO MANUAL · TOL 0.001</span></div>
           <p class="quiz-q">En la primera iteración de Bisección sobre [1, 2] con f(x) = x³ − x − 2, ¿cuánto vale f(1.5)?</p>
           <div class="quiz-input-row">
             <input class="quiz-input" type="number" step="any" placeholder="Escribe el valor exacto…" aria-label="Respuesta numérica pregunta 3">
@@ -739,7 +580,7 @@
         </article>
 
         <article class="quiz-card" data-type="opcion" data-answer="a" data-explain="x₁ = 1.5 - f(1.5)/f'(1.5) = 1.5 - (-0.125)/5.75 = 1.5 + 0.02173913 = 1.5217391.">
-          <div class="quiz-head"><span class="quiz-n">4</span><span class="quiz-kind">OPCIÓN MÚLTIPLE</span></div>
+          <div class="quiz-head"><span class="quiz-n">4</span><span class="quiz-kind">MÉTODOS ABIERTOS</span></div>
           <p class="quiz-q">En Newton-Raphson con x₀ = 1.5 para f(x) = x³ − x − 2 (f'(x) = 3x² − 1), ¿cuál es el valor de x₁?</p>
           <div class="quiz-options">
             <label><input type="radio" name="q4" value="a"> 1.5217391</label>
@@ -751,8 +592,8 @@
           <p class="quiz-feedback" aria-live="polite"></p>
         </article>
 
-        <article class="quiz-card" data-type="opcion" data-answer="f" data-explain="FALSO. El Teorema Fundamental del Álgebra establece 3 raíces en los números complejos C. f(x) = x³ - x - 2 tiene 1 raíz real (1.5214) y 2 complejas conjugadas (-0.7607 ± 0.8578i).">
-          <div class="quiz-head"><span class="quiz-n">5</span><span class="quiz-kind">VERDADERO O FALSO</span></div>
+        <article class="quiz-card" data-type="opcion" data-answer="f" data-explain="FALSO. El Teorema Fundamental del Álgebra promete 3 raíces complejas C. f(x)=x³-x-2 tiene 1 real (1.5214) y 2 complejas conjugadas (-0.7607 ± 0.8578i).">
+          <div class="quiz-head"><span class="quiz-n">5</span><span class="quiz-kind">ÁLGEBRA DE POLINOMIOS</span></div>
           <p class="quiz-q">"Todo polinomio de grado 3 con coeficientes reales tiene necesariamente 3 raíces reales."</p>
           <div class="quiz-options">
             <label><input type="radio" name="q5" value="v"> Verdadero</label>
@@ -763,7 +604,7 @@
         </article>
 
         <article class="quiz-card" data-type="numerica" data-answer="20" data-tol="0" data-explain="n ≥ log₂((2-1)/10⁻⁶) = log₂(10⁶) ≈ 19.9315 ⇒ Se requieren exactamente 20 iteraciones.">
-          <div class="quiz-head"><span class="quiz-n">6</span><span class="quiz-kind">NUMÉRICA · ENTERO</span></div>
+          <div class="quiz-head"><span class="quiz-n">6</span><span class="quiz-kind">COTA DE BISECCIÓN</span></div>
           <p class="quiz-q">¿Cuántas iteraciones de Bisección en [1, 2] garantizan una cota de error ≤ 10⁻⁶? (valor entero)</p>
           <div class="quiz-input-row">
             <input class="quiz-input" type="number" step="1" placeholder="n = ?" aria-label="Respuesta numérica pregunta 6">
@@ -774,18 +615,20 @@
       </div>
     </section>
 
-    <!-- 07. REFERENCIAS -->
+    <!-- ==========================================
+         07. REFERENCIAS
+         ========================================== -->
     <section class="view" id="referencias" data-section="referencias">
       <div class="section-heading">
         <p class="eyebrow"><span>07</span> FUENTES Y BIBLIOGRAFÍA</p>
         <h2>Referencias Académicas y Tecnológicas</h2>
-        <p>Fuentes bibliográficas formales y recursos tecnológicos utilizados en la construcción del módulo.</p>
+        <p>Fuentes formales consultadas para la formulación de métodos abiertos y cerrados.</p>
       </div>
       <div class="example-card">
         <h3>Bibliografía Especializada</h3>
         <ul class="ref-list">
-          <li><strong>[1] Burden, R. L. y Faires, J. D. (2017).</strong> <em>Análisis Numérico</em> (10.ª ed.). Cengage Learning. (Capítulo 2: Soluciones de ecuaciones de una variable).</li>
-          <li><strong>[2] Chapra, S. C. y Canale, R. P. (2015).</strong> <em>Métodos Numéricos para Ingenieros</em> (7.ª ed.). McGraw-Hill Education. (Capítulos 5 y 6: Métodos cerrados y abiertos).</li>
+          <li><strong>[1] Burden, R. L. y Faires, J. D. (2017).</strong> <em>Análisis Numérico</em> (10.ª ed.). Cengage Learning. (Capítulo 2: Métodos cerrados y abiertos).</li>
+          <li><strong>[2] Chapra, S. C. y Canale, R. P. (2015).</strong> <em>Métodos Numéricos para Ingenieros</em> (7.ª ed.). McGraw-Hill Education. (Capítulos 5 y 6: Métodos cerrados vs. abiertos).</li>
           <li><strong>[3] GNU Octave Documentation (2026).</strong> <em>Numerical Roots of Non-linear Equations</em>. https://docs.octave.org/</li>
           <li><strong>[4] Python Software Foundation (2026).</strong> <em>Floating Point Arithmetic: Issues and Limitations (IEEE 754 Standard)</em>. https://docs.python.org/3/tutorial/floatingpoint.html</li>
           <li><strong>[5] Mozilla Developer Network (MDN).</strong> <em>Web Standards and JavaScript Numerical Processing</em>. https://developer.mozilla.org/</li>
@@ -795,12 +638,14 @@
       </div>
     </section>
 
-    <!-- 08. EQUIPO -->
+    <!-- ==========================================
+         08. EQUIPO
+         ========================================== -->
     <section class="view" id="equipo" data-section="equipo">
       <div class="section-heading">
-        <p class="eyebrow"><span>08</span> EQUIPO DE TRABAJO Y ASIGNACIÓN DE ROLES</p>
+        <p class="eyebrow"><span>08</span> EQUIPO DE TRABAJO</p>
         <h2>Ingeniería de Sistemas · UNSA 2026</h2>
-        <p>Acta formal de asignación de roles y rotación según el marco de trabajo del curso.</p>
+        <p>Acta formal de asignación de roles y rotación según el marco del curso.</p>
       </div>
       <div class="team-layout">
         <div class="team-card">
@@ -844,12 +689,12 @@
   </main>
 
   <footer>
-    <span>ITERA · MÓDULO 1: ECUACIONES NO LINEALES Y ERRORES</span>
+    <span>ITERA · MÓDULO 1: MÉTODOS CERRADOS Y ABIERTOS</span>
     <a class="back-portal" href="../index.html"><i class="fa-solid fa-arrow-left"></i> Volver al Portal General</a>
     <span>UNSA · INGENIERÍA DE SISTEMAS · 2026</span>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="js/app.js?v=10"></script>
+  <script src="js/app.js?v=11"></script>
 </body>
 </html>
