@@ -1,6 +1,6 @@
 /**
  * ITERA - Módulo 1: Ecuaciones No Lineales y Errores
- * Implementación de Bisección (Cerrado) y Newton-Raphson (Abierto)
+ * Implementación de Métodos Cerrados (Bisección) y Métodos Abiertos (Newton-Raphson)
  * UNSA - Escuela Profesional de Ingeniería de Sistemas
  */
 
@@ -28,6 +28,13 @@ function df(x) {
 // ALGORITMOS NUMÉRICOS
 // ==========================================
 
+/**
+ * Método Cerrado: Bisección
+ * @param {number} a - Límite inferior
+ * @param {number} b - Límite superior
+ * @param {number} tolerance - Criterio de parada
+ * @param {number} maxIterations - Límite de seguridad
+ */
 function solveBisection(a, b, tolerance, maxIterations) {
   if (isNaN(a) || isNaN(b) || isNaN(tolerance) || isNaN(maxIterations)) {
     throw new Error("Por favor ingresa valores numéricos válidos en todos los campos.");
@@ -84,6 +91,12 @@ function solveBisection(a, b, tolerance, maxIterations) {
   return rows;
 }
 
+/**
+ * Método Abierto: Newton-Raphson
+ * @param {number} x0 - Semilla inicial
+ * @param {number} tolerance - Criterio de parada
+ * @param {number} maxIterations - Límite de seguridad
+ */
 function solveNewton(x0, tolerance, maxIterations) {
   if (isNaN(x0) || isNaN(tolerance) || isNaN(maxIterations)) {
     throw new Error("Por favor ingresa valores numéricos válidos.");
@@ -143,7 +156,13 @@ function formatNumber(value) {
 
 function scientific(value) {
   if (value === undefined || value === null || isNaN(value)) return "—";
-  return Number(value).toExponential(2).replace("e-", " × 10⁻").replace("e+", " × 10");
+  return Number(value).toExponential(2).replace("e-", " × 10⁻").replace("e+", " × 10⁺");
+}
+
+function triggerMathJax() {
+  if (window.MathJax && MathJax.typesetPromise) {
+    MathJax.typesetPromise().catch((err) => console.warn("MathJax render:", err));
+  }
 }
 
 function updateResults(rows) {
@@ -173,6 +192,7 @@ function updateResults(rows) {
   renderTable(rows);
   renderResultChart(rows);
   renderComparisonChart();
+  triggerMathJax();
 }
 
 function renderTable(rows) {
@@ -185,9 +205,9 @@ function renderTable(rows) {
         <th>$i$</th>
         <th>$a$</th>
         <th>$b$</th>
-        <th>$c = (a+b)/2$</th>
+        <th>$c = \\frac{a+b}{2}$</th>
         <th>$f(c)$</th>
-        <th>Cota de Error</th>
+        <th>Cota $\\frac{|b-a|}{2}$</th>
       </tr>
     `;
     body.innerHTML = rows.map(row => `
@@ -236,7 +256,7 @@ function renderResultChart(rows) {
     data: {
       labels,
       datasets: [{
-        label: "Error ($E_n$)",
+        label: "Error (En)",
         data: values,
         borderColor: "#ef6c45",
         backgroundColor: "rgba(239,108,69,0.12)",
@@ -281,7 +301,6 @@ function renderComparisonChart() {
   const compCanvas = $("#comparisonChart");
   if (!compCanvas) return;
 
-  // Calculamos ambos sobre el caso base
   const bisectionRows = solveBisection(1.0, 2.0, 1e-6, 100);
   const newtonRows = solveNewton(1.5, 1e-6, 100);
 
@@ -300,7 +319,7 @@ function renderComparisonChart() {
       labels,
       datasets: [
         {
-          label: "Bisección (Cerrado, Lineal)",
+          label: "Bisección (Método Cerrado, Lineal)",
           data: bisectionData,
           borderColor: "#185e73",
           backgroundColor: "rgba(24,94,115,0.08)",
@@ -310,7 +329,7 @@ function renderComparisonChart() {
           pointBackgroundColor: "#185e73"
         },
         {
-          label: "Newton-Raphson (Abierto, Cuadrático)",
+          label: "Newton-Raphson (Método Abierto, Cuadrático)",
           data: newtonData,
           borderColor: "#ef6c45",
           backgroundColor: "rgba(239,108,69,0.08)",
@@ -461,6 +480,7 @@ function switchView(view) {
   if (view === "comparacion") {
     setTimeout(renderComparisonChart, 100);
   }
+  setTimeout(triggerMathJax, 50);
 }
 
 document.querySelectorAll("[data-view]").forEach(link => {
@@ -492,7 +512,7 @@ document.querySelectorAll(".calc-tab").forEach(tab => {
   tab.addEventListener("click", () => {
     state.method = tab.dataset.calculator;
     document.querySelectorAll(".calc-tab").forEach(item => item.classList.toggle("active", item === tab));
-    $("#methodPill").textContent = state.method === "biseccion" ? "BISECCIÓN (CERRADO)" : "NEWTON-RAPHSON (ABIERTO)";
+    $("#methodPill").textContent = state.method === "biseccion" ? "MÉTODO CERRADO: BISECCIÓN" : "MÉTODO ABIERTO: NEWTON-RAPHSON";
     $("#bisectionInputs").classList.toggle("hidden", state.method !== "biseccion");
     $("#newtonInputs").classList.toggle("hidden", state.method !== "newton");
     runCalculator();
@@ -529,6 +549,7 @@ document.querySelectorAll(".solution-toggle").forEach(button => {
     const open = solution.classList.toggle("open");
     button.classList.toggle("open", open);
     button.innerHTML = open ? 'Ocultar solución <i class="fa-solid fa-chevron-up"></i>' : 'Ver solución completa <i class="fa-solid fa-chevron-down"></i>';
+    if (open) triggerMathJax();
   });
 });
 
@@ -570,6 +591,7 @@ document.querySelectorAll(".quiz-card").forEach((card, i) => {
       feedback.textContent = "✗ Respuesta incorrecta. " + card.dataset.explain;
       feedback.className = "quiz-feedback bad";
     }
+    triggerMathJax();
   });
 });
 
@@ -587,95 +609,10 @@ $(".quiz-reset").addEventListener("click", () => {
   });
 });
 
-// ============ TABS DE TEORÍA ============
-document.querySelectorAll(".theory-tab").forEach(tab => {
-  tab.addEventListener("click", () => {
-    document.querySelectorAll(".theory-tab").forEach(t => t.classList.toggle("active", t === tab));
-    document.querySelectorAll(".theory-panel").forEach(p => p.classList.toggle("active", p.dataset.panel === tab.dataset.theory));
-  });
-});
-
-// ============ WIZARD DE TEORÍA (PASO A PASO) ============
-const wizards = [];
-document.querySelectorAll(".theory-panel").forEach(panel => {
-  const steps = Array.from(panel.querySelectorAll(".tstep"));
-  if (!steps.length) return;
-  panel.classList.add("wiz");
-  const prog = document.createElement("div");
-  prog.className = "wizard-progress";
-  prog.innerHTML = '<span class="wiz-count"></span><div class="wiz-bar"><span></span></div><div class="wiz-dots"></div>';
-  const navw = document.createElement("div");
-  navw.className = "wizard-nav";
-  navw.innerHTML = `
-    <button type="button" class="button button-outline wiz-prev"><i class="fa-solid fa-arrow-left"></i> Anterior</button>
-    <button type="button" class="button button-primary wiz-next">Siguiente <i class="fa-solid fa-arrow-right"></i></button>
-  `;
-  panel.insertBefore(prog, steps[0]);
-  steps[steps.length - 1].after(navw);
-
-  const dotsWrap = prog.querySelector(".wiz-dots");
-  steps.forEach(() => {
-    const d = document.createElement("span");
-    d.className = "wiz-dot";
-    dotsWrap.appendChild(d);
-  });
-
-  const dots = Array.from(dotsWrap.children);
-  const bar = prog.querySelector(".wiz-bar span");
-  const count = prog.querySelector(".wiz-count");
-  const prev = navw.querySelector(".wiz-prev");
-  const next = navw.querySelector(".wiz-next");
-  let idx = 0;
-
-  function render() {
-    steps.forEach((s, i) => s.classList.toggle("wz-active", i === idx));
-    dots.forEach((d, i) => {
-      d.classList.toggle("now", i === idx);
-      d.classList.toggle("done", i < idx);
-    });
-    bar.style.width = `${((idx + 1) / steps.length) * 100}%`;
-    count.textContent = `PASO ${idx + 1} DE ${steps.length}`;
-    prev.style.visibility = idx === 0 ? "hidden" : "visible";
-    const last = idx === steps.length - 1;
-    next.innerHTML = last ? 'Ir a Calculadoras <i class="fa-solid fa-bullseye"></i>' : 'Siguiente <i class="fa-solid fa-arrow-right"></i>';
-  }
-
-  prev.addEventListener("click", () => {
-    if (idx > 0) {
-      idx -= 1;
-      render();
-    }
-  });
-
-  next.addEventListener("click", () => {
-    if (idx < steps.length - 1) {
-      idx += 1;
-      render();
-    } else {
-      switchView("calculadoras");
-    }
-  });
-
-  render();
-  wizards.push({ reset: () => { idx = 0; render(); } });
-});
-
-document.querySelectorAll(".theory-tab").forEach(tab => {
-  tab.addEventListener("click", () => wizards.forEach(w => w.reset()));
-});
-
-// Navegación accesible por teclado
-document.addEventListener("keydown", event => {
-  const activePanel = document.querySelector(".theory-panel.active");
-  if (activePanel && document.querySelector("#teoria.active-view")) {
-    if (event.key === "ArrowRight") activePanel.querySelector(".wiz-next")?.click();
-    if (event.key === "ArrowLeft") activePanel.querySelector(".wiz-prev")?.click();
-  }
-});
-
 // Inicialización general al cargar
 window.addEventListener("DOMContentLoaded", () => {
   initHeroChart();
   runCalculator();
   renderComparisonChart();
+  triggerMathJax();
 });
