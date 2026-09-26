@@ -9,7 +9,9 @@ const state = {
   iterations: [],
   chart: null,
   heroChart: null,
-  comparisonChart: null
+  comparisonChart: null,
+  mullerChart: null,
+  bairstowChart: null
 };
 
 const $ = (selector) => document.querySelector(selector);
@@ -143,6 +145,216 @@ function solveNewton(x0, tolerance, maxIterations) {
     x = next;
   }
   return rows;
+}
+
+function cubicExample(x) {
+  return (x ** 3) - (3 * x) + 1;
+}
+
+function solveMuller(initialPoints, tolerance = 1e-8, maxIterations = 50) {
+  let [x0, x1, x2] = initialPoints;
+  const rows = [];
+
+  for (let iteration = 1; iteration <= maxIterations; iteration += 1) {
+    const h1 = x1 - x0;
+    const h2 = x2 - x1;
+    if (Math.abs(h1) < 1e-14 || Math.abs(h2) < 1e-14 || Math.abs(h1 + h2) < 1e-14) {
+      throw new Error("La terna inicial de Müller debe contener tres puntos distintos.");
+    }
+
+    const delta1 = (cubicExample(x1) - cubicExample(x0)) / h1;
+    const delta2 = (cubicExample(x2) - cubicExample(x1)) / h2;
+    const a = (delta2 - delta1) / (h1 + h2);
+    const b = (a * h2) + delta2;
+    const c = cubicExample(x2);
+    const discriminant = (b ** 2) - (4 * a * c);
+    if (discriminant < 0) {
+      throw new Error("Esta terna produjo una raíz compleja; prueba valores iniciales más cercanos a la raíz real buscada.");
+    }
+
+    const squareRoot = Math.sqrt(discriminant);
+    const denominator = Math.abs(b + squareRoot) >= Math.abs(b - squareRoot) ? b + squareRoot : b - squareRoot;
+    if (Math.abs(denominator) < 1e-14) {
+      throw new Error("El denominador de Müller es demasiado pequeño para continuar con esta terna.");
+    }
+
+    const next = x2 - ((2 * c) / denominator);
+    const error = Math.abs(next - x2);
+    rows.push({ iteration, x0, x1, x2, a, b, c, discriminant, next, error });
+    if (!Number.isFinite(next)) throw new Error("Müller produjo un valor no finito.");
+    if (error < tolerance || Math.abs(cubicExample(next)) < tolerance) return { rows, root: next };
+
+    [x0, x1, x2] = [x1, x2, next];
+  }
+
+  throw new Error("Müller alcanzó el máximo de iteraciones sin converger.");
+}
+
+function renderMullerExample() {
+  const resultContainer = $("#mullerResults");
+  const initialTriples = [
+    { label: "Raíz negativa", points: [-2, -1.9, -1.8] },
+    { label: "Raíz cercana a cero", points: [0, 0.25, 0.5] },
+    { label: "Raíz positiva", points: [1.3, 1.5, 1.7] }
+  ];
+  const solutions = initialTriples.map(item => ({ ...item, ...solveMuller(item.points) }));
+
+  resultContainer.innerHTML = solutions.map(solution => `
+    <section class="muller-root-result">
+      <h5>${solution.label} · terna inicial (${solution.points.join(", ")})</h5>
+      <div class="muller-table-wrap">
+        <table class="muller-table">
+          <thead><tr><th>Iteración</th><th>$x_2$</th><th>$a$</th><th>$b$</th><th>$c=f(x_2)$</th><th>$x_3$</th><th>$|x_3-x_2|$</th></tr></thead>
+          <tbody>${solution.rows.map(row => `<tr><td>${row.iteration}</td><td>${formatNumber(row.x2)}</td><td>${formatNumber(row.a)}</td><td>${formatNumber(row.b)}</td><td>${scientific(row.c)}</td><td>${formatNumber(row.next)}</td><td>${scientific(row.error)}</td></tr>`).join("")}</tbody>
+        </table>
+      </div>
+      <span class="muller-root-value">Raíz aproximada: ${formatNumber(solution.root)} · residuo: ${scientific(Math.abs(cubicExample(solution.root)))}</span>
+    </section>
+  `).join("");
+
+  const roots = solutions.map(solution => solution.root).sort((left, right) => left - right);
+  const curve = Array.from({ length: 121 }, (_, index) => {
+    const x = -2.5 + (index * 5 / 120);
+    return { x, y: cubicExample(x) };
+  });
+  const canvas = $("#mullerChart");
+  if (state.mullerChart) state.mullerChart.destroy();
+  state.mullerChart = new Chart(canvas.getContext("2d"), {
+    type: "scatter",
+    data: {
+      datasets: [
+        { label: "f(x) = x³ - 3x + 1", data: curve, showLine: true, borderColor: "#185e73", borderWidth: 3, pointRadius: 0, tension: 0.2 },
+        { label: "Raíces aproximadas", data: roots.map(x => ({ x, y: 0 })), backgroundColor: "#ef6c45", borderColor: "#ffffff", borderWidth: 2, pointRadius: 7, pointHoverRadius: 9 }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: "top", labels: { usePointStyle: true, font: { family: "DM Sans", size: 12 } } },
+        tooltip: { callbacks: { label: context => context.datasetIndex === 1 ? `Raíz: (${context.parsed.x.toFixed(8)}, 0)` : `(${context.parsed.x.toFixed(2)}, ${context.parsed.y.toFixed(3)})` } }
+      },
+      scales: {
+        x: { type: "linear", min: -2.5, max: 2.5, title: { display: true, text: "x" }, grid: { color: context => context.tick.value === 0 ? "#20252a" : "#e6e5df", lineWidth: context => context.tick.value === 0 ? 1.5 : 1 } },
+        y: { min: -9, max: 9, title: { display: true, text: "f(x)" }, grid: { color: context => context.tick.value === 0 ? "#20252a" : "#e6e5df", lineWidth: context => context.tick.value === 0 ? 1.5 : 1 } }
+      }
+    }
+  });
+  $("#mullerConclusion").innerHTML = `Las tres raíces reales son aproximadamente $${roots.map(formatNumber).join(",\; ")}$. El método de Müller es abierto: no exige una derivada ni un intervalo con cambio de signo, pero depende de elegir ternas iniciales adecuadas.`;
+  triggerMathJax();
+}
+
+function polynomialValue(coefficients, x) {
+  return coefficients.reduce((value, coefficient) => (value * x) + coefficient, 0);
+}
+
+function formatPolynomial(coefficients) {
+  const degree = coefficients.length - 1;
+  const terms = coefficients.map((coefficient, index) => {
+    const value = Math.abs(coefficient) < 1e-10 ? 0 : coefficient;
+    if (value === 0) return null;
+    const power = degree - index;
+    const variable = power > 1 ? `x^${power}` : power === 1 ? "x" : "";
+    const magnitude = (power === 0 || Math.abs(value) !== 1) ? formatNumber(Math.abs(value)) : "";
+    return { negative: value < 0, text: `${magnitude}${variable}` };
+  }).filter(Boolean);
+  if (terms.length === 0) return "0";
+  return terms.map((term, index) => `${index === 0 ? (term.negative ? "-" : "") : (term.negative ? " - " : " + ")}${term.text}`).join("");
+}
+
+function solveBairstow(coefficients, initialR, initialS, tolerance = 1e-10, maxIterations = 50) {
+  const degree = coefficients.length - 1;
+  let r = initialR;
+  let s = initialS;
+  const rows = [];
+
+  for (let iteration = 1; iteration <= maxIterations; iteration += 1) {
+    const b = Array(degree + 1).fill(0);
+    const c = Array(degree + 1).fill(0);
+    const d = Array(degree + 1).fill(0);
+    b[0] = coefficients[0];
+    b[1] = coefficients[1] + (r * b[0]);
+    c[1] = b[0];
+
+    for (let index = 2; index <= degree; index += 1) {
+      b[index] = coefficients[index] + (r * b[index - 1]) + (s * b[index - 2]);
+      c[index] = b[index - 1] + (r * c[index - 1]) + (s * c[index - 2]);
+      d[index] = b[index - 2] + (r * d[index - 1]) + (s * d[index - 2]);
+    }
+
+    const determinant = (c[degree - 1] * d[degree]) - (d[degree - 1] * c[degree]);
+    if (Math.abs(determinant) < 1e-14) {
+      throw new Error("La terna inicial de Bairstow produjo un sistema singular; prueba otros valores de r y s.");
+    }
+
+    const deltaR = ((d[degree - 1] * b[degree]) - (d[degree] * b[degree - 1])) / determinant;
+    const deltaS = ((c[degree] * b[degree - 1]) - (c[degree - 1] * b[degree])) / determinant;
+    rows.push({ iteration, r, s, remainderX: b[degree - 1], remainder: b[degree], deltaR, deltaS });
+    r += deltaR;
+    s += deltaS;
+
+    if (Math.max(Math.abs(b[degree - 1]), Math.abs(b[degree])) < tolerance) {
+      const quotient = b.slice(0, degree - 1);
+      return { r, s, rows, quotient };
+    }
+    if (!Number.isFinite(r) || !Number.isFinite(s)) throw new Error("Bairstow produjo parámetros no finitos.");
+  }
+
+  throw new Error("Bairstow alcanzó el máximo de iteraciones sin reducir el residuo.");
+}
+
+function renderBairstowExample() {
+  const original = [1, 0, -5, 0, 4];
+  const first = solveBairstow(original, 0.2, 0.8);
+  const second = solveBairstow(first.quotient, -0.2, 3.5);
+  const factors = [first, second];
+  const roots = factors.flatMap(({ r, s }) => {
+    const discriminant = (r ** 2) + (4 * s);
+    if (discriminant < 0) throw new Error("Uno de los factores obtenidos no tiene raíces reales.");
+    return [(r - Math.sqrt(discriminant)) / 2, (r + Math.sqrt(discriminant)) / 2];
+  }).sort((left, right) => left - right);
+
+  $("#bairstowResults").innerHTML = factors.map((factor, index) => `
+    <section class="muller-root-result">
+      <h5>Factor cuadrático ${index + 1} · polinomio de grado ${index === 0 ? 4 : 2}</h5>
+      <div class="muller-table-wrap">
+        <table class="muller-table">
+          <thead><tr><th>Iteración</th><th>$r$</th><th>$s$</th><th>Residuo $b_{n-1}$</th><th>Residuo $b_n$</th><th>$\\Delta r$</th><th>$\\Delta s$</th></tr></thead>
+          <tbody>${factor.rows.map(row => `<tr><td>${row.iteration}</td><td>${formatNumber(row.r)}</td><td>${formatNumber(row.s)}</td><td>${scientific(row.remainderX)}</td><td>${scientific(row.remainder)}</td><td>${scientific(row.deltaR)}</td><td>${scientific(row.deltaS)}</td></tr>`).join("")}</tbody>
+        </table>
+      </div>
+      <span class="muller-root-value">Factor: $${formatPolynomial([1, -factor.r, -factor.s])}$ · cociente: $${formatPolynomial(factor.quotient)}$</span>
+    </section>
+  `).join("");
+
+  const curve = Array.from({ length: 161 }, (_, index) => {
+    const x = -2.2 + (index * 4.4 / 160);
+    return { x, y: polynomialValue(original, x) };
+  });
+  if (state.bairstowChart) state.bairstowChart.destroy();
+  state.bairstowChart = new Chart($("#bairstowChart").getContext("2d"), {
+    type: "scatter",
+    data: {
+      datasets: [
+        { label: "P(x) = x⁴ - 5x² + 4", data: curve, showLine: true, borderColor: "#185e73", borderWidth: 3, pointRadius: 0, tension: 0.15 },
+        { label: "Raíces reales", data: roots.map(x => ({ x, y: 0 })), backgroundColor: "#ef6c45", borderColor: "#ffffff", borderWidth: 2, pointRadius: 7, pointHoverRadius: 9 }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: "top", labels: { usePointStyle: true, font: { family: "DM Sans", size: 12 } } },
+        tooltip: { callbacks: { label: context => context.datasetIndex === 1 ? `Raíz: (${context.parsed.x.toFixed(8)}, 0)` : `(${context.parsed.x.toFixed(2)}, ${context.parsed.y.toFixed(3)})` } }
+      },
+      scales: {
+        x: { type: "linear", min: -2.5, max: 2.5, title: { display: true, text: "x" }, grid: { color: context => context.tick.value === 0 ? "#20252a" : "#e6e5df", lineWidth: context => context.tick.value === 0 ? 1.5 : 1 } },
+        y: { min: -5, max: 8, title: { display: true, text: "P(x)" }, grid: { color: context => context.tick.value === 0 ? "#20252a" : "#e6e5df", lineWidth: context => context.tick.value === 0 ? 1.5 : 1 } }
+      }
+    }
+  });
+  $("#bairstowConclusion").innerHTML = `La factorización obtenida es $P(x)\\approx(${formatPolynomial([1, -first.r, -first.s])})(${formatPolynomial([1, -second.r, -second.s])})$. Las raíces reales son $${roots.map(formatNumber).join(",\\; ")}$.`;
+  triggerMathJax();
 }
 
 // ==========================================
@@ -551,6 +763,40 @@ document.querySelectorAll(".solution-toggle").forEach(button => {
     button.innerHTML = open ? 'Ocultar solución <i class="fa-solid fa-chevron-up"></i>' : 'Ver solución completa <i class="fa-solid fa-chevron-down"></i>';
     if (open) triggerMathJax();
   });
+});
+
+$("#mullerToggle").addEventListener("click", event => {
+  const button = event.currentTarget;
+  const solution = $("#mullerSolution");
+  const open = solution.classList.toggle("open");
+  button.classList.toggle("open", open);
+  button.setAttribute("aria-expanded", String(open));
+  button.innerHTML = open ? 'Ocultar solución <i class="fa-solid fa-chevron-up"></i>' : 'Ver solución paso a paso <i class="fa-solid fa-chevron-down"></i>';
+  if (open) {
+    try {
+      renderMullerExample();
+    } catch (error) {
+      $("#mullerResults").textContent = error.message;
+    }
+    triggerMathJax();
+  }
+});
+
+$("#bairstowToggle").addEventListener("click", event => {
+  const button = event.currentTarget;
+  const solution = $("#bairstowSolution");
+  const open = solution.classList.toggle("open");
+  button.classList.toggle("open", open);
+  button.setAttribute("aria-expanded", String(open));
+  button.innerHTML = open ? 'Ocultar solución <i class="fa-solid fa-chevron-up"></i>' : 'Ver solución paso a paso <i class="fa-solid fa-chevron-down"></i>';
+  if (open) {
+    try {
+      renderBairstowExample();
+    } catch (error) {
+      $("#bairstowResults").textContent = error.message;
+    }
+    triggerMathJax();
+  }
 });
 
 // ============ AUTOEVALUACIÓN (6 preguntas) ============
