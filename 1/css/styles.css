@@ -317,9 +317,31 @@ body:before {
 .calc-tab.active { background: var(--ink); color: white; border-color: var(--ink); }
 .calculator-layout {
   display: grid;
-  grid-template-columns: 340px 1fr;
+  grid-template-columns: 340px 1fr 250px;
   gap: 28px;
   margin-bottom: 32px;
+}
+
+/* CALCULADORA AVANZADA: GRÁFICO DE FUNCIÓN Y TECLADO */
+.function-chart-wrap { height: 250px; margin: 16px 0 12px; position: relative; }
+.deriv-btn { background: var(--ink); color: #fff; border: 0; border-radius: 7px; font-size: 10px; font-weight: 700; padding: 4px 10px; cursor: pointer; margin-left: 8px; letter-spacing: .04em; }
+.deriv-btn:hover { background: var(--orange); }
+.keypad-dock { background: var(--cream); border: 1px solid var(--line); border-radius: 16px; padding: 20px; align-self: start; }
+.keypad-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.keypad-target { background: var(--ink); color: #fff; font: 700 10px "Space Grotesk", sans-serif; padding: 4px 10px; border-radius: 20px; letter-spacing: .08em; }
+.keypad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.keypad button { height: 44px; border: 1px solid var(--line); background: #fff; border-radius: 10px; font: 600 14px "Space Grotesk", sans-serif; cursor: pointer; color: var(--ink); transition: .12s; }
+.keypad button:active { transform: scale(.92); }
+.keypad button:hover { background: var(--orange); color: #fff; border-color: var(--orange); }
+.keypad .kp-fn { background: var(--paper); color: var(--orange-dark); font-size: 12px; font-weight: 700; }
+.keypad .kp-warn { color: var(--orange-dark); font-weight: 700; }
+.keypad .kp-clear { grid-column: span 3; }
+.keypad .kp-run { background: var(--orange); color: #fff; border-color: var(--orange); font-size: 15px; }
+.keypad .kp-run:hover { background: var(--orange-dark); }
+.keypad-fab { display: none; position: fixed; right: 18px; bottom: 18px; width: 56px; height: 56px; border-radius: 50%; background: var(--orange); color: #fff; border: 0; font-size: 21px; box-shadow: 0 12px 32px rgba(239,108,69,.5); z-index: 70; cursor: pointer; }
+@media (max-width: 1200px) and (min-width: 901px) {
+  .calculator-layout { grid-template-columns: 320px 1fr; }
+  .keypad-dock { grid-column: 1 / -1; }
 }
 .control-panel {
   background: var(--cream);
@@ -755,6 +777,10 @@ ol.steps li { margin-bottom: 7px; font-size: 14px; line-height: 1.6; padding-lef
   .metrics { grid-template-columns: 1fr 1fr; }
   .method-grid { grid-template-columns: 1fr; }
   .calculator-layout { grid-template-columns: 1fr; }
+  .keypad-dock { display: none; position: fixed; left: 10px; right: 10px; bottom: 84px; z-index: 75; max-height: 56vh; overflow-y: auto; box-shadow: 0 -14px 50px rgba(22,40,60,.3); }
+  .keypad-dock.open { display: block; }
+  .keypad-fab { display: block; }
+  .function-chart-wrap { height: 200px; }
   .exercise-grid { grid-template-columns: 1fr; }
   .team-layout { grid-template-columns: 1fr; }
   .learning-band { grid-template-columns: 1fr; }

@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@500;600;700&family=STIX+Two+Math&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-  <link rel="stylesheet" href="css/styles.css?v=12">
+  <link rel="stylesheet" href="css/styles.css?v=13">
 
   <!-- Configuración e Integración de MathJax v3 -->
   <script>
@@ -452,8 +452,8 @@
             <span class="panel-kicker">CONFIGURACIÓN</span>
             <span class="method-pill" id="methodPill">MÉTODO CERRADO: BISECCIÓN</span>
           </div>
-          <label>Función Objetivo $f(x)$ <span class="label-note">Calibración de servidor</span>
-            <input type="text" id="funcDisplay" value="x³ − x − 2" readonly>
+          <label>Función Objetivo $f(x)$ <span class="label-note">editable — usa teclado o escribe (x^3 - x - 2)</span>
+            <input type="text" id="inputFunc" value="x^3 - x - 2" autocomplete="off" spellcheck="false">
           </label>
           <div class="input-row" id="bisectionInputs">
             <label>Extremo inferior (a)<input id="inputA" type="number" value="1" step="any"></label>
@@ -461,7 +461,9 @@
           </div>
           <div class="input-row hidden" id="newtonInputs">
             <label>Semilla inicial (x₀)<input id="inputX0" type="number" value="1.5" step="any"></label>
-            <label>Derivada analítica $f'(x)$<input type="text" value="3x² − 1" readonly></label>
+            <label>Derivada $f'(x)$ <button type="button" class="deriv-btn" id="btnAutoDeriv" title="Calcular derivada simbólica"><i class="fa-solid fa-wand-magic-sparkles"></i> Derivar</button>
+              <input type="text" id="inputDeriv" value="3*x^2 - 1" autocomplete="off" spellcheck="false">
+            </label>
           </div>
           <div class="input-row">
             <label>Tolerancia ($\text{tol}$)<input id="inputTolerance" type="number" value="0.000001" min="0.000000001" step="any"></label>
@@ -485,8 +487,46 @@
             <span><small>Error final ($E_n$)</small><strong id="resultError">—</strong></span>
             <span><small>Residuo $|f(x)|$</small><strong id="resultResidual">—</strong></span>
           </div>
+          <div class="function-chart-wrap"><canvas id="functionChart" aria-label="Gráfica de la función con ejes x y f(x)"></canvas></div>
           <div class="mini-chart"><canvas id="resultChart" aria-label="Curva de convergencia logarítmica"></canvas></div>
         </div>
+
+        <div class="keypad-dock" id="keypadDock">
+          <div class="keypad-head"><span class="panel-kicker">TECLADO MATEMÁTICO</span><span class="keypad-target" id="keypadTarget">f(x)</span></div>
+          <div class="keypad" id="keypad">
+            <button type="button" class="kp-fn" data-insert="x">x</button>
+            <button type="button" class="kp-fn" data-insert="^">x<sup>y</sup></button>
+            <button type="button" class="kp-fn" data-insert="sqrt(">√</button>
+            <button type="button" class="kp-fn" data-insert="pi">π</button>
+            <button type="button" class="kp-fn" data-insert="sin(">sin</button>
+            <button type="button" class="kp-fn" data-insert="cos(">cos</button>
+            <button type="button" class="kp-fn" data-insert="tan(">tan</button>
+            <button type="button" class="kp-fn" data-insert="e">e</button>
+            <button type="button" class="kp-fn" data-insert="log(">ln</button>
+            <button type="button" class="kp-fn" data-insert="log10(">log</button>
+            <button type="button" class="kp-fn" data-insert="(">(</button>
+            <button type="button" class="kp-fn" data-insert=")">)</button>
+            <button type="button" data-insert="7">7</button>
+            <button type="button" data-insert="8">8</button>
+            <button type="button" data-insert="9">9</button>
+            <button type="button" data-insert="/">÷</button>
+            <button type="button" data-insert="4">4</button>
+            <button type="button" data-insert="5">5</button>
+            <button type="button" data-insert="6">6</button>
+            <button type="button" data-insert="*">×</button>
+            <button type="button" data-insert="1">1</button>
+            <button type="button" data-insert="2">2</button>
+            <button type="button" data-insert="3">3</button>
+            <button type="button" data-insert="-">−</button>
+            <button type="button" data-insert="0">0</button>
+            <button type="button" data-insert=".">.</button>
+            <button type="button" class="kp-warn" data-action="back">⌫</button>
+            <button type="button" data-insert="+">+</button>
+            <button type="button" class="kp-warn kp-clear" data-action="clear">C</button>
+            <button type="button" class="kp-run" data-action="run"><i class="fa-solid fa-play"></i></button>
+          </div>
+        </div>
+        <button class="keypad-fab" id="keypadFab" type="button" aria-label="Abrir teclado matemático"><i class="fa-solid fa-calculator"></i></button>
       </div>
 
       <div class="table-section">
@@ -770,6 +810,7 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="js/app.js?v=12"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/13.1.1/math.min.js"></script>
+  <script src="js/app.js?v=13"></script>
 </body>
 </html>

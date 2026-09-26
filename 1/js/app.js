@@ -8,6 +8,7 @@ const state = {
   method: "biseccion",
   iterations: [],
   chart: null,
+  functionChart: null,
   heroChart: null,
   comparisonChart: null,
   mullerChart: null,
@@ -16,14 +17,32 @@ const state = {
 
 const $ = (selector) => document.querySelector(selector);
 
-// Función base del caso aplicado (calibración de servidor: g(x) = x³ - x = 2 -> f(x) = x³ - x - 2)
-function f(x) {
-  return (x ** 3) - x - 2.0;
+// Función objetivo y derivada EDITABLES (matemática compilada con math.js)
+const BASE_FUNC = "x^3 - x - 2";
+const BASE_DERIV = "3*x^2 - 1";
+let fCompiled = null;
+let dfCompiled = null;
+
+function compileExpr(expr) {
+  const code = math.parse(expr).compile();
+  return (x) => code.evaluate({ x: x });
 }
 
-// Derivada analítica f'(x) = 3x² - 1
+function rebuildFunctions() {
+  const fx = ($("#inputFunc")?.value || BASE_FUNC).trim();
+  const dx = ($("#inputDeriv")?.value || BASE_DERIV).trim();
+  fCompiled = compileExpr(fx);
+  dfCompiled = compileExpr(dx);
+}
+
+function f(x) {
+  try { const v = fCompiled(x); return typeof v === "number" && isFinite(v) ? v : NaN; }
+  catch (err) { return NaN; }
+}
+
 function df(x) {
-  return (3.0 * (x ** 2)) - 1.0;
+  try { const v = dfCompiled(x); return typeof v === "number" && isFinite(v) ? v : NaN; }
+  catch (err) { return NaN; }
 }
 
 // ==========================================
@@ -53,6 +72,9 @@ function solveBisection(a, b, tolerance, maxIterations) {
 
   const fa = f(a);
   const fb = f(b);
+  if (isNaN(fa) || isNaN(fb)) {
+    throw new Error("f(x) no está definida en alguno de los extremos. Ajusta el intervalo.");
+  }
   if (fa * fb >= 0) {
     throw new Error("Los extremos deben tener signos opuestos (f(a) · f(b) < 0) según el Teorema de Bolzano.");
   }
@@ -403,6 +425,7 @@ function updateResults(rows) {
 
   renderTable(rows);
   renderResultChart(rows);
+  renderFunctionChart(root);
   renderComparisonChart();
   triggerMathJax();
 }
@@ -503,6 +526,97 @@ function renderResultChart(rows) {
             font: { size: 10 },
             callback: (val) => Number(val).toExponential(0)
           }
+        }
+      }
+    }
+  });
+}
+
+function renderFunctionChart(rootValue) {
+  const canvas = $("#functionChart");
+  if (!canvas) return;
+
+  let lo, hi;
+  if (state.method === "biseccion") {
+    lo = Number($("#inputA").value); hi = Number($("#inputB").value);
+  } else {
+    const xs = state.iterations.map(r => r.x).filter(v => isFinite(v));
+    lo = Math.min(...xs); hi = Math.max(...xs);
+  }
+  const pad = Math.max(Math.abs(hi - lo) * 0.18, 0.3);
+  lo -= pad; hi += pad;
+
+  const ys = [];
+  for (let i = 0; i <= 220; i += 1) {
+    const x = lo + (hi - lo) * i / 220;
+    const y = f(x);
+    ys.push({ x, y: isFinite(y) ? y : null });
+  }
+  const finiteYs = ys.filter(p => p.y !== null).map(p => p.y);
+  if (finiteYs.length) {
+    const sorted = [...finiteYs].sort((l, r) => l - r);
+    const q1 = sorted[Math.floor(sorted.length * 0.05)];
+    const q3 = sorted[Math.floor(sorted.length * 0.95)];
+    const span = Math.max((q3 - q1) * 2.5, 1e-6);
+    ys.forEach(p => { if (p.y !== null && (p.y < q1 - span || p.y > q3 + span)) p.y = null; });
+  }
+
+  const extras = [];
+  if (isFinite(rootValue)) extras.push({ x: rootValue, y: 0 });
+  if (state.method === "biseccion") {
+    extras.push({ x: Number($("#inputA").value), y: f(Number($("#inputA").value)) });
+    extras.push({ x: Number($("#inputB").value), y: f(Number($("#inputB").value)) });
+  } else {
+    extras.push({ x: Number($("#inputX0").value), y: f(Number($("#inputX0").value)) });
+  }
+
+  if (state.functionChart) state.functionChart.destroy();
+  state.functionChart = new Chart(canvas.getContext("2d"), {
+    type: "line",
+    data: {
+      datasets: [
+        {
+          label: "f(x)",
+          data: ys,
+          borderColor: "#185e73",
+          borderWidth: 2.4,
+          pointRadius: 0,
+          tension: 0.15,
+          spanGaps: false
+        },
+        {
+          label: "Raíz",
+          data: extras.filter(p => isFinite(p.y)),
+          type: "scatter",
+          backgroundColor: (ctx) => ctx.dataIndex === 0 ? "#ef6c45" : "#16283c",
+          pointRadius: (ctx) => ctx.dataIndex === 0 ? 8 : 5,
+          pointStyle: (ctx) => ctx.dataIndex === 0 ? "rectRot" : "circle"
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `x=${Number(ctx.raw.x).toFixed(4)}, f(x)=${Number(ctx.raw.y).toFixed(4)}`
+          }
+        }
+      },
+      scales: {
+        x: {
+          type: "linear",
+          min: lo, max: hi,
+          title: { display: true, text: "x", font: { size: 13, weight: "bold" } },
+          grid: { color: "#e6e5df" },
+          ticks: { color: "#70777a", maxTicksLimit: 9 }
+        },
+        y: {
+          title: { display: true, text: "f(x)", font: { size: 13, weight: "bold" } },
+          grid: { color: (ctx) => ctx.tick.value === 0 ? "#b9bdb8" : "#e6e5df" },
+          ticks: { color: "#70777a", maxTicksLimit: 8 }
         }
       }
     }
@@ -640,6 +754,13 @@ function initHeroChart() {
 
 function runCalculator() {
   try {
+    rebuildFunctions();
+  } catch (err) {
+    $("#formMessage").textContent = "Expresión inválida. Usa sintaxis como x^3 - x - 2, sqrt(x), sin(x), pi.";
+    $("#formMessage").className = "form-message error";
+    return;
+  }
+  try {
     const tolerance = Number($("#inputTolerance").value);
     const maxIterations = Number($("#inputIterations").value);
     let rows;
@@ -663,6 +784,8 @@ function runCalculator() {
 }
 
 function resetBaseCase() {
+  $("#inputFunc").value = BASE_FUNC;
+  $("#inputDeriv").value = BASE_DERIV;
   $("#inputTolerance").value = "0.000001";
   $("#inputIterations").value = "100";
   if (state.method === "biseccion") {
@@ -729,6 +852,64 @@ document.querySelectorAll(".calc-tab").forEach(tab => {
     $("#newtonInputs").classList.toggle("hidden", state.method !== "newton");
     runCalculator();
   });
+});
+
+// ============ TECLADO MATEMÁTICO Y DERIVADA SIMBÓLICA ============
+let keypadTarget = null;
+
+function updateKeypadLabel() {
+  const label = $("#keypadTarget");
+  if (!label) return;
+  const id = keypadTarget ? keypadTarget.id : "inputFunc";
+  label.textContent = id === "inputDeriv" ? "f'(x)" : id === "inputFunc" ? "f(x)" : id.replace("input", "").toUpperCase();
+}
+
+document.querySelectorAll("#calculatorForm input").forEach(inp => {
+  inp.addEventListener("focus", () => { keypadTarget = inp; updateKeypadLabel(); });
+});
+keypadTarget = $("#inputFunc");
+
+document.querySelectorAll("#keypad button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const inp = keypadTarget || $("#inputFunc");
+    if (btn.dataset.action === "back") {
+      inp.value = inp.value.slice(0, -1);
+    } else if (btn.dataset.action === "clear") {
+      inp.value = "";
+    } else if (btn.dataset.action === "run") {
+      runCalculator();
+      return;
+    } else {
+      const token = btn.dataset.insert;
+      if (inp.type === "number") {
+        inp.value = (inp.value === "0" || inp.value === "") ? token : inp.value + token;
+      } else {
+        const start = inp.selectionStart ?? inp.value.length;
+        const end = inp.selectionEnd ?? inp.value.length;
+        inp.value = inp.value.slice(0, start) + token + inp.value.slice(end);
+        try { inp.setSelectionRange(start + token.length, start + token.length); } catch (e) { /* noop */ }
+      }
+    }
+    inp.focus();
+  });
+});
+
+$("#keypadFab")?.addEventListener("click", () => {
+  $("#keypadDock").classList.toggle("open");
+});
+
+$("#btnAutoDeriv")?.addEventListener("click", () => {
+  try {
+    const node = math.parse($("#inputFunc").value.trim());
+    const derivative = math.simplify(math.derivative(node, "x")).toString();
+    $("#inputDeriv").value = derivative;
+    $("#formMessage").textContent = `Derivada simbólica calculada: f'(x) = ${derivative}`;
+    $("#formMessage").className = "form-message success";
+    if (state.method === "newton") runCalculator();
+  } catch (err) {
+    $("#formMessage").textContent = "No se pudo derivar esa expresión. Revisa la sintaxis de f(x).";
+    $("#formMessage").className = "form-message error";
+  }
 });
 
 // ============ EXPORTACIÓN A CSV ============
@@ -857,6 +1038,7 @@ $(".quiz-reset").addEventListener("click", () => {
 
 // Inicialización general al cargar
 window.addEventListener("DOMContentLoaded", () => {
+  rebuildFunctions();
   initHeroChart();
   runCalculator();
   renderComparisonChart();
