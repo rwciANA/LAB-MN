@@ -10,7 +10,8 @@ const state = {
   chart: null,
   heroChart: null,
   comparisonChart: null,
-  mullerChart: null
+  mullerChart: null,
+  bairstowChart: null
 };
 
 const $ = (selector) => document.querySelector(selector);
@@ -240,6 +241,119 @@ function renderMullerExample() {
     }
   });
   $("#mullerConclusion").innerHTML = `Las tres raíces reales son aproximadamente $${roots.map(formatNumber).join(",\; ")}$. El método de Müller es abierto: no exige una derivada ni un intervalo con cambio de signo, pero depende de elegir ternas iniciales adecuadas.`;
+  triggerMathJax();
+}
+
+function polynomialValue(coefficients, x) {
+  return coefficients.reduce((value, coefficient) => (value * x) + coefficient, 0);
+}
+
+function formatPolynomial(coefficients) {
+  const degree = coefficients.length - 1;
+  const terms = coefficients.map((coefficient, index) => {
+    const value = Math.abs(coefficient) < 1e-10 ? 0 : coefficient;
+    if (value === 0) return null;
+    const power = degree - index;
+    const variable = power > 1 ? `x^${power}` : power === 1 ? "x" : "";
+    const magnitude = (power === 0 || Math.abs(value) !== 1) ? formatNumber(Math.abs(value)) : "";
+    return { negative: value < 0, text: `${magnitude}${variable}` };
+  }).filter(Boolean);
+  if (terms.length === 0) return "0";
+  return terms.map((term, index) => `${index === 0 ? (term.negative ? "-" : "") : (term.negative ? " - " : " + ")}${term.text}`).join("");
+}
+
+function solveBairstow(coefficients, initialR, initialS, tolerance = 1e-10, maxIterations = 50) {
+  const degree = coefficients.length - 1;
+  let r = initialR;
+  let s = initialS;
+  const rows = [];
+
+  for (let iteration = 1; iteration <= maxIterations; iteration += 1) {
+    const b = Array(degree + 1).fill(0);
+    const c = Array(degree + 1).fill(0);
+    const d = Array(degree + 1).fill(0);
+    b[0] = coefficients[0];
+    b[1] = coefficients[1] + (r * b[0]);
+    c[1] = b[0];
+
+    for (let index = 2; index <= degree; index += 1) {
+      b[index] = coefficients[index] + (r * b[index - 1]) + (s * b[index - 2]);
+      c[index] = b[index - 1] + (r * c[index - 1]) + (s * c[index - 2]);
+      d[index] = b[index - 2] + (r * d[index - 1]) + (s * d[index - 2]);
+    }
+
+    const determinant = (c[degree - 1] * d[degree]) - (d[degree - 1] * c[degree]);
+    if (Math.abs(determinant) < 1e-14) {
+      throw new Error("La terna inicial de Bairstow produjo un sistema singular; prueba otros valores de r y s.");
+    }
+
+    const deltaR = ((d[degree - 1] * b[degree]) - (d[degree] * b[degree - 1])) / determinant;
+    const deltaS = ((c[degree] * b[degree - 1]) - (c[degree - 1] * b[degree])) / determinant;
+    rows.push({ iteration, r, s, remainderX: b[degree - 1], remainder: b[degree], deltaR, deltaS });
+    r += deltaR;
+    s += deltaS;
+
+    if (Math.max(Math.abs(b[degree - 1]), Math.abs(b[degree])) < tolerance) {
+      const quotient = b.slice(0, degree - 1);
+      return { r, s, rows, quotient };
+    }
+    if (!Number.isFinite(r) || !Number.isFinite(s)) throw new Error("Bairstow produjo parámetros no finitos.");
+  }
+
+  throw new Error("Bairstow alcanzó el máximo de iteraciones sin reducir el residuo.");
+}
+
+function renderBairstowExample() {
+  const original = [1, 0, -5, 0, 4];
+  const first = solveBairstow(original, 0.2, 0.8);
+  const second = solveBairstow(first.quotient, -0.2, 3.5);
+  const factors = [first, second];
+  const roots = factors.flatMap(({ r, s }) => {
+    const discriminant = (r ** 2) + (4 * s);
+    if (discriminant < 0) throw new Error("Uno de los factores obtenidos no tiene raíces reales.");
+    return [(r - Math.sqrt(discriminant)) / 2, (r + Math.sqrt(discriminant)) / 2];
+  }).sort((left, right) => left - right);
+
+  $("#bairstowResults").innerHTML = factors.map((factor, index) => `
+    <section class="muller-root-result">
+      <h5>Factor cuadrático ${index + 1} · polinomio de grado ${index === 0 ? 4 : 2}</h5>
+      <div class="muller-table-wrap">
+        <table class="muller-table">
+          <thead><tr><th>Iteración</th><th>$r$</th><th>$s$</th><th>Residuo $b_{n-1}$</th><th>Residuo $b_n$</th><th>$\\Delta r$</th><th>$\\Delta s$</th></tr></thead>
+          <tbody>${factor.rows.map(row => `<tr><td>${row.iteration}</td><td>${formatNumber(row.r)}</td><td>${formatNumber(row.s)}</td><td>${scientific(row.remainderX)}</td><td>${scientific(row.remainder)}</td><td>${scientific(row.deltaR)}</td><td>${scientific(row.deltaS)}</td></tr>`).join("")}</tbody>
+        </table>
+      </div>
+      <span class="muller-root-value">Factor: $${formatPolynomial([1, -factor.r, -factor.s])}$ · cociente: $${formatPolynomial(factor.quotient)}$</span>
+    </section>
+  `).join("");
+
+  const curve = Array.from({ length: 161 }, (_, index) => {
+    const x = -2.2 + (index * 4.4 / 160);
+    return { x, y: polynomialValue(original, x) };
+  });
+  if (state.bairstowChart) state.bairstowChart.destroy();
+  state.bairstowChart = new Chart($("#bairstowChart").getContext("2d"), {
+    type: "scatter",
+    data: {
+      datasets: [
+        { label: "P(x) = x⁴ - 5x² + 4", data: curve, showLine: true, borderColor: "#185e73", borderWidth: 3, pointRadius: 0, tension: 0.15 },
+        { label: "Raíces reales", data: roots.map(x => ({ x, y: 0 })), backgroundColor: "#ef6c45", borderColor: "#ffffff", borderWidth: 2, pointRadius: 7, pointHoverRadius: 9 }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: "top", labels: { usePointStyle: true, font: { family: "DM Sans", size: 12 } } },
+        tooltip: { callbacks: { label: context => context.datasetIndex === 1 ? `Raíz: (${context.parsed.x.toFixed(8)}, 0)` : `(${context.parsed.x.toFixed(2)}, ${context.parsed.y.toFixed(3)})` } }
+      },
+      scales: {
+        x: { type: "linear", min: -2.5, max: 2.5, title: { display: true, text: "x" }, grid: { color: context => context.tick.value === 0 ? "#20252a" : "#e6e5df", lineWidth: context => context.tick.value === 0 ? 1.5 : 1 } },
+        y: { min: -5, max: 8, title: { display: true, text: "P(x)" }, grid: { color: context => context.tick.value === 0 ? "#20252a" : "#e6e5df", lineWidth: context => context.tick.value === 0 ? 1.5 : 1 } }
+      }
+    }
+  });
+  $("#bairstowConclusion").innerHTML = `La factorización obtenida es $P(x)\\approx(${formatPolynomial([1, -first.r, -first.s])})(${formatPolynomial([1, -second.r, -second.s])})$. Las raíces reales son $${roots.map(formatNumber).join(",\\; ")}$.`;
   triggerMathJax();
 }
 
@@ -663,6 +777,23 @@ $("#mullerToggle").addEventListener("click", event => {
       renderMullerExample();
     } catch (error) {
       $("#mullerResults").textContent = error.message;
+    }
+    triggerMathJax();
+  }
+});
+
+$("#bairstowToggle").addEventListener("click", event => {
+  const button = event.currentTarget;
+  const solution = $("#bairstowSolution");
+  const open = solution.classList.toggle("open");
+  button.classList.toggle("open", open);
+  button.setAttribute("aria-expanded", String(open));
+  button.innerHTML = open ? 'Ocultar solución <i class="fa-solid fa-chevron-up"></i>' : 'Ver solución paso a paso <i class="fa-solid fa-chevron-down"></i>';
+  if (open) {
+    try {
+      renderBairstowExample();
+    } catch (error) {
+      $("#bairstowResults").textContent = error.message;
     }
     triggerMathJax();
   }
