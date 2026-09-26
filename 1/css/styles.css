@@ -1026,4 +1026,44 @@ ol.steps li { margin-bottom: 7px; font-size: 14px; line-height: 1.6; padding-lef
   .paradigm-cards { grid-template-columns: 1fr; }
 }
 
+/* =========================================================================
+   ESTILOS DE VISUALIZACIÓN MATEMÁTICA Y ACCESIBILIDAD (MATHJAX & LATEX)
+   ========================================================================= */
+
+.formula-line, .math-tex, mjx-container {
+  font-family: "MathJax_Main", "STIX Two Math", "Latin Modern Math", "Cambria Math", "Times New Roman", serif;
+}
+
+.formula-line {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--orange);
+  border-radius: 8px;
+  padding: 12px 18px;
+  margin: 14px 0;
+  font-size: 15px;
+  overflow-x: auto;
+  color: var(--ink);
+  box-shadow: 0 2px 8px rgba(32,37,42,0.03);
+}
+
+mjx-container {
+  outline: none !important;
+}
+
+mjx-container[display="true"] {
+  margin: 12px 0 !important;
+  padding: 4px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}
+
+/* Fallbacks de legibilidad para símbolos */
+.math-fallback {
+  font-family: "STIX Two Math", "Latin Modern Math", "Cambria Math", serif;
+  font-style: normal;
+}
+
+
 
