@@ -1,53 +1,45 @@
-# Ejemplo manual · Método 1: Bisección (Semana 2)
+# Ejemplo Manual · Método 1: Bisección (Método Cerrado)
 
-**Responsable:** C (M) Suarez · **Revisor:** A (V) Condori
+**Responsable:** C (D) Suarez Huamani · **Revisor:** A (V) Condori Idme
 
-## Problema
+## 1. Planteamiento del Problema
 
-Hallar la raíz positiva de f(x) = x³ − x − 2 en [1, 2] con tolerancia 10⁻⁶.
+Hallar la raíz positiva de la ecuación no lineal $f(x) = x^3 - x - 2 = 0$ en el intervalo cerrado $[1, 2]$ con una tolerancia $\text{tol} = 10^{-6}$.
 
-## Condiciones de uso
+## 2. Condiciones de Uso y Precondiciones
 
-- f continua en [a, b] (es un polinomio, se cumple).
-- f(a) · f(b) < 0 (cambio de signo).
+1. **Continuidad:** $f(x)$ es continua en todo el intervalo $[a, b] = [1, 2]$.
+2. **Teorema de Bolzano:** $f(1) = 1^3 - 1 - 2 = -2 < 0$ y $f(2) = 2^3 - 2 - 2 = +4 > 0$. Como $f(1) \cdot f(2) = -8 < 0$, existe al menos una raíz real $r \in (1, 2)$.
 
-## Cálculo manual (primeras iteraciones)
+---
 
-| i | a | b | c = (a+b)/2 | f(c) | Signo | Intervalo siguiente | Cota (b−a)/2 |
-|---|-----|-----|------------|----------|-------|---------------------|--------------|
-| 1 | 1.0 | 2.0 | 1.5 | −0.125 | − | [1.5, 2.0] | 0.5 |
-| 2 | 1.5 | 2.0 | 1.75 | 1.609375 | + | [1.5, 1.75] | 0.25 |
-| 3 | 1.5 | 1.75 | 1.625 | 0.666016 | + | [1.5, 1.625] | 0.125 |
-| 4 | 1.5 | 1.625 | 1.5625 | 0.252197 | + | [1.5, 1.5625] | 0.0625 |
-| 5 | 1.5 | 1.5625 | 1.53125 | 0.059113 | + | [1.5, 1.53125] | 0.03125 |
+## 3. Cálculo Manual Paso a Paso (Primeras Iteraciones)
 
-Regla: si f(a)·f(c) < 0 la raíz está en [a, c]; si no, en [c, b].
+| $i$ | $a$ | $b$ | $c = \frac{a+b}{2}$ | $f(c)$ | Signo de $f(c)$ | Nuevo Intervalo | Cota $\frac{b-a}{2}$ |
+|---|---|---|---|---|---|---|---|
+| 1 | $1.000000$ | $2.000000$ | $1.50000000$ | $-0.125000$ | $-$ | $[1.500000, 2.000000]$ | $0.500000$ |
+| 2 | $1.500000$ | $2.000000$ | $1.75000000$ | $+1.609375$ | $+$ | $[1.500000, 1.750000]$ | $0.250000$ |
+| 3 | $1.500000$ | $1.750000$ | $1.62500000$ | $+0.666016$ | $+$ | $[1.500000, 1.625000]$ | $0.125000$ |
+| 4 | $1.500000$ | $1.625000$ | $1.56250000$ | $+0.252197$ | $+$ | $[1.500000, 1.562500]$ | $0.062500$ |
+| 5 | $1.500000$ | $1.562500$ | $1.53125000$ | $+0.059113$ | $+$ | $[1.500000, 1.531250]$ | $0.031250$ |
+| 20 | $1.521379$ | $1.521381$ | $1.52138042$ | $+4.40 \times 10^{-6}$ | $+$ | — | $9.54 \times 10^{-7} \le 10^{-6}$ ✓ |
 
-## Detalle del paso 1
+---
 
-- f(1.5) = 1.5³ − 1.5 − 2 = 3.375 − 3.5 = **−0.125**
-- f(1.5)·f(2) = (−0.125)(4) < 0 → nueva raíz en [1.5, 2]
+## 4. Detalle de Evaluación en la Iteración 1
 
-## Criterio de parada
+- **Punto medio:** $c_1 = \frac{1.0 + 2.0}{2} = 1.5$
+- **Evaluación:** $f(1.5) = (1.5)^3 - 1.5 - 2 = 3.375 - 3.500 = -0.125$
+- **Comprobación de signo:** $f(1.0) \cdot f(1.5) = (-2.0) \cdot (-0.125) = +0.250 > 0$, mientras que $f(1.5) \cdot f(2.0) = (-0.125) \cdot (+4.0) = -0.500 < 0$.
+- **Nuevo intervalo:** Se descarta $[1.0, 1.5]$ y se conserva $[1.5, 2.0]$.
 
-Detener cuando (b − a)/2 ≤ 10⁻⁶. Con a₀ = 1, b₀ = 2 se necesitan n ≥ log₂(1/10⁻⁶) ≈ 20 iteraciones; el código converge en 21.
+---
 
-## Resultado manual de referencia
+## 5. Criterio de Parada y Cota Teórica
 
-c₂₁ ≈ **1.52137971** (raíz real ≈ 1.5213797068).
+Se detiene cuando $\frac{b_n - a_n}{2} \le 10^{-6}$ o cuando $|f(c_n)| \le 10^{-6}$.
+$$ n \ge \log_2\left(\frac{b_0 - a_0}{\text{tol}}\right) = \log_2\left(\frac{2 - 1}{10^{-6}}\right) = \log_2(10^6) \approx 19.9315 \implies \mathbf{20 \text{ iteraciones}} $$
 
-## Pseudocódigo del método 1
-
-```
-INICIO biseccion(f, a, b, tol, maxit):
-    SI f(a)·f(b) ≥ 0 ENTONCES devolver ERROR("sin cambio de signo")
-    PARA i = 1 HASTA maxit:
-        c ← (a + b) / 2
-        error ← (b − a) / 2
-        GUARDAR fila (i, a, b, c, f(c), error)
-        SI |f(c)| ≤ tol O error ≤ tol ENTONCES devolver c, i
-        SI f(a)·f(c) < 0 ENTONCES b ← c SINO a ← c
-    FIN PARA
-    devolver c, maxit, estado = "LÍMITE ALCANZADO"
-FIN
-```
+- **Aproximación final:** $c_{20} = 1.5213804245$
+- **Referencia independiente:** $r = 1.5213797068$
+- **Error absoluto real:** $|c_{20} - r| = 7.18 \times 10^{-7} \le 10^{-6}$
