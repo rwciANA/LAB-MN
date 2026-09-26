@@ -573,6 +573,26 @@
         </article>
       </div>
 
+      <article class="muller-example">
+        <div class="muller-intro">
+          <span class="difficulty advanced">EJEMPLO GUIADO · MÉTODO ABIERTO</span>
+          <h3>Hallar las raíces de una ecuación cúbica con Müller</h3>
+          <p>Un modelo simplificado de balance presenta tres puntos de operación donde el residuo es cero. Resuelve la ecuación $f(x)=x^3-3x+1=0$ con el método de Müller, partiendo de las ternas $(x_0,x_1,x_2)=(-2,-1.9,-1.8)$, $(0,0.25,0.5)$ y $(1.3,1.5,1.7)$. Usa una tolerancia de $10^{-8}$ y encuentra las tres raíces reales.</p>
+          <button class="solution-toggle muller-toggle" id="mullerToggle" type="button" aria-expanded="false" aria-controls="mullerSolution">Ver solución paso a paso <i class="fa-solid fa-chevron-down"></i></button>
+        </div>
+        <div class="solution muller-solution" id="mullerSolution">
+          <h4>1 · Preparar la interpolación cuadrática</h4>
+          <p>Müller usa tres aproximaciones $x_0,x_1,x_2$ para construir una parábola que interpola los puntos $(x_i,f(x_i))$. Definimos $h_1=x_1-x_0$, $h_2=x_2-x_1$, $\delta_1=\frac{f(x_1)-f(x_0)}{h_1}$ y $\delta_2=\frac{f(x_2)-f(x_1)}{h_2}$. Los coeficientes son $a=\frac{\delta_2-\delta_1}{h_1+h_2}$, $b=a h_2+\delta_2$ y $c=f(x_2)$.</p>
+          <h4>2 · Encontrar el siguiente punto</h4>
+          <p>Se resuelve la parábola $a t^2+bt+c=0$ y se elige el denominador de mayor magnitud para evitar cancelación numérica: $x_3=x_2-\frac{2c}{b\pm\sqrt{b^2-4ac}}$. Después, se desplaza la terna $(x_0,x_1,x_2)\leftarrow(x_1,x_2,x_3)$ y se repite hasta que $|x_3-x_2|<10^{-8}$.</p>
+          <div class="muller-results" id="mullerResults" aria-live="polite"></div>
+          <h4>3 · Función y raíces en el plano cartesiano</h4>
+          <p>Los marcadores muestran los pares $(r,0)$ obtenidos; al sustituirlos en $f$, el residuo es prácticamente cero.</p>
+          <div class="muller-chart-wrap"><canvas id="mullerChart" role="img" aria-label="Gráfica de x al cubo menos tres x más uno con sus tres raíces reales"></canvas></div>
+          <p class="muller-conclusion" id="mullerConclusion"></p>
+        </div>
+      </article>
+
       <div class="quiz-bar">
         <div><span class="panel-kicker">AUTOEVALUACIÓN INTERACTIVA</span><h3>6 Preguntas sobre Abiertos y Cerrados</h3></div>
         <strong class="quiz-score">0 / 6</strong>

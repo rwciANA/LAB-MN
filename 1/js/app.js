@@ -9,7 +9,8 @@ const state = {
   iterations: [],
   chart: null,
   heroChart: null,
-  comparisonChart: null
+  comparisonChart: null,
+  mullerChart: null
 };
 
 const $ = (selector) => document.querySelector(selector);
@@ -143,6 +144,103 @@ function solveNewton(x0, tolerance, maxIterations) {
     x = next;
   }
   return rows;
+}
+
+function cubicExample(x) {
+  return (x ** 3) - (3 * x) + 1;
+}
+
+function solveMuller(initialPoints, tolerance = 1e-8, maxIterations = 50) {
+  let [x0, x1, x2] = initialPoints;
+  const rows = [];
+
+  for (let iteration = 1; iteration <= maxIterations; iteration += 1) {
+    const h1 = x1 - x0;
+    const h2 = x2 - x1;
+    if (Math.abs(h1) < 1e-14 || Math.abs(h2) < 1e-14 || Math.abs(h1 + h2) < 1e-14) {
+      throw new Error("La terna inicial de Müller debe contener tres puntos distintos.");
+    }
+
+    const delta1 = (cubicExample(x1) - cubicExample(x0)) / h1;
+    const delta2 = (cubicExample(x2) - cubicExample(x1)) / h2;
+    const a = (delta2 - delta1) / (h1 + h2);
+    const b = (a * h2) + delta2;
+    const c = cubicExample(x2);
+    const discriminant = (b ** 2) - (4 * a * c);
+    if (discriminant < 0) {
+      throw new Error("Esta terna produjo una raíz compleja; prueba valores iniciales más cercanos a la raíz real buscada.");
+    }
+
+    const squareRoot = Math.sqrt(discriminant);
+    const denominator = Math.abs(b + squareRoot) >= Math.abs(b - squareRoot) ? b + squareRoot : b - squareRoot;
+    if (Math.abs(denominator) < 1e-14) {
+      throw new Error("El denominador de Müller es demasiado pequeño para continuar con esta terna.");
+    }
+
+    const next = x2 - ((2 * c) / denominator);
+    const error = Math.abs(next - x2);
+    rows.push({ iteration, x0, x1, x2, a, b, c, discriminant, next, error });
+    if (!Number.isFinite(next)) throw new Error("Müller produjo un valor no finito.");
+    if (error < tolerance || Math.abs(cubicExample(next)) < tolerance) return { rows, root: next };
+
+    [x0, x1, x2] = [x1, x2, next];
+  }
+
+  throw new Error("Müller alcanzó el máximo de iteraciones sin converger.");
+}
+
+function renderMullerExample() {
+  const resultContainer = $("#mullerResults");
+  const initialTriples = [
+    { label: "Raíz negativa", points: [-2, -1.9, -1.8] },
+    { label: "Raíz cercana a cero", points: [0, 0.25, 0.5] },
+    { label: "Raíz positiva", points: [1.3, 1.5, 1.7] }
+  ];
+  const solutions = initialTriples.map(item => ({ ...item, ...solveMuller(item.points) }));
+
+  resultContainer.innerHTML = solutions.map(solution => `
+    <section class="muller-root-result">
+      <h5>${solution.label} · terna inicial (${solution.points.join(", ")})</h5>
+      <div class="muller-table-wrap">
+        <table class="muller-table">
+          <thead><tr><th>Iteración</th><th>$x_2$</th><th>$a$</th><th>$b$</th><th>$c=f(x_2)$</th><th>$x_3$</th><th>$|x_3-x_2|$</th></tr></thead>
+          <tbody>${solution.rows.map(row => `<tr><td>${row.iteration}</td><td>${formatNumber(row.x2)}</td><td>${formatNumber(row.a)}</td><td>${formatNumber(row.b)}</td><td>${scientific(row.c)}</td><td>${formatNumber(row.next)}</td><td>${scientific(row.error)}</td></tr>`).join("")}</tbody>
+        </table>
+      </div>
+      <span class="muller-root-value">Raíz aproximada: ${formatNumber(solution.root)} · residuo: ${scientific(Math.abs(cubicExample(solution.root)))}</span>
+    </section>
+  `).join("");
+
+  const roots = solutions.map(solution => solution.root).sort((left, right) => left - right);
+  const curve = Array.from({ length: 121 }, (_, index) => {
+    const x = -2.5 + (index * 5 / 120);
+    return { x, y: cubicExample(x) };
+  });
+  const canvas = $("#mullerChart");
+  if (state.mullerChart) state.mullerChart.destroy();
+  state.mullerChart = new Chart(canvas.getContext("2d"), {
+    type: "scatter",
+    data: {
+      datasets: [
+        { label: "f(x) = x³ - 3x + 1", data: curve, showLine: true, borderColor: "#185e73", borderWidth: 3, pointRadius: 0, tension: 0.2 },
+        { label: "Raíces aproximadas", data: roots.map(x => ({ x, y: 0 })), backgroundColor: "#ef6c45", borderColor: "#ffffff", borderWidth: 2, pointRadius: 7, pointHoverRadius: 9 }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: "top", labels: { usePointStyle: true, font: { family: "DM Sans", size: 12 } } },
+        tooltip: { callbacks: { label: context => context.datasetIndex === 1 ? `Raíz: (${context.parsed.x.toFixed(8)}, 0)` : `(${context.parsed.x.toFixed(2)}, ${context.parsed.y.toFixed(3)})` } }
+      },
+      scales: {
+        x: { type: "linear", min: -2.5, max: 2.5, title: { display: true, text: "x" }, grid: { color: context => context.tick.value === 0 ? "#20252a" : "#e6e5df", lineWidth: context => context.tick.value === 0 ? 1.5 : 1 } },
+        y: { min: -9, max: 9, title: { display: true, text: "f(x)" }, grid: { color: context => context.tick.value === 0 ? "#20252a" : "#e6e5df", lineWidth: context => context.tick.value === 0 ? 1.5 : 1 } }
+      }
+    }
+  });
+  $("#mullerConclusion").innerHTML = `Las tres raíces reales son aproximadamente $${roots.map(formatNumber).join(",\; ")}$. El método de Müller es abierto: no exige una derivada ni un intervalo con cambio de signo, pero depende de elegir ternas iniciales adecuadas.`;
+  triggerMathJax();
 }
 
 // ==========================================
@@ -551,6 +649,23 @@ document.querySelectorAll(".solution-toggle").forEach(button => {
     button.innerHTML = open ? 'Ocultar solución <i class="fa-solid fa-chevron-up"></i>' : 'Ver solución completa <i class="fa-solid fa-chevron-down"></i>';
     if (open) triggerMathJax();
   });
+});
+
+$("#mullerToggle").addEventListener("click", event => {
+  const button = event.currentTarget;
+  const solution = $("#mullerSolution");
+  const open = solution.classList.toggle("open");
+  button.classList.toggle("open", open);
+  button.setAttribute("aria-expanded", String(open));
+  button.innerHTML = open ? 'Ocultar solución <i class="fa-solid fa-chevron-up"></i>' : 'Ver solución paso a paso <i class="fa-solid fa-chevron-down"></i>';
+  if (open) {
+    try {
+      renderMullerExample();
+    } catch (error) {
+      $("#mullerResults").textContent = error.message;
+    }
+    triggerMathJax();
+  }
 });
 
 // ============ AUTOEVALUACIÓN (6 preguntas) ============
