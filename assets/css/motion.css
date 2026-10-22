@@ -1,0 +1,62 @@
+/* Animaciones de ITERA: entradas al desplazarse, transición entre vistas y reproducción de pasos. */
+
+@keyframes itera-entrada {
+  from { opacity: 0; transform: translateY(18px) scale(.985); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes itera-vista {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes itera-pulso {
+  0%   { box-shadow: 0 0 0 0 rgba(239,108,69,.55); }
+  100% { box-shadow: 0 0 0 16px rgba(239,108,69,0); }
+}
+@keyframes itera-flotar {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+@keyframes itera-barra {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* Elementos que se revelan al entrar en pantalla (se activa desde motion.js) */
+.anim-ready { opacity: 0; transform: translateY(18px); transition: opacity .55s ease, transform .55s cubic-bezier(.2,.7,.2,1); transition-delay: var(--retraso, 0ms); }
+.anim-ready.vis { opacity: 1; transform: none; }
+
+/* Cambio de vista */
+.view.active-view { animation: itera-vista .5s cubic-bezier(.2,.7,.2,1) both; }
+
+/* Entrada de la portada */
+.hero-copy > *, .hero-visual > * { animation: itera-entrada .7s cubic-bezier(.2,.7,.2,1) both; }
+.hero-copy > *:nth-child(2) { animation-delay: .08s; }
+.hero-copy > *:nth-child(3) { animation-delay: .16s; }
+.hero-copy > *:nth-child(4) { animation-delay: .24s; }
+.hero-copy > *:nth-child(5) { animation-delay: .32s; }
+.hero-visual > * { animation-delay: .2s; }
+
+/* Pasos de una solución: se ven uno tras otro */
+.paso-activo { animation: itera-pulso 1s ease-out 1; border-color: var(--orange) !important; background: #fff7f3 !important; }
+.calc-table tbody tr.paso-activo td { background: #fff3ec; }
+.step.paso-activo { transform: scale(1.01); }
+.step { transition: transform .25s ease, border-color .25s ease, background .25s ease; }
+
+/* Botón de reproducción */
+.btn-reproducir { display: inline-flex; align-items: center; gap: 8px; margin: 8px 0 14px; }
+.btn-reproducir.activo { background: var(--orange); color: #fff; border-color: var(--orange); }
+.btn-reproducir.activo i { animation: itera-flotar 1s ease-in-out infinite; }
+
+/* Barra de progreso de la reproducción */
+.barra-progreso { height: 4px; background: var(--line); border-radius: 4px; overflow: hidden; margin: 0 0 14px; }
+.barra-progreso span { display: block; height: 100%; background: linear-gradient(90deg, var(--orange), var(--orange-dark)); transform-origin: left; transform: scaleX(0); transition: transform .4s ease; }
+
+/* Subrayado animado de los títulos de sección */
+.section-heading h2 { background: linear-gradient(var(--orange), var(--orange)) no-repeat left bottom / 0 3px; padding-bottom: 6px; }
+.section-heading.visto h2 { background-size: 64px 3px; transition: background-size .8s ease .2s; }
+
+/* Respeta la preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .anim-ready { opacity: 1; transform: none; }
+}

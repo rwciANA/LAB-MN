@@ -1,3 +1,6 @@
+// Controles de reproducción (los gestiona assets/js/motion.js).
+const PLAY_HTML = `<div class="btn-wrap"><button type="button" class="ghost-btn btn-reproducir" data-play><i class="fa-solid fa-play" aria-hidden="true"></i> Reproducir paso a paso</button></div><div class="barra-progreso"><span></span></div>`;
+
 /*
  * Solucionador paso a paso de los ejercicios del módulo 3.
  * Usa las mismas funciones que la calculadora (lagrange, linearRegression).
@@ -33,13 +36,14 @@ function solucionLagrange(ej) {
   const { xs, ys, x } = ej.datos;
   const r = lagrange(xs, ys, x);
   let html = "<h4>Nodos</h4>" + tablaM(["i", "xᵢ", "yᵢ"], xs.map((v, i) => [i + 1, v, ys[i]]));
-  html += `<h4>Base de Lagrange en x = ${x}, nodo por nodo</h4>`;
+  html += `<h4>Base de Lagrange en x = ${x}, nodo por nodo</h4>` + PLAY_HTML + "<div data-reproducir>";
   r.bases.forEach(b => {
     html += `<div class="step">
       <p><strong>L${b.i + 1}(${x}) = ${b.factores.join(" · ")} = ${fmtM(b.L)}</strong></p>
       <p>Contribución: L${b.i + 1}(${x})·y${b.i + 1} = ${fmtM(b.L)} · ${b.yi} = ${fmtM(b.contribucion)}</p>
     </div>`;
   });
+  html += "</div>";
   html += `<p>Suma de contribuciones: P(${x}) = ${r.bases.map(b => fmtM(b.contribucion)).join(" + ")} = <strong>${fmtM(r.value)}</strong>.</p>`;
   html += `<p>${escapeHtml(r.message)}</p>`;
 

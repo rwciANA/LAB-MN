@@ -1,3 +1,6 @@
+// Controles de reproducción (los gestiona assets/js/motion.js).
+const PLAY_HTML = `<div class="btn-wrap"><button type="button" class="ghost-btn btn-reproducir" data-play><i class="fa-solid fa-play" aria-hidden="true"></i> Reproducir paso a paso</button></div><div class="barra-progreso"><span></span></div>`;
+
 /*
  * Solucionador paso a paso de los ejercicios del módulo 2.
  * Usa los mismos algoritmos que la calculadora, así la solución mostrada y la calculadora coinciden.
@@ -83,10 +86,10 @@ function solucionSistema(ej) {
 
   if (ej.tipo === "gauss") {
     const r = gaussPartialPivot(A, b);
-    let html = "<h4>Eliminación gaussiana con pivoteo parcial, paso a paso</h4>";
-    html += r.steps.map((s, i) =>
+    let html = "<h4>Eliminación gaussiana con pivoteo parcial, paso a paso</h4>" + PLAY_HTML;
+    html += "<div data-reproducir>" + r.steps.map((s, i) =>
       `<div class="step"><p><strong>Paso ${i + 1}. ${escapeHtml(s.titulo)}</strong></p>${matrizHTML(s.matriz)}</div>`
-    ).join("");
+    ).join("") + "</div>";
     if (r.status === "ok") {
       html += `<p>Sustitución hacia atrás: <strong>x = (${r.x.map(v => fmtN(v)).join(", ")})</strong>.</p>`;
       html += `<p>Residuo ‖b − A·x‖∞ = ${r.residualInf.toExponential(2)}.</p>`;
@@ -107,7 +110,7 @@ function solucionSistema(ej) {
   ]);
   let html = "<h4>Primera iteración, componente por componente (desde x₀ = 0)</h4>";
   html += detalleIteracion1(A, b);
-  html += "<h4>Tabla de iteraciones</h4>" + tablaSimple(encabezados, filas);
+  html += "<h4>Tabla de iteraciones</h4>" + PLAY_HTML + "<div data-reproducir>" + tablaSimple(encabezados, filas) + "</div>";
   html += `<p>${escapeHtml(s.message)}</p>`;
   html += `<p>Dominancia diagonal estricta: <strong>${s.dominant ? "sí, Gauss-Seidel converge" : "no; la convergencia no está garantizada por esta condición"}</strong>.</p>`;
   if (s.status === "ok") {

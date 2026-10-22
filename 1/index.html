@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <link rel="stylesheet" href="css/styles.css?v=13">
   <link rel="stylesheet" href="../assets/css/teclado.css">
+  <link rel="stylesheet" href="../assets/css/motion.css">
 
   <!-- Configuración e Integración de MathJax v3 -->
   <script>
@@ -64,6 +65,7 @@
       <a href="#historia" data-view="historia"><i class="fa-solid fa-clock-rotate-left"></i>Historia</a>
       <a href="#calculadoras" data-view="calculadoras"><i class="fa-solid fa-calculator"></i>Calculadoras</a>
       <a href="#practica" data-view="practica"><i class="fa-solid fa-pen-to-square"></i>Práctica</a>
+      <a href="#autoevaluacion" data-view="autoevaluacion"><i class="fa-solid fa-circle-question"></i>Autoevaluación</a>
       <a href="#referencias" data-view="referencias"><i class="fa-solid fa-quote-right"></i>Referencias</a>
       <a href="#equipo" data-view="equipo"><i class="fa-solid fa-users"></i>Equipo</a>
       <a href="../index.html"><i class="fa-solid fa-arrow-left"></i>Portal General</a>
@@ -769,6 +771,18 @@
         </div>
       </article>
 
+    </section>
+
+    <!-- ==========================================
+         07. REFERENCIAS
+         ========================================== -->
+    <section class="view" id="autoevaluacion" data-section="autoevaluacion">
+      <div class="section-heading">
+        <p class="eyebrow"><span>06b</span> AUTOEVALUACIÓN</p>
+        <h2>Pon a prueba lo que aprendiste</h2>
+        <p>Seis preguntas sobre métodos cerrados, abiertos, errores y residuos. Cada respuesta incluye su explicación.</p>
+      </div>
+
       <div class="quiz-bar">
         <div><span class="panel-kicker">AUTOEVALUACIÓN INTERACTIVA</span><h3>6 Preguntas sobre Abiertos y Cerrados</h3></div>
         <strong class="quiz-score">0 / 6</strong>
@@ -846,9 +860,6 @@
       </div>
     </section>
 
-    <!-- ==========================================
-         07. REFERENCIAS
-         ========================================== -->
     <section class="view" id="referencias" data-section="referencias">
       <div class="section-heading">
         <p class="eyebrow"><span>07</span> FUENTES Y BIBLIOGRAFÍA</p>
@@ -930,5 +941,6 @@
   <script src="js/app.js?v=13"></script>
   <script src="../assets/js/keypad-float.js"></script>
   <script>activarTecladoFlotante(document.getElementById("keypadDock"), document.getElementById("keypadFab"));</script>
+  <script src="../assets/js/motion.js"></script>
 </body>
 </html>
