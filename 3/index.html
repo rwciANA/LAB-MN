@@ -263,10 +263,10 @@ SCR = Σ rᵢ²</code></pre>
         </div>
         <div class="controls">
           <label>Nodos
-            <input id="nCount" type="number" min="2" max="6" step="1" value="4">
+            <input id="nCount" type="text" data-math data-label="Número de nodos" inputmode="numeric" value="4">
           </label>
           <label>Consulta x
-            <input id="xQuery" type="number" step="any" value="1.5">
+            <input id="xQuery" type="text" data-math data-label="Consulta x" inputmode="decimal" value="1.5">
           </label>
           <label>Método
             <select id="method"><option value="both" selected>Comparar ambos</option><option value="lagrange">Lagrange</option><option value="reg">Regresión lineal</option></select>
@@ -302,6 +302,7 @@ SCR = Σ rᵢ²</code></pre>
         <div class="table-scroll"><table class="calc-table" id="resTable"><thead></thead><tbody></tbody></table></div>
       </div>
       <aside class="calc-aside" aria-label="Guía de lectura">
+        <div id="keypadMount"></div>
         <h3><i class="fa-solid fa-book-open"></i> Cómo leer los resultados</h3>
         <ul>
           <li><strong>P(x) de Lagrange:</strong> pasa por todos los datos; es la estimación si los datos son exactos.</li>
@@ -442,7 +443,9 @@ SCR = Σ rᵢ²</code></pre>
   <script src="js/content.js"></script>
   <script src="js/content-extra.js"></script>
   <script src="js/solver.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/13.1.1/math.min.js"></script>
   <script src="../assets/js/learn.js"></script>
+  <script src="../assets/js/keypad.js"></script>
   <script src="../assets/js/shell.js"></script>
   <script src="js/app.js"></script>
 </body>

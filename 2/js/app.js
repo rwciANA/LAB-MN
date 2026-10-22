@@ -32,14 +32,14 @@ function buildInputs(n, A = null, b = null) {
   for (let i = 0; i < n; i += 1) {
     for (let j = 0; j < n; j += 1) {
       const input = document.createElement("input");
-      input.type = "number";
+      input.type = "text"; input.dataset.math = ""; input.inputMode = "decimal";
       input.step = "any";
       input.value = A ? A[i][j] : 0;
       input.setAttribute("aria-label", `A fila ${i + 1}, columna ${j + 1}`);
       matrix.appendChild(input);
     }
     const input = document.createElement("input");
-    input.type = "number";
+    input.type = "text"; input.dataset.math = ""; input.inputMode = "decimal";
     input.step = "any";
     input.value = b ? b[i] : 0;
     input.setAttribute("aria-label", `b fila ${i + 1}`);
@@ -52,8 +52,8 @@ function readSystem() {
   const cells = [...$("matrixInputs").querySelectorAll("input")].map(i => i.value.trim());
   const bCells = [...$("vectorInputs").querySelectorAll("input")].map(i => i.value.trim());
   const A = [];
-  for (let i = 0; i < n; i += 1) A.push(cells.slice(i * n, i * n + n).map(Number));
-  const b = bCells.map(Number);
+  for (let i = 0; i < n; i += 1) A.push(cells.slice(i * n, i * n + n).map(evalNum));
+  const b = bCells.map(evalNum);
   const vacio = [...cells, ...bCells].some(v => v === "");
   return { A, b, vacio };
 }
@@ -124,8 +124,8 @@ function solve() {
     return;
   }
   const method = $("method").value;
-  const tol = Number($("tol").value);
-  const maxIter = Number($("maxIter").value);
+  const tol = evalNum($("tol").value);
+  const maxIter = evalNum($("maxIter").value);
   if (!(tol > 0)) {
     setMessage("La tolerancia debe ser mayor que cero (ej. 0.000001).", "error");
     return;
@@ -182,6 +182,7 @@ function cargarEjercicioEnCalculadora(ej) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  initKeypad($("keypadMount"), { onRun: solve });
   $("size").addEventListener("change", () => {
     const n = sizeNow();
     const cur = readSystem();

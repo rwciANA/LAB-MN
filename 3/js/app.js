@@ -21,8 +21,8 @@ function buildPoints(n, xs = [], ys = []) {
     const row = document.createElement("div");
     row.className = "point-row";
     row.innerHTML = `<span class="idx">${i + 1}</span>` +
-      `<input type="number" step="any" aria-label="x del dato ${i + 1}" value="${xs[i] ?? ""}">` +
-      `<input type="number" step="any" aria-label="y del dato ${i + 1}" value="${ys[i] ?? ""}">`;
+      `<input type="text" data-math inputmode="decimal" aria-label="x del dato ${i + 1}" value="${xs[i] ?? ""}">` +
+      `<input type="text" data-math inputmode="decimal" aria-label="y del dato ${i + 1}" value="${ys[i] ?? ""}">`;
     box.appendChild(row);
   }
 }
@@ -35,8 +35,8 @@ function readPoints() {
   for (const row of rows) {
     const [xi, yi] = row.querySelectorAll("input");
     if (xi.value.trim() === "" || yi.value.trim() === "") vacio = true;
-    xs.push(Number(xi.value));
-    ys.push(Number(yi.value));
+    xs.push(evalNum(xi.value));
+    ys.push(evalNum(yi.value));
   }
   return { xs, ys, vacio };
 }
@@ -113,7 +113,7 @@ function calculate() {
     setMessage("Completa todos los valores de x e y.", "error");
     return;
   }
-  const q = Number($("xQuery").value);
+  const q = evalNum($("xQuery").value);
   if (!Number.isFinite(q)) {
     setMessage("La consulta x debe ser un número.", "error");
     return;
@@ -175,8 +175,9 @@ function cargarEjercicioEnCalculadora(ej) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  initKeypad($("keypadMount"), { onRun: calculate });
   $("nCount").addEventListener("change", () => {
-    const n = Math.min(6, Math.max(2, Math.round(Number($("nCount").value)) || 2));
+    const n = Math.min(6, Math.max(2, Math.round(evalNum($("nCount").value)) || 2));
     $("nCount").value = String(n);
     const { xs, ys } = readPoints();
     buildPoints(n, xs, ys);

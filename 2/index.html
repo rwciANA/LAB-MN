@@ -285,10 +285,10 @@ si no: no se alcanzó la tolerancia</code></pre>
             <select id="method"><option value="both" selected>Comparar ambos</option><option value="gauss">Eliminación gaussiana</option><option value="gs">Gauss-Seidel</option></select>
           </label>
           <label>Tolerancia
-            <input id="tol" type="number" step="any" value="0.000001">
+            <input id="tol" type="text" data-math data-label="Tolerancia" inputmode="decimal" value="0.000001">
           </label>
           <label>Máx. iteraciones
-            <input id="maxIter" type="number" min="1" step="1" value="100">
+            <input id="maxIter" type="text" data-math data-label="Máx. iteraciones" inputmode="numeric" value="100">
           </label>
         </div>
         <div class="presets">
@@ -329,6 +329,7 @@ si no: no se alcanzó la tolerancia</code></pre>
         <div class="table-scroll"><table class="calc-table" id="gsTable"><thead></thead><tbody></tbody></table></div>
       </div>
       <aside class="calc-aside" aria-label="Guía de lectura">
+        <div id="keypadMount"></div>
         <h3><i class="fa-solid fa-book-open"></i> Cómo leer los resultados</h3>
         <ul>
           <li><strong>Residuo ≈ 0:</strong> la solución satisface el sistema dentro del redondeo.</li>
@@ -469,7 +470,9 @@ si no: no se alcanzó la tolerancia</code></pre>
   <script src="js/content.js"></script>
   <script src="js/content-extra.js"></script>
   <script src="js/solver.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/13.1.1/math.min.js"></script>
   <script src="../assets/js/learn.js"></script>
+  <script src="../assets/js/keypad.js"></script>
   <script src="../assets/js/shell.js"></script>
   <script src="js/app.js"></script>
 </body>
