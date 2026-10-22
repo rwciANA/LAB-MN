@@ -117,4 +117,4 @@ function gaussSeidel(A, b, { x0 = null, tol = 1e-6, maxIter = 100 } = {}) {
   };
 }
 
-module.exports = { gaussPartialPivot, gaussSeidel, residual, infNorm, validateSystem };
+if (typeof module !== "undefined") module.exports = { gaussPartialPivot, gaussSeidel, residual, infNorm, validateSystem };

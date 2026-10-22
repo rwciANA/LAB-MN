@@ -127,6 +127,40 @@
       </ol>
     </section>
 
+    <section id="ejemplos-extra" class="card">
+      <h2>3b. Ejemplos adicionales</h2>
+      <div id="ejemplosExtra"></div>
+    </section>
+
+    <section id="comparativo" class="card">
+      <h2>3c. Caso comparativo: directo frente a iterativo</h2>
+      <p>Mismo sistema, dos métodos. La comparación se hace con el <strong>residuo</strong> y el número de operaciones, no solo con la respuesta.</p>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Criterio</th><th>Eliminación gaussiana</th><th>Gauss-Seidel (caso base)</th><th>Gauss-Seidel (A = [[1,2],[3,1]])</th></tr></thead>
+          <tbody>
+            <tr><td>Solución</td><td>(1, 2, 3)</td><td>(1, 2, 3) tras 8 iteraciones</td><td>No converge</td></tr>
+            <tr><td>Residuo final ‖b − A·x‖∞</td><td>≈ 0 (redondeo)</td><td>≤ 10⁻⁶</td><td>Crece: 18 → 140 000 en 6 iteraciones</td></tr>
+            <tr><td>Procedimiento</td><td>Finito: n³/3 operaciones aprox.</td><td>Repetido hasta la tolerancia</td><td>Sin garantía</td></tr>
+            <tr><td>Advertencia</td><td>Pivote pequeño o singular</td><td>Máx. de iteraciones sin convergencia</td><td>Sin dominancia: usar eliminación</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Cuándo usar cada uno:</strong> eliminación para sistemas pequeños y densos como los de este módulo; Gauss-Seidel cuando la matriz es grande y dispersa, y se conoce que converge (por ejemplo, dominancia diagonal estricta).</p>
+    </section>
+
+    <section id="ejercicios" class="card">
+      <h2>3d. Ejercicios propuestos</h2>
+      <p class="hint">Dos intermedios y dos de mayor dificultad. Intenta primero; luego abre la solución.</p>
+      <div id="ejercicios-lista"></div>
+    </section>
+
+    <section id="autoevaluacion" class="card">
+      <h2>3e. Autoevaluación</h2>
+      <p class="hint">Seis preguntas: selección múltiple, verdadero o falso, y respuesta numérica con tolerancia.</p>
+      <div id="quiz"></div>
+    </section>
+
     <section id="pruebas" class="card">
       <h2>4. Pruebas del módulo</h2>
       <p class="hint">Pruebas ejecutadas con <code>node tests/run.js</code>. Referencia: solución exacta (1, 2, 3) y primera iteración (2.25, 2.35, 2.7333333333).</p>
@@ -146,6 +180,9 @@
 
   <script src="js/algorithms.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="js/tests.js"></script>
+  <script src="js/content.js"></script>
+  <script src="../assets/js/learn.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

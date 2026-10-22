@@ -81,4 +81,4 @@ function linearRegression(xs, ys) {
   };
 }
 
-module.exports = { lagrange, linearRegression, validateNodes };
+if (typeof module !== "undefined") module.exports = { lagrange, linearRegression, validateNodes };

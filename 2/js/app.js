@@ -182,4 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
   $("solve").addEventListener("click", solve);
   loadPreset("base");
   renderTests();
+  $("ejemplosExtra").innerHTML = EJEMPLOS_EXTRA_2;
+  renderExercises($("ejercicios-lista"), EJERCICIOS_2);
+  renderQuiz($("quiz"), AUTOEVALUACION_2);
 });

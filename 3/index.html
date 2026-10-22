@@ -120,6 +120,39 @@
       </ol>
     </section>
 
+    <section id="ejemplos-extra" class="card">
+      <h2>3b. Ejemplos adicionales</h2>
+      <div id="ejemplosExtra"></div>
+    </section>
+
+    <section id="comparativo" class="card">
+      <h2>3c. Caso comparativo: interpolar frente a ajustar</h2>
+      <p>Mismos datos (x = 0, 1, 2, 3; y = 1, 2, 2, 4), dos objetivos distintos.</p>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Consulta</th><th>Lagrange (4 nodos)</th><th>Recta de mínimos cuadrados</th><th>Lectura</th></tr></thead>
+          <tbody>
+            <tr><td>x = 0 (dato)</td><td>1</td><td>0.9</td><td>Lagrange respeta el dato; la recta lo suaviza.</td></tr>
+            <tr><td>x = 1.5 (dentro)</td><td>1.9375</td><td>2.25</td><td>Diferencia por objetivos distintos.</td></tr>
+            <tr><td>x = 5 (fuera)</td><td>26</td><td>5.4</td><td>Extrapolación: el polinomio se dispara.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Conclusión:</strong> si los datos son exactos y quieres reproducirlos, interpola. Si tienen error de medición y buscas una tendencia para predecir, ajusta. En ambos casos el aviso fuera de intervalo es obligatorio.</p>
+    </section>
+
+    <section id="ejercicios" class="card">
+      <h2>3d. Ejercicios propuestos</h2>
+      <p class="hint">Dos intermedios y dos de mayor dificultad. Intenta primero; luego abre la solución.</p>
+      <div id="ejercicios-lista"></div>
+    </section>
+
+    <section id="autoevaluacion" class="card">
+      <h2>3e. Autoevaluación</h2>
+      <p class="hint">Seis preguntas: selección múltiple, verdadero o falso, y respuesta numérica con tolerancia.</p>
+      <div id="quiz"></div>
+    </section>
+
     <section id="pruebas" class="card">
       <h2>4. Pruebas del módulo</h2>
       <p class="hint">Pruebas ejecutadas con <code>node tests/run.js</code>. Referencias: Lagrange = 1.9375 en x = 1.5; recta 0.9 + 0.9x; SCR = 0.70.</p>
@@ -140,6 +173,8 @@
   <script src="js/algorithms.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script src="js/tests.js"></script>
+  <script src="js/content.js"></script>
+  <script src="../assets/js/learn.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
