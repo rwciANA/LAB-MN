@@ -91,25 +91,90 @@
       <div class="section-heading compact">
         <p class="eyebrow"><span>02</span> TEORÍA</p>
         <h2>Cómo funcionan ambos métodos</h2>
-        <p>Dos formas de llegar a la misma solución: una directa y otra por aproximaciones sucesivas.</p>
+        <p>Un método directo llega a la solución en un número fijo de pasos. Un método iterativo se aproxima a ella paso a paso. Entender cuándo y por qué cada uno funciona es el objetivo de esta sección.</p>
       </div>
-      <div class="paradigm-cards">
-        <div class="paradigm-box closed">
-          <div class="p-head"><i class="fa-solid fa-gears"></i> <strong>Eliminación gaussiana con pivoteo parcial</strong></div>
-          <p>En cada columna $k$ se elige como pivote la fila con mayor $|a_{ik}|$ y se intercambia con la fila $k$. Luego se anulan los elementos debajo del pivote y se despeja de abajo hacia arriba:</p>
-          <p>$$x_n=\frac{b_n^{(n)}}{a_{nn}^{(n)}},\qquad x_i=\frac{b_i^{(i)}-\sum_{j>i}a_{ij}^{(i)}x_j}{a_{ii}^{(i)}}$$</p>
-          <p><strong>Advertencia:</strong> si el pivote es cero el sistema es singular. Si es muy pequeño, el error de redondeo se amplifica.</p>
-        </div>
-        <div class="paradigm-box open">
-          <div class="p-head"><i class="fa-solid fa-rotate"></i> <strong>Gauss-Seidel</strong></div>
-          <p>Cada componente usa los valores más recientes disponibles:</p>
+
+      <div class="theory-grid">
+        <article class="theory-card">
+          <h3><i class="fa-solid fa-gears"></i> Eliminación gaussiana con pivoteo parcial</h3>
+          <p><strong>Idea.</strong> Transformar <code>A·x = b</code> en un sistema triangular superior equivalente, que se resuelve despejando de abajo hacia arriba. Intercambiar filas y restar múltiplos de una fila a otra no cambian la solución.</p>
+          <p><strong>Pasos.</strong></p>
+          <ol>
+            <li>Formar la matriz aumentada <code>[A | b]</code>.</li>
+            <li>En la columna <em>k</em>, elegir como pivote la fila con mayor <code>|aᵢₖ|</code> (desde la fila <em>k</em> hacia abajo) e intercambiarla con la fila <em>k</em>.</li>
+            <li>Para cada fila <em>i</em> debajo de <em>k</em>, restar <code>(aᵢₖ/aₖₖ)</code> veces la fila <em>k</em>, para anular <code>aᵢₖ</code>.</li>
+            <li>Repetir en todas las columnas y, por último, sustituir hacia atrás.</li>
+          </ol>
+          <p><strong>Por qué pivotear.</strong> Dividir entre un número pequeño amplifica el error de redondeo. Elegir el mayor valor absoluto como divisor mantiene los multiplicadores en el intervalo [−1, 1].</p>
+          <p><strong>Costo.</strong> Del orden de <code>2n³/3</code> operaciones de punto flotante.</p>
+          <pre class="algo"><code>para k = 1 hasta n-1:
+    p = argmax |a[i][k]|, con i ≥ k
+    intercambiar fila k con fila p
+    si |a[k][k]| ≈ 0: sistema singular, detener
+    para i = k+1 hasta n:
+        f = a[i][k] / a[k][k]
+        a[i][j] -= f · a[k][j],  para j = k..n
+sustitución hacia atrás</code></pre>
+          <p><strong>Falla cuando:</strong> el sistema es singular (no hay pivote no nulo) o el pivote es muy pequeño y el redondeo domina el resultado.</p>
+        </article>
+
+        <article class="theory-card">
+          <h3><i class="fa-solid fa-rotate"></i> Gauss-Seidel</h3>
+          <p><strong>Idea.</strong> Partir de una aproximación inicial (aquí, el vector cero) y mejorarla componente por componente. Cada componente nueva usa los valores más recientes disponibles, por eso suele converger más rápido que el método de Jacobi, que solo usa los valores de la iteración anterior.</p>
+          <p><strong>Fórmula por componente.</strong></p>
           <p>$$x_i^{(k+1)}=\frac{1}{a_{ii}}\Big(b_i-\sum_{j<i}a_{ij}x_j^{(k+1)}-\sum_{j>i}a_{ij}x_j^{(k)}\Big)$$</p>
-          <p><strong>Criterio de parada:</strong> $\|b-Ax\|_\infty\le\text{tol}$, o agotar el máximo de iteraciones. Llegar al máximo <em>no</em> demuestra convergencia.</p>
-        </div>
+          <pre class="algo"><code>x = vector cero
+repetir k = 1 … maxIter:
+    para i = 1 … n:
+        x[i] = (b[i] - Σ_{j≠i} a[i][j]·x[j]) / a[i][i]
+    si ‖b - A·x‖∞ ≤ tol: devolver x
+si no: no se alcanzó la tolerancia</code></pre>
+          <p><strong>Condiciones de convergencia.</strong></p>
+          <ul>
+            <li><strong>Suficiente:</strong> dominancia diagonal estricta, <code>|aᵢᵢ| &gt; Σ_{j≠i}|aᵢⱼ|</code> en cada fila.</li>
+            <li><strong>Suficiente:</strong> A simétrica y definida positiva.</li>
+            <li><strong>Exacta:</strong> el radio espectral de la matriz de iteración es menor que 1. No es una prueba práctica, pero explica por qué el método diverge en <code>[[1,2],[3,1]]</code>.</li>
+          </ul>
+          <p><strong>Criterio de parada.</strong> Se usa el residuo <code>‖b − A·x‖∞</code>. Llegar al máximo de iteraciones <em>no</em> demuestra convergencia: solo indica que no se cumplió la tolerancia.</p>
+          <p><strong>Costo por iteración.</strong> Del orden de <code>n²</code> operaciones. Resulta ventajoso cuando <em>n</em> es grande y A es dispersa.</p>
+        </article>
       </div>
+
+      <div class="theory-grid">
+        <article class="theory-card">
+          <h3><i class="fa-solid fa-ruler"></i> Error, residuo y número de condición</h3>
+          <p>Sea <code>x*</code> la solución exacta y <code>x</code> una aproximación.</p>
+          <ul>
+            <li><strong>Error:</strong> <code>e = x* − x</code>. Es lo que queremos pequeño, pero no lo conocemos.</li>
+            <li><strong>Residuo:</strong> <code>r = b − A·x</code>. Se calcula sin conocer <code>x*</code>.</li>
+          </ul>
+          <p>Ambos se relacionan por <code>A·e = r</code>. Un residuo pequeño es una buena señal, pero no una garantía:</p>
+          <p>$$\frac{\|e\|}{\|x^*\|}\;\le\;\kappa(A)\,\frac{\|r\|}{\|b\|},\qquad \kappa(A)=\|A\|\,\|A^{-1}\|$$</p>
+          <p>Si <code>κ(A)</code> es grande (matriz casi singular), un residuo casi nulo puede convivir con un error grande. Esto conecta con la advertencia de pivotes pequeños del módulo.</p>
+        </article>
+
+        <article class="theory-card">
+          <h3><i class="fa-solid fa-scale-balanced"></i> Comparación de los dos métodos</h3>
+          <div class="table-scroll">
+            <table class="calc-table">
+              <thead><tr><th>Aspecto</th><th>Eliminación gaussiana</th><th>Gauss-Seidel</th></tr></thead>
+              <tbody>
+                <tr><td>Tipo</td><td>Directo</td><td>Iterativo</td></tr>
+                <tr><td>Resultado</td><td>Solución en un número fijo de pasos</td><td>Aproximación que mejora en cada iteración</td></tr>
+                <tr><td>Requisito</td><td>Pivote no nulo (con pivoteo)</td><td>Convergencia (dominancia, SPD o radio espectral)</td></tr>
+                <tr><td>Costo</td><td>≈ 2n³/3</td><td>≈ n² por iteración</td></tr>
+                <tr><td>Fallo típico</td><td>Singularidad, pivote pequeño</td><td>No converge o converge lento</td></tr>
+                <tr><td>Verificación</td><td>Residuo cercano a cero</td><td>Residuo ≤ tolerancia</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Para sistemas pequeños y densos, como los de este módulo, la eliminación gaussiana es la opción segura. Gauss-Seidel tiene sentido cuando A es grande y dispersa, y se sabe que converge.</p>
+        </article>
+      </div>
+
       <div class="ejemplo-extra">
-        <h3>Dominancia diagonal estricta</h3>
-        <p>Si $|a_{ii}|&gt;\sum_{j\ne i}|a_{ij}|$ en cada fila, Gauss-Seidel converge. Es una <strong>condición suficiente, no necesaria</strong>: la matriz $\begin{pmatrix}2&1&0\\1&2&1\\0&1&2\end{pmatrix}$ es simétrica definida positiva y converge aunque su fila 2 no sea estrictamente dominante ($2=1+1$).</p>
+        <h3>Dominancia diagonal estricta: suficiente, no necesaria</h3>
+        <p>Si <code>|aᵢᵢ| &gt; Σ_{j≠i}|aᵢⱼ|</code> en cada fila, Gauss-Seidel converge. Pero no es necesaria: la matriz $\begin{pmatrix}2&1&0\\1&2&1\\0&1&2\end{pmatrix}$ es simétrica definida positiva y converge aunque su fila 2 no sea estrictamente dominante ($2=1+1$). Al revés, <code>[[1,2],[3,1]]</code> no es dominante y diverge.</p>
       </div>
     </section>
 
@@ -178,6 +243,25 @@
         <h3>Iteraciones de Gauss-Seidel</h3>
         <div class="table-scroll"><table class="calc-table" id="gsTable"><thead></thead><tbody></tbody></table></div>
       </div>
+      <aside class="calc-aside" aria-label="Guía de lectura">
+        <h3><i class="fa-solid fa-book-open"></i> Cómo leer los resultados</h3>
+        <ul>
+          <li><strong>Residuo ≈ 0:</strong> la solución satisface el sistema dentro del redondeo.</li>
+          <li><strong>Residuo ≤ tolerancia:</strong> Gauss-Seidel cumplió el criterio de parada.</li>
+          <li><strong>Gráfico logarítmico descendente:</strong> cada iteración reduce el residuo; la pendiente indica la velocidad.</li>
+          <li><strong>Gráfico que sube:</strong> el método diverge; usa eliminación gaussiana.</li>
+          <li><strong>Pivote pequeño:</strong> el resultado puede ser inexacto aunque el programa no falle.</li>
+        </ul>
+        <h3><i class="fa-solid fa-square-root-variable"></i> Fórmulas de referencia</h3>
+        <p>$$A\,x=b,\qquad r=b-A\,x,\qquad \|r\|_\infty=\max_i |r_i|$$</p>
+        <p>$$x_i^{(k+1)}=\frac{1}{a_{ii}}\Big(b_i-\sum_{j<i}a_{ij}x_j^{(k+1)}-\sum_{j>i}a_{ij}x_j^{(k)}\Big)$$</p>
+        <h3><i class="fa-solid fa-lightbulb"></i> Sugerencias</h3>
+        <ul>
+          <li>Empieza con el caso base y cambia un solo número para ver el efecto.</li>
+          <li>Prueba el «Fallo: singular» y observa el mensaje.</li>
+          <li>Compara el número de iteraciones al cambiar la tolerancia.</li>
+        </ul>
+      </aside>
     </div>
     </section>
 

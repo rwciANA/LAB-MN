@@ -172,3 +172,41 @@ img, canvas, svg { max-width: 100%; }
 @media (min-width: 1100px) and (max-width: 1439px) {
   .status { display: none; }
 }
+
+/* ===== Ocupar toda la pantalla en escritorio ===== */
+.view { max-width: none; padding-left: clamp(20px, 3vw, 64px); padding-right: clamp(20px, 3vw, 64px); }
+.view .section-heading { max-width: none; }
+.view .section-heading p { max-width: none; }
+.view .section-heading h2 { font-size: clamp(28px, 2.6vw, 40px); }
+.hero-grid { gap: clamp(32px, 6vw, 120px); }
+.hero-copy .lead { max-width: 64ch; }
+.calc-layout .output-panel, .calc-layout .control-panel { border-radius: 18px; }
+.calc-layout { width: 100%; }
+
+/* ===== Teoría ===== */
+.theory-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; margin-bottom: 22px; }
+.theory-card { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: clamp(20px, 2vw, 32px); box-shadow: var(--shadow); min-width: 0; }
+.theory-card h3 { font: 700 22px "Space Grotesk", sans-serif; margin: 0 0 14px; color: var(--ink); }
+.theory-card h3 i { color: var(--orange); margin-right: 8px; }
+.theory-card p, .theory-card li { font-size: 15.5px; line-height: 1.7; color: #3f4a50; }
+.theory-card ol, .theory-card ul { padding-left: 22px; }
+pre.algo { background: #1f2a30; color: #e9f1f4; border-radius: 12px; padding: 16px 18px; overflow-x: auto; font: 13.5px/1.6 ui-monospace, Consolas, monospace; margin: 14px 0; }
+pre.algo code { background: none; color: inherit; font: inherit; padding: 0; }
+@media (min-width: 1100px) {
+  .theory-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ===== Panel lateral de la calculadora ===== */
+.calc-aside { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 22px; box-shadow: var(--shadow); min-width: 0; }
+.calc-aside h3 { font: 700 16px "Space Grotesk", sans-serif; margin: 6px 0 10px; color: var(--ink); }
+.calc-aside h3 i { color: var(--orange); margin-right: 6px; }
+.calc-aside ul { padding-left: 18px; margin: 0 0 14px; }
+.calc-aside li { font-size: 14px; line-height: 1.6; color: #3f4a50; margin-bottom: 6px; }
+.calc-aside p { font-size: 14px; overflow-x: auto; }
+@media (min-width: 1024px) {
+  .calc-layout .calc-aside { grid-column: 2; position: static; }
+}
+@media (min-width: 1600px) {
+  .calc-layout { grid-template-columns: minmax(340px, 4fr) minmax(0, 5fr) minmax(280px, 3fr); }
+  .calc-layout .calc-aside { grid-column: 3; grid-row: 1; position: sticky; top: 96px; }
+}

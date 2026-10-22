@@ -91,25 +91,75 @@
       <div class="section-heading compact">
         <p class="eyebrow"><span>02</span> TEORÍA</p>
         <h2>Interpolar frente a ajustar</h2>
-        <p>Dos modelos con objetivos distintos. Elegir mal el modelo lleva a conclusiones erróneas.</p>
+        <p>Dos respuestas a dos preguntas distintas. Interpolar responde «¿qué valor tendría la función entre estos datos exactos?». Ajustar responde «¿cuál es la tendencia que describen estos datos con error?».</p>
       </div>
-      <div class="paradigm-cards">
-        <div class="paradigm-box closed">
-          <div class="p-head"><i class="fa-solid fa-bezier-curve"></i> <strong>Lagrange</strong></div>
-          <p>Polinomio de grado a lo sumo $n-1$ que pasa por los $n$ puntos:</p>
-          <p>$$P(x)=\sum_{i=0}^{n-1} y_i\,L_i(x),\qquad L_i(x)=\prod_{j\ne i}\frac{x-x_j}{x_i-x_j}$$</p>
-          <p><strong>Limitación:</strong> reproduce el error de medición y, con grado alto, puede oscilar entre puntos.</p>
-        </div>
-        <div class="paradigm-box open">
-          <div class="p-head"><i class="fa-solid fa-chart-line"></i> <strong>Regresión lineal</strong></div>
-          <p>Recta que minimiza la suma de cuadrados de los residuos:</p>
-          <p>$$b=\frac{S_{xy}}{S_{xx}},\qquad a=\bar y-b\,\bar x,\qquad SCR=\sum_i (y_i-a-b\,x_i)^2$$</p>
-          <p><strong>Limitación:</strong> requiere al menos dos abscisas distintas y supone una tendencia lineal.</p>
-        </div>
+
+      <div class="theory-grid">
+        <article class="theory-card">
+          <h3><i class="fa-solid fa-bezier-curve"></i> Interpolación de Lagrange</h3>
+          <p><strong>Idea.</strong> Construir un polinomio de grado a lo sumo <em>n−1</em> que pase exactamente por los <em>n</em> puntos <code>(xᵢ, yᵢ)</code>. Es único para abscisas distintas.</p>
+          <p>$$P(x)=\sum_{i=1}^{n} y_i\,L_i(x),\qquad L_i(x)=\prod_{j\ne i}\frac{x-x_j}{x_i-x_j}$$</p>
+          <p><strong>Propiedad clave.</strong> <code>Lᵢ(xⱼ) = 1</code> si <em>i = j</em> y <code>0</code> si no. Por eso <code>P(xⱼ) = yⱼ</code>: el polinomio pasa por cada dato.</p>
+          <p><strong>Error de interpolación.</strong> Si <code>y = f(x)</code> es suficientemente suave:</p>
+          <p>$$f(x)-P(x)=\frac{f^{(n)}(\xi)}{n!}\prod_{i=1}^{n}(x-x_i)$$</p>
+          <p>El error crece cuando <em>x</em> se aleja de los nodos, lo que explica por qué la extrapolación es poco confiable.</p>
+          <pre class="algo"><code>entrada: nodos (xᵢ, yᵢ), consulta x
+si hay abscisas repetidas: error
+P = 0
+para i = 1 … n:
+    L = 1
+    para j ≠ i: L = L · (x - xⱼ) / (xᵢ - xⱼ)
+    P = P + yᵢ · L
+devolver P</code></pre>
+          <p><strong>Costo.</strong> Del orden de <code>n²</code> operaciones por consulta. Cada base puede ser negativa: eso no indica error.</p>
+          <p><strong>Fenómeno de Runge.</strong> Con muchos nodos equiespaciados, el polinomio puede oscilar mucho cerca de los extremos del intervalo, aunque pase por todos los datos. Por eso más nodos no garantizan mejor resultado.</p>
+        </article>
+
+        <article class="theory-card">
+          <h3><i class="fa-solid fa-chart-line"></i> Regresión lineal por mínimos cuadrados</h3>
+          <p><strong>Modelo.</strong> <code>y = a + b·x + ε</code>, donde <code>ε</code> es el error de medición. Se busca la recta que minimiza la suma de cuadrados de los residuos:</p>
+          <p>$$SCR(a,b)=\sum_{i=1}^{n}\big(y_i-a-b\,x_i\big)^2$$</p>
+          <p><strong>Solución.</strong> Derivando e igualando a cero se obtienen las ecuaciones normales, cuya solución cerrada es:</p>
+          <p>$$b=\frac{S_{xy}}{S_{xx}},\qquad a=\bar y-b\,\bar x,\qquad S_{xy}=\sum (x_i-\bar x)(y_i-\bar y),\quad S_{xx}=\sum (x_i-\bar x)^2$$</p>
+          <p><strong>Bondad del ajuste.</strong> <code>R² = 1 − SCR / SCT</code>, con <code>SCT = Σ(yᵢ − ȳ)²</code>. Un R² alto indica que la recta explica buena parte de la variación; no prueba que el modelo lineal sea el correcto.</p>
+          <pre class="algo"><code>entrada: datos (xᵢ, yᵢ), n ≥ 2
+si todas las xᵢ son iguales: error (pendiente indefinida)
+x̄ = promedio(x), ȳ = promedio(y)
+Sxy = Σ (xᵢ - x̄)(yᵢ - ȳ)
+Sxx = Σ (xᵢ - x̄)²
+b = Sxy / Sxx;  a = ȳ - b·x̄
+residuos: rᵢ = yᵢ - (a + b·xᵢ)
+SCR = Σ rᵢ²</code></pre>
+          <p><strong>Supuestos.</strong> Relación lineal, errores independientes y de varianza aproximadamente constante. Si no se cumplen, conviene revisar los residuos antes de confiar en la recta.</p>
+        </article>
       </div>
-      <div class="ejemplo-extra">
-        <h3>Idea clave</h3>
-        <p>Interpolar no elimina el error de medición. Ajustar describe una tendencia para predecir; interpolar estima entre datos exactos. Fuera del intervalo de los datos, ambos requieren aviso de extrapolación.</p>
+
+      <div class="theory-grid">
+        <article class="theory-card">
+          <h3><i class="fa-solid fa-scale-balanced"></i> ¿Interpolar o ajustar?</h3>
+          <div class="table-scroll">
+            <table class="calc-table">
+              <thead><tr><th>Pregunta</th><th>Interpolar (Lagrange)</th><th>Ajustar (regresión)</th></tr></thead>
+              <tbody>
+                <tr><td>¿Los datos son exactos?</td><td>Sí, se respetan todos</td><td>No, tienen error de medición</td></tr>
+                <tr><td>¿Qué busco?</td><td>Estimar valores entre los datos</td><td>Describir la tendencia</td></tr>
+                <tr><td>¿Pasa por los datos?</td><td>Sí, exactamente</td><td>No necesariamente</td></tr>
+                <tr><td>¿Y fuera del intervalo?</td><td>Puede dispararse</td><td>Más estable como modelo lineal</td></tr>
+                <tr><td>Riesgo típico</td><td>Oscilaciones con muchos nodos</td><td>Modelo lineal inadecuado</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="theory-card">
+          <h3><i class="fa-solid fa-triangle-exclamation"></i> Errores comunes</h3>
+          <ul>
+            <li><strong>Creer que interpolar elimina el error de medición.</strong> Solo reproduce el dato, con su error incluido.</li>
+            <li><strong>Subir el grado sin medir el error.</strong> Más nodos pueden empeorar el resultado cerca de los extremos.</li>
+            <li><strong>Extrapolar sin aviso.</strong> Fuera del intervalo de los datos, el resultado es una hipótesis, no una estimación.</li>
+            <li><strong>Usar R² como única prueba.</strong> Hay que mirar también los residuos y el contexto del problema.</li>
+          </ul>
+        </article>
       </div>
     </section>
 
@@ -167,6 +217,25 @@
         <h3>Residuos de la regresión</h3>
         <div class="table-scroll"><table class="calc-table" id="resTable"><thead></thead><tbody></tbody></table></div>
       </div>
+      <aside class="calc-aside" aria-label="Guía de lectura">
+        <h3><i class="fa-solid fa-book-open"></i> Cómo leer los resultados</h3>
+        <ul>
+          <li><strong>P(x) de Lagrange:</strong> pasa por todos los datos; es la estimación si los datos son exactos.</li>
+          <li><strong>Recta ŷ(x):</strong> describe la tendencia; es la predicción si los datos tienen error.</li>
+          <li><strong>SCR:</strong> suma de residuos al cuadrado. Cuanto menor, mejor ajusta la recta.</li>
+          <li><strong>Aviso de extrapolación:</strong> la consulta está fuera del intervalo de los datos.</li>
+          <li><strong>Base negativa:</strong> es normal; la suma de contribuciones da el valor.</li>
+        </ul>
+        <h3><i class="fa-solid fa-square-root-variable"></i> Fórmulas de referencia</h3>
+        <p>$$P(x)=\sum_{i} y_i\,L_i(x),\qquad L_i(x)=\prod_{j\ne i}\frac{x-x_j}{x_i-x_j}$$</p>
+        <p>$$b=\frac{S_{xy}}{S_{xx}},\qquad a=\bar y-b\,\bar x,\qquad SCR=\sum_i (y_i-a-b\,x_i)^2$$</p>
+        <h3><i class="fa-solid fa-lightbulb"></i> Sugerencias</h3>
+        <ul>
+          <li>Empieza con el caso de partida y cambia un dato para ver su efecto.</li>
+          <li>Prueba «Fallo: x repetida» y observa el rechazo.</li>
+          <li>Consulta x = 5 y compara la predicción de ambos modelos.</li>
+        </ul>
+      </aside>
     </div>
     </section>
 
