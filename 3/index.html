@@ -1,135 +1,200 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Módulo 3 · Interpolación y ajuste de curvas | ITERA</title>
-  <meta name="description" content="Compara la interpolación de Lagrange con la regresión lineal por mínimos cuadrados y decide cuál usar según el propósito.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Módulo 3: Interpolación y ajuste de curvas. Interpolación de Lagrange y regresión lineal por mínimos cuadrados, con ejemplos, ejercicios y autoevaluación.">
+  <title>ITERA | Interpolación y ajuste de curvas</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@500;600;700&family=STIX+Two+Math&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="../assets/css/modulo.css">
-  <script>window.MathJax = { tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["$$", "$$"]] } };</script>
-  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="../">ITERA <small>Módulo 3</small></a>
-    <nav aria-label="Secciones">
-      <a href="#teoria">Teoría</a>
-      <a href="#calculadora">Calculadora</a>
-      <a href="#ejemplo">Ejemplo</a>
-      <a href="#pruebas">Pruebas</a>
+    <a class="brand" href="#inicio" data-view="inicio" aria-label="Ir al inicio">
+      <span class="brand-mark"><i class="fa-solid fa-wave-square"></i></span>
+      <span><strong>ITERA</strong><small>MÓDULO 3 · INTERPOLACIÓN Y AJUSTE</small></span>
+    </a>
+    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menú" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
+    <nav class="nav" id="mainNav" aria-label="Navegación principal">
+      <div class="nav-mobile-head">
+        <span class="brand-mark"><i class="fa-solid fa-wave-square"></i></span>
+        <strong>ITERA · MÓDULO 3</strong>
+        <button class="nav-close" id="navClose" type="button" aria-label="Cerrar menú"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <a href="#inicio" data-view="inicio" class="active"><i class="fa-solid fa-house"></i>Inicio</a>
+      <a href="#teoria" data-view="teoria"><i class="fa-solid fa-book-open"></i>Teoría</a>
+      <a href="#calculadora" data-view="calculadora"><i class="fa-solid fa-calculator"></i>Calculadora</a>
+      <a href="#ejemplos" data-view="ejemplos"><i class="fa-solid fa-list-ol"></i>Ejemplos</a>
+      <a href="#comparativo" data-view="comparativo"><i class="fa-solid fa-code-compare"></i>Comparación</a>
+      <a href="#ejercicios" data-view="ejercicios"><i class="fa-solid fa-pen-to-square"></i>Ejercicios</a>
+      <a href="#autoevaluacion" data-view="autoevaluacion"><i class="fa-solid fa-circle-question"></i>Autoevaluación</a>
+      <a href="#pruebas" data-view="pruebas"><i class="fa-solid fa-flask-vial"></i>Pruebas</a>
+      <a href="#referencias" data-view="referencias"><i class="fa-solid fa-quote-right"></i>Referencias</a>
+      <a href="#equipo" data-view="equipo"><i class="fa-solid fa-users"></i>Equipo</a>
+      <a href="../index.html"><i class="fa-solid fa-arrow-left"></i>Portal General</a>
     </nav>
+    <div class="nav-backdrop" id="navBackdrop"></div>
+    <span class="status"><a class="back-portal" href="../index.html"><i class="fa-solid fa-arrow-left"></i> Portal</a><span class="status-dot"></span> Versión v1.0.0</span>
   </header>
 
   <main>
-    <section class="hero">
-      <p class="eyebrow">Módulo 3 · Aproximación de funciones</p>
-      <h1>Interpolación y ajuste de curvas</h1>
-      <p class="lead">Distingue <strong>pasar por los datos</strong> de <strong>aproximar una tendencia</strong>, y elige el método según lo que necesites.</p>
-      <p class="meta"><strong>Objetivo:</strong> distinguir interpolar de ajustar, y elegir entre ambos según el propósito.</p>
-      <p class="meta"><strong>Caso de partida (datos sintéticos):</strong> carga normalizada x = 0, 1, 2, 3 y latencia y = 1, 2, 2, 4 ms de un servicio.</p>
+    <!-- 01. INICIO -->
+    <section class="view active-view" id="inicio" data-section="inicio">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow"><span>01</span> APROXIMACIÓN DE FUNCIONES · INGENIERÍA DE SISTEMAS (UNSA)</p>
+          <h1>Interpolación y ajuste de curvas</h1>
+          <p class="lead"><strong>Objetivo:</strong> distinguir pasar por los datos de aproximar una tendencia, y elegir entre interpolación y regresión según el propósito.</p>
+          <div class="target-badge">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span><strong>Público objetivo:</strong> estudiantes de Ingeniería de Sistemas y autodidactas. Caso de partida: carga y latencia de un servicio (datos sintéticos).</span>
+          </div>
+          <div class="paradigm-cards">
+            <div class="paradigm-box closed">
+              <div class="p-head"><i class="fa-solid fa-bezier-curve"></i> <strong>Interpolación de Lagrange</strong></div>
+              <p>Pasa exactamente por los datos. Útil cuando los datos son exactos y se quiere estimar valores intermedios.</p>
+              <a class="button button-outline" href="#calculadora" data-view="calculadora">Ir a la calculadora <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="paradigm-box open">
+              <div class="p-head"><i class="fa-solid fa-chart-line"></i> <strong>Regresión lineal</strong></div>
+              <p>Describe la tendencia por mínimos cuadrados. Útil cuando los datos tienen error de medición y se quiere predecir.</p>
+              <a class="button button-primary" href="#teoria" data-view="teoria">Ver la teoría <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="stats" style="grid-template-columns: 1fr 1fr;">
+            <div><span>Lagrange en x = 1.5</span><strong>1.9375</strong></div>
+            <div><span>Recta</span><strong>y = 0.9 + 0.9x</strong></div>
+            <div><span>Predicción en 1.5</span><strong>2.25 ms</strong></div>
+            <div><span>SCR</span><strong>0.70</strong></div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section id="teoria" class="card">
-      <h2>1. Teoría breve</h2>
-      <div class="grid2">
-        <div>
-          <h3>Interpolación de Lagrange</h3>
-          <p>Construye un polinomio de grado <em>n − 1</em> que pasa exactamente por los <em>n</em> puntos:</p>
-          <p>$$P(x)=\sum_{i=0}^{n-1} y_i\,L_i(x), \qquad L_i(x)=\prod_{j\ne i}\frac{x-x_j}{x_i-x_j}$$</p>
-          <p><strong>Limitación:</strong> si el dato tiene error de medición, el polinomio lo reproduce. Con grado alto puede oscilar entre puntos.</p>
+    <!-- 02. TEORÍA -->
+    <section class="view" id="teoria" data-section="teoria">
+      <div class="section-heading compact">
+        <p class="eyebrow"><span>02</span> TEORÍA</p>
+        <h2>Interpolar frente a ajustar</h2>
+        <p>Dos modelos con objetivos distintos. Elegir mal el modelo lleva a conclusiones erróneas.</p>
+      </div>
+      <div class="paradigm-cards">
+        <div class="paradigm-box closed">
+          <div class="p-head"><i class="fa-solid fa-bezier-curve"></i> <strong>Lagrange</strong></div>
+          <p>Polinomio de grado a lo sumo $n-1$ que pasa por los $n$ puntos:</p>
+          <p>$$P(x)=\sum_{i=0}^{n-1} y_i\,L_i(x),\qquad L_i(x)=\prod_{j\ne i}\frac{x-x_j}{x_i-x_j}$$</p>
+          <p><strong>Limitación:</strong> reproduce el error de medición y, con grado alto, puede oscilar entre puntos.</p>
         </div>
-        <div>
-          <h3>Regresión lineal por mínimos cuadrados</h3>
-          <p>Busca la recta que minimiza la suma de cuadrados de los residuos, sin pasar necesariamente por los datos:</p>
-          <p>$$\text{pendiente } b=\frac{S_{xy}}{S_{xx}},\qquad \text{intercepto } a=\bar y-b\,\bar x,\qquad SCR=\sum_i (y_i-a-b\,x_i)^2$$</p>
-          <p><strong>Limitación:</strong> requiere al menos dos abscisas distintas; supone una tendencia lineal.</p>
+        <div class="paradigm-box open">
+          <div class="p-head"><i class="fa-solid fa-chart-line"></i> <strong>Regresión lineal</strong></div>
+          <p>Recta que minimiza la suma de cuadrados de los residuos:</p>
+          <p>$$b=\frac{S_{xy}}{S_{xx}},\qquad a=\bar y-b\,\bar x,\qquad SCR=\sum_i (y_i-a-b\,x_i)^2$$</p>
+          <p><strong>Limitación:</strong> requiere al menos dos abscisas distintas y supone una tendencia lineal.</p>
         </div>
       </div>
-      <p><strong>Idea clave:</strong> interpolar no elimina el error de medición. Ajustar sirve para describir una tendencia; interpolar, para estimar entre datos exactos.</p>
+      <div class="ejemplo-extra">
+        <h3>Idea clave</h3>
+        <p>Interpolar no elimina el error de medición. Ajustar describe una tendencia para predecir; interpolar estima entre datos exactos. Fuera del intervalo de los datos, ambos requieren aviso de extrapolación.</p>
+      </div>
     </section>
 
-    <section id="calculadora" class="card">
-      <h2>2. Calculadora</h2>
-      <p class="hint">Datos precargados con el caso de partida. Edita x e y, y elige el método. Entre 2 y 6 nodos.</p>
-
-      <div class="controls">
-        <label>Nodos
-          <input id="nCount" type="number" min="2" max="6" step="1" value="4">
-        </label>
-        <label>Consulta x
-          <input id="xQuery" type="number" step="any" value="1.5">
-        </label>
-        <label>Método
-          <select id="method">
-            <option value="both" selected>Comparar ambos</option>
-            <option value="lagrange">Lagrange</option>
-            <option value="reg">Regresión lineal</option>
-          </select>
-        </label>
+    <!-- 03. CALCULADORA -->
+    <section class="view" id="calculadora" data-section="calculadora">
+      <div class="section-heading compact">
+        <p class="eyebrow"><span>03</span> EXPERIMENTACIÓN NUMÉRICA</p>
+        <h2>Calculadora de interpolación y ajuste</h2>
+        <p>Datos precargados con el caso de partida. Edita x e y (entre 2 y 6 nodos), la consulta y el método.</p>
       </div>
 
-      <div class="presets">
-        <button type="button" data-preset="base">Caso base</button>
-        <button type="button" data-preset="repetida">Fallo: x repetida</button>
-        <button type="button" data-preset="iguales">Fallo: x iguales</button>
-        <button type="button" id="reset">Restablecer</button>
-      </div>
-
-      <div class="matrix-wrap">
-        <div>
-          <h3>Datos (x, y)</h3>
-          <div id="pointsInputs" class="points" aria-label="Pares de datos"></div>
+      <div class="control-panel">
+        <div class="panel-heading">
+          <span class="panel-kicker">CONFIGURACIÓN</span>
+          <span class="method-pill">DATOS Y MÉTODO</span>
         </div>
+        <div class="controls">
+          <label>Nodos
+            <input id="nCount" type="number" min="2" max="6" step="1" value="4">
+          </label>
+          <label>Consulta x
+            <input id="xQuery" type="number" step="any" value="1.5">
+          </label>
+          <label>Método
+            <select id="method"><option value="both" selected>Comparar ambos</option><option value="lagrange">Lagrange</option><option value="reg">Regresión lineal</option></select>
+          </label>
+        </div>
+        <div class="presets">
+          <button type="button" data-preset="base">Caso base</button>
+          <button type="button" data-preset="repetida">Fallo: x repetida</button>
+          <button type="button" data-preset="iguales">Fallo: x iguales</button>
+          <button type="button" id="reset">Restablecer</button>
+        </div>
+        <h3 class="calc-note">Datos (x, y)</h3>
+        <div id="pointsInputs" class="points" aria-label="Pares de datos"></div>
+        <div class="actions">
+          <button type="button" id="solve" class="primary"><i class="fa-solid fa-calculator" aria-hidden="true"></i> Calcular</button>
+        </div>
+        <p id="message" class="message" role="status" aria-live="polite"></p>
       </div>
 
-      <div class="actions">
-        <button type="button" id="solve" class="primary"><i class="fa-solid fa-calculator" aria-hidden="true"></i> Calcular</button>
-      </div>
-      <p id="message" class="message" role="status" aria-live="polite"></p>
-
-      <div id="results" class="results" hidden>
+      <div id="results" class="output-panel" hidden>
         <div class="stats">
           <div><span>Lagrange P(x)</span><strong id="valLagrange">—</strong></div>
-          <div><span>Recta ajustada ŷ(x)</span><strong id="valReg">—</strong></div>
+          <div><span>Recta ŷ(x)</span><strong id="valReg">—</strong></div>
           <div><span>Pendiente / intercepto</span><strong id="coefReg">—</strong></div>
           <div><span>Suma de cuadrados de residuos</span><strong id="scr">—</strong></div>
         </div>
-
-        <h3>Gráfico: datos, polinomio de Lagrange y recta</h3>
-        <p class="hint">Eje horizontal: carga x. Eje vertical: latencia y (ms). Los puntos son los datos; la curva naranja pasa por ellos; la recta azul es el ajuste.</p>
-        <div class="chart-box"><canvas id="curveChart" aria-label="Gráfico de datos, polinomio de Lagrange y recta de regresión"></canvas></div>
-
-        <h3>Contribución de cada base de Lagrange en x</h3>
-        <div class="table-scroll"><table id="basesTable"><thead></thead><tbody></tbody></table></div>
-
+        <h3>Datos, polinomio de Lagrange y recta</h3>
+        <p class="calc-note">Puntos: datos. Curva naranja: pasa por los datos. Recta azul: tendencia.</p>
+        <div class="chart-box"><canvas id="curveChart" aria-label="Datos, polinomio de Lagrange y recta de regresión"></canvas></div>
+        <h3>Contribución de cada base de Lagrange</h3>
+        <div class="table-scroll"><table class="calc-table" id="basesTable"><thead></thead><tbody></tbody></table></div>
         <h3>Residuos de la regresión</h3>
-        <div class="table-scroll"><table id="resTable"><thead></thead><tbody></tbody></table></div>
+        <div class="table-scroll"><table class="calc-table" id="resTable"><thead></thead><tbody></tbody></table></div>
       </div>
     </section>
 
-    <section id="ejemplo" class="card">
-      <h2>3. Ejemplo resuelto y caso comparativo</h2>
-      <ol class="steps-list">
-        <li><strong>Lagrange con los cuatro nodos.</strong> En x = 1.5 el polinomio vale 1.9375 ms.</li>
-        <li><strong>Regresión lineal.</strong> S<sub>xy</sub> = 4.5 y S<sub>xx</sub> = 5, así que b = 0.9 y a = 0.9. La recta es y = 0.9 + 0.9x; predice 2.25 ms en x = 1.5.</li>
-        <li><strong>Interpretación.</strong> No coinciden porque tienen objetivos distintos: Lagrange respeta cada dato (incluido el 2 en x = 2) y la recta describe la tendencia general. Si la latencia real tiene ruido, la recta es el modelo más estable para predecir.</li>
-      </ol>
-    </section>
-
-    <section id="ejemplos-extra" class="card">
-      <h2>3b. Ejemplos adicionales</h2>
+    <!-- 04. EJEMPLOS -->
+    <section class="view" id="ejemplos" data-section="ejemplos">
+      <div class="section-heading compact">
+        <p class="eyebrow"><span>04</span> EJEMPLOS RESUELTOS</p>
+        <h2>Paso a paso</h2>
+        <p>El caso de partida y ejemplos adicionales con contribuciones de cada base y comparación de nodos.</p>
+      </div>
+      <article class="ejemplo-extra">
+        <h3>Caso de partida · Lagrange y regresión</h3>
+        <ol>
+          <li><strong>Lagrange con cuatro nodos.</strong> En x = 1.5 el polinomio vale 1.9375 ms.</li>
+          <li><strong>Regresión lineal.</strong> S<sub>xy</sub> = 4.5 y S<sub>xx</sub> = 5, así que b = 0.9 y a = 0.9. La recta es y = 0.9 + 0.9x; predice 2.25 ms en x = 1.5.</li>
+          <li><strong>Interpretación.</strong> No coinciden porque tienen objetivos distintos: Lagrange respeta cada dato y la recta describe la tendencia.</li>
+        </ol>
+      </article>
       <div id="ejemplosExtra"></div>
     </section>
 
-    <section id="comparativo" class="card">
-      <h2>3c. Caso comparativo: interpolar frente a ajustar</h2>
-      <p>Mismos datos (x = 0, 1, 2, 3; y = 1, 2, 2, 4), dos objetivos distintos.</p>
+    <!-- 05. COMPARACIÓN -->
+    <section class="view" id="comparativo" data-section="comparativo">
+      <div class="section-heading compact">
+        <p class="eyebrow"><span>05</span> CASO COMPARATIVO</p>
+        <h2>Interpolar frente a ajustar</h2>
+        <p>Mismos datos (x = 0, 1, 2, 3; y = 1, 2, 2, 4) con dos objetivos distintos.</p>
+      </div>
       <div class="table-scroll">
-        <table>
+        <table class="calc-table">
           <thead><tr><th>Consulta</th><th>Lagrange (4 nodos)</th><th>Recta de mínimos cuadrados</th><th>Lectura</th></tr></thead>
           <tbody>
             <tr><td>x = 0 (dato)</td><td>1</td><td>0.9</td><td>Lagrange respeta el dato; la recta lo suaviza.</td></tr>
@@ -138,36 +203,82 @@
           </tbody>
         </table>
       </div>
-      <p><strong>Conclusión:</strong> si los datos son exactos y quieres reproducirlos, interpola. Si tienen error de medición y buscas una tendencia para predecir, ajusta. En ambos casos el aviso fuera de intervalo es obligatorio.</p>
+      <div class="ejemplo-extra">
+        <h3>Conclusión</h3>
+        <p>Si los datos son exactos y quieres reproducirlos, interpola. Si tienen error de medición y buscas una tendencia para predecir, ajusta. En ambos casos, la consulta fuera del intervalo requiere aviso.</p>
+      </div>
     </section>
 
-    <section id="ejercicios" class="card">
-      <h2>3d. Ejercicios propuestos</h2>
-      <p class="hint">Dos intermedios y dos de mayor dificultad. Intenta primero; luego abre la solución.</p>
+    <!-- 06. EJERCICIOS -->
+    <section class="view" id="ejercicios" data-section="ejercicios">
+      <div class="section-heading compact">
+        <p class="eyebrow"><span>06</span> PRÁCTICA</p>
+        <h2>Ejercicios propuestos</h2>
+        <p>Dos intermedios y dos de mayor dificultad. Intenta primero y luego revisa la solución.</p>
+      </div>
       <div id="ejercicios-lista"></div>
     </section>
 
-    <section id="autoevaluacion" class="card">
-      <h2>3e. Autoevaluación</h2>
-      <p class="hint">Seis preguntas: selección múltiple, verdadero o falso, y respuesta numérica con tolerancia.</p>
+    <!-- 07. AUTOEVALUACIÓN -->
+    <section class="view" id="autoevaluacion" data-section="autoevaluacion">
+      <div class="section-heading compact">
+        <p class="eyebrow"><span>07</span> AUTOEVALUACIÓN</p>
+        <h2>Seis preguntas</h2>
+        <p>Selección múltiple, verdadero o falso, y respuesta numérica con tolerancia. Cada respuesta incluye su explicación.</p>
+      </div>
       <div id="quiz"></div>
     </section>
 
-    <section id="pruebas" class="card">
-      <h2>4. Pruebas del módulo</h2>
-      <p class="hint">Pruebas ejecutadas con <code>node tests/run.js</code>. Referencias: Lagrange = 1.9375 en x = 1.5; recta 0.9 + 0.9x; SCR = 0.70.</p>
+    <!-- 08. PRUEBAS -->
+    <section class="view" id="pruebas" data-section="pruebas">
+      <div class="section-heading compact">
+        <p class="eyebrow"><span>08</span> MATRIZ DE PRUEBAS</p>
+        <h2>Ocho pruebas del módulo</h2>
+        <p>Cuatro normales, dos de frontera y dos inválidas. Se ejecutan en el navegador al cargar la página y también con <code>node tests/run.js</code>.</p>
+      </div>
       <div class="table-scroll">
-        <table>
+        <table class="calc-table">
           <thead><tr><th>ID</th><th>Método</th><th>Tipo</th><th>Entrada</th><th>Esperado</th><th>Estado</th></tr></thead>
           <tbody id="testsBody"></tbody>
         </table>
       </div>
     </section>
+
+    <!-- 09. REFERENCIAS -->
+    <section class="view" id="referencias" data-section="referencias">
+      <div class="section-heading compact">
+        <p class="eyebrow"><span>09</span> REFERENCIAS</p>
+        <h2>Fuentes y código de referencia</h2>
+        <p>Los valores de la guía se contrastaron con una implementación independiente.</p>
+      </div>
+      <ul class="ref-list">
+        <li>Código de referencia en Python: <code>3/scripts/referencia.py</code> (sin dependencias).</li>
+        <li>Guía de trabajo de laboratorio, módulo 3: valores de verificación y casos.</li>
+        <li>MDN Web Docs, Learn web development: <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development" target="_blank" rel="noopener">developer.mozilla.org</a>.</li>
+        <li>Chart.js y MathJax: bibliotecas de gráficos y de fórmulas usadas en el portal.</li>
+      </ul>
+    </section>
+
+    <!-- 10. EQUIPO -->
+    <section class="view" id="equipo" data-section="equipo">
+      <div class="section-heading compact">
+        <p class="eyebrow"><span>10</span> EQUIPO</p>
+        <h2>Integrantes</h2>
+        <p>Los roles rotan cada tres semanas. Cada integrante defiende su parte del módulo.</p>
+      </div>
+      <ul class="ref-list">
+        <li>A · Condori Idme Raul Wilfredo</li>
+        <li>B · Quispe Rupaylla Fabrizio Alonso</li>
+        <li>C · Suarez Huamani Marco Antonio</li>
+        <li>D · Chura Monroy Daniel Wilston</li>
+      </ul>
+    </section>
   </main>
 
-  <footer class="footer">
-    <p>UNSA · Ingeniería de Sistemas · Laboratorio de Métodos Numéricos · 2026</p>
-    <p><a href="../">Volver al portal</a></p>
+  <footer>
+    <span>ITERA · MÓDULO 3: INTERPOLACIÓN Y AJUSTE DE CURVAS</span>
+    <a class="back-portal" href="../index.html"><i class="fa-solid fa-arrow-left"></i> Volver al Portal General</a>
+    <span>UNSA · INGENIERÍA DE SISTEMAS · 2026</span>
   </footer>
 
   <script src="js/algorithms.js"></script>
@@ -175,6 +286,7 @@
   <script src="js/tests.js"></script>
   <script src="js/content.js"></script>
   <script src="../assets/js/learn.js"></script>
+  <script src="../assets/js/shell.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

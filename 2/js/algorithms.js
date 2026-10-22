@@ -107,7 +107,7 @@ function gaussSeidel(A, b, { x0 = null, tol = 1e-6, maxIter = 100 } = {}) {
     const resNorm = infNorm(residual(A, x, b));
     rows.push({ iteracion: it, x: [...x], residuo: resNorm, cambio: infNorm(x.map((v, i) => v - prev[i])) });
     if (resNorm <= tol) {
-      return { status: "ok", message: `Convergencia en ${it} iteraciones.`, rows, x, dominant };
+      return { status: "ok", message: `Convergencia en ${it} ${it === 1 ? "iteración" : "iteraciones"}.`, rows, x, dominant };
     }
   }
   return {

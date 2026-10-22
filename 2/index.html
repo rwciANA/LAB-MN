@@ -1,181 +1,295 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Módulo 2 · Sistemas de ecuaciones lineales | ITERA</title>
-  <meta name="description" content="Resuelve sistemas pequeños con eliminación gaussiana con pivoteo parcial y Gauss-Seidel, y compara ambos por su residuo.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Módulo 2: Sistemas de ecuaciones lineales. Eliminación gaussiana con pivoteo parcial y Gauss-Seidel, con residuo, ejemplos, ejercicios y autoevaluación.">
+  <title>ITERA | Sistemas de ecuaciones lineales</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@500;600;700&family=STIX+Two+Math&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="../assets/css/modulo.css">
-  <script>window.MathJax = { tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["$$", "$$"]] } };</script>
-  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="../">ITERA <small>Módulo 2</small></a>
-    <nav aria-label="Secciones">
-      <a href="#teoria">Teoría</a>
-      <a href="#calculadora">Calculadora</a>
-      <a href="#ejemplo">Ejemplo</a>
-      <a href="#pruebas">Pruebas</a>
+    <a class="brand" href="#inicio" data-view="inicio" aria-label="Ir al inicio">
+      <span class="brand-mark"><i class="fa-solid fa-wave-square"></i></span>
+      <span><strong>ITERA</strong><small>MÓDULO 2 · SISTEMAS LINEALES</small></span>
+    </a>
+    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menú" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
+    <nav class="nav" id="mainNav" aria-label="Navegación principal">
+      <div class="nav-mobile-head">
+        <span class="brand-mark"><i class="fa-solid fa-wave-square"></i></span>
+        <strong>ITERA · MÓDULO 2</strong>
+        <button class="nav-close" id="navClose" type="button" aria-label="Cerrar menú"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <a href="#inicio" data-view="inicio" class="active"><i class="fa-solid fa-house"></i>Inicio</a>
+      <a href="#teoria" data-view="teoria"><i class="fa-solid fa-book-open"></i>Teoría</a>
+      <a href="#calculadora" data-view="calculadora"><i class="fa-solid fa-calculator"></i>Calculadora</a>
+      <a href="#ejemplos" data-view="ejemplos"><i class="fa-solid fa-list-ol"></i>Ejemplos</a>
+      <a href="#comparativo" data-view="comparativo"><i class="fa-solid fa-code-compare"></i>Comparación</a>
+      <a href="#ejercicios" data-view="ejercicios"><i class="fa-solid fa-pen-to-square"></i>Ejercicios</a>
+      <a href="#autoevaluacion" data-view="autoevaluacion"><i class="fa-solid fa-circle-question"></i>Autoevaluación</a>
+      <a href="#pruebas" data-view="pruebas"><i class="fa-solid fa-flask-vial"></i>Pruebas</a>
+      <a href="#referencias" data-view="referencias"><i class="fa-solid fa-quote-right"></i>Referencias</a>
+      <a href="#equipo" data-view="equipo"><i class="fa-solid fa-users"></i>Equipo</a>
+      <a href="../index.html"><i class="fa-solid fa-arrow-left"></i>Portal General</a>
     </nav>
+    <div class="nav-backdrop" id="navBackdrop"></div>
+    <span class="status"><a class="back-portal" href="../index.html"><i class="fa-solid fa-arrow-left"></i> Portal</a><span class="status-dot"></span> Versión v1.0.0</span>
   </header>
 
   <main>
-    <section class="hero">
-      <p class="eyebrow">Módulo 2 · Álgebra lineal numérica</p>
-      <h1>Sistemas de ecuaciones lineales</h1>
-      <p class="lead">Resuelve sistemas de tamaño 2 o 3 con un método directo y un método iterativo, y compara ambos mirando el <strong>residuo</strong>, no solo la respuesta.</p>
-      <p class="meta"><strong>Objetivo:</strong> resolver sistemas pequeños y comparar un método directo con uno iterativo mediante el residuo.</p>
-      <p class="meta"><strong>Caso de partida (datos sintéticos):</strong> demanda de tres servicios con filas (4, 1, 1), (1, 5, 1), (1, 1, 6) y vector (9, 14, 21). Las incógnitas son índices normalizados de demanda.</p>
+    <!-- 01. INICIO -->
+    <section class="view active-view" id="inicio" data-section="inicio">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow"><span>01</span> ÁLGEBRA LINEAL NUMÉRICA · INGENIERÍA DE SISTEMAS (UNSA)</p>
+          <h1>Sistemas de ecuaciones lineales</h1>
+          <p class="lead"><strong>Objetivo:</strong> resolver sistemas pequeños y comparar un método directo con uno iterativo mediante el residuo.</p>
+          <div class="target-badge">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span><strong>Público objetivo:</strong> estudiantes de Ingeniería de Sistemas y autodidactas con bases de álgebra lineal. Caso de partida: estimación de demanda de tres servicios (datos sintéticos).</span>
+          </div>
+          <div class="paradigm-cards">
+            <div class="paradigm-box closed">
+              <div class="p-head"><i class="fa-solid fa-gears"></i> <strong>Eliminación gaussiana</strong></div>
+              <p>Método directo con pivoteo parcial y sustitución hacia atrás. Solución en un número finito de operaciones.</p>
+              <a class="button button-outline" href="#calculadora" data-view="calculadora">Ir a la calculadora <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="paradigm-box open">
+              <div class="p-head"><i class="fa-solid fa-rotate"></i> <strong>Gauss-Seidel</strong></div>
+              <p>Método iterativo desde el vector cero. Se detiene cuando el residuo en norma infinita cumple la tolerancia.</p>
+              <a class="button button-primary" href="#teoria" data-view="teoria">Ver la teoría <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="stats" style="grid-template-columns: 1fr 1fr;">
+            <div><span>Caso base</span><strong>A x = b, 3 × 3</strong></div>
+            <div><span>Solución</span><strong>(1, 2, 3)</strong></div>
+            <div><span>Gauss-Seidel</span><strong>8 iteraciones</strong></div>
+            <div><span>Residuo</span><strong>≤ 10⁻⁶</strong></div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section id="teoria" class="card">
-      <h2>1. Teoría breve</h2>
-      <div class="grid2">
-        <div>
-          <h3>Eliminación gaussiana con pivoteo parcial</h3>
-          <p>Convierte <code>A·x = b</code> en un sistema triangular superior. En cada columna se intercambia la fila con mayor |valor| para usar el pivote más grande posible. Luego se despeja la última incógnita y se sustituye hacia atrás.</p>
-          <p><strong>Limitación:</strong> un pivote cercano a cero amplifica el error de redondeo, y un pivote nulo indica sistema singular.</p>
+    <!-- 02. TEORÍA -->
+    <section class="view" id="teoria" data-section="teoria">
+      <div class="section-heading compact">
+        <p class="eyebrow"><span>02</span> TEORÍA</p>
+        <h2>Cómo funcionan ambos métodos</h2>
+        <p>Dos formas de llegar a la misma solución: una directa y otra por aproximaciones sucesivas.</p>
+      </div>
+      <div class="paradigm-cards">
+        <div class="paradigm-box closed">
+          <div class="p-head"><i class="fa-solid fa-gears"></i> <strong>Eliminación gaussiana con pivoteo parcial</strong></div>
+          <p>En cada columna $k$ se elige como pivote la fila con mayor $|a_{ik}|$ y se intercambia con la fila $k$. Luego se anulan los elementos debajo del pivote y se despeja de abajo hacia arriba:</p>
+          <p>$$x_n=\frac{b_n^{(n)}}{a_{nn}^{(n)}},\qquad x_i=\frac{b_i^{(i)}-\sum_{j>i}a_{ij}^{(i)}x_j}{a_{ii}^{(i)}}$$</p>
+          <p><strong>Advertencia:</strong> si el pivote es cero el sistema es singular. Si es muy pequeño, el error de redondeo se amplifica.</p>
         </div>
-        <div>
-          <h3>Gauss-Seidel</h3>
-          <p>Método iterativo: cada componente se actualiza con los valores más recientes disponibles. Parte del vector cero y se detiene cuando la norma infinita del residuo $$\|b - A x\|_\infty \le \text{tol}$$ cumple la tolerancia.</p>
-          <p><strong>Condición suficiente:</strong> si la matriz es <em>estrictamente diagonal dominante</em> (|aᵢᵢ| &gt; Σ|aᵢⱼ| en cada fila), Gauss-Seidel converge. No es necesaria: hay sistemas convergentes que no cumplen esta condición.</p>
+        <div class="paradigm-box open">
+          <div class="p-head"><i class="fa-solid fa-rotate"></i> <strong>Gauss-Seidel</strong></div>
+          <p>Cada componente usa los valores más recientes disponibles:</p>
+          <p>$$x_i^{(k+1)}=\frac{1}{a_{ii}}\Big(b_i-\sum_{j<i}a_{ij}x_j^{(k+1)}-\sum_{j>i}a_{ij}x_j^{(k)}\Big)$$</p>
+          <p><strong>Criterio de parada:</strong> $\|b-Ax\|_\infty\le\text{tol}$, o agotar el máximo de iteraciones. Llegar al máximo <em>no</em> demuestra convergencia.</p>
         </div>
+      </div>
+      <div class="ejemplo-extra">
+        <h3>Dominancia diagonal estricta</h3>
+        <p>Si $|a_{ii}|&gt;\sum_{j\ne i}|a_{ij}|$ en cada fila, Gauss-Seidel converge. Es una <strong>condición suficiente, no necesaria</strong>: la matriz $\begin{pmatrix}2&1&0\\1&2&1\\0&1&2\end{pmatrix}$ es simétrica definida positiva y converge aunque su fila 2 no sea estrictamente dominante ($2=1+1$).</p>
       </div>
     </section>
 
-    <section id="calculadora" class="card">
-      <h2>2. Calculadora</h2>
-      <p class="hint">Los datos vienen precargados con el caso base. Puedes editarlos. Tamaño 2 o 3.</p>
-
-      <div class="controls">
-        <label>Tamaño
-          <select id="size">
-            <option value="2">2 × 2</option>
-            <option value="3" selected>3 × 3</option>
-          </select>
-        </label>
-        <label>Método
-          <select id="method">
-            <option value="both" selected>Comparar ambos</option>
-            <option value="gauss">Eliminación gaussiana</option>
-            <option value="gs">Gauss-Seidel</option>
-          </select>
-        </label>
-        <label>Tolerancia
-          <input id="tol" type="number" step="any" value="0.000001">
-        </label>
-        <label>Máx. iteraciones
-          <input id="maxIter" type="number" min="1" step="1" value="100">
-        </label>
+    <!-- 03. CALCULADORA -->
+    <section class="view" id="calculadora" data-section="calculadora">
+      <div class="section-heading compact">
+        <p class="eyebrow"><span>03</span> EXPERIMENTACIÓN NUMÉRICA</p>
+        <h2>Calculadora de sistemas lineales</h2>
+        <p>Datos precargados con el caso base. Edítalos, cambia el tamaño (2 o 3), y compara ambos métodos.</p>
       </div>
 
-      <div class="presets">
-        <button type="button" data-preset="base">Caso base</button>
-        <button type="button" data-preset="singular">Fallo: singular</button>
-        <button type="button" data-preset="pivote">Pivote pequeño</button>
-        <button type="button" id="reset">Restablecer</button>
-      </div>
-
-      <div class="matrix-wrap">
-        <div>
-          <h3>Matriz A</h3>
-          <div id="matrixInputs" class="matrix" aria-label="Matriz de coeficientes"></div>
+      <div class="control-panel">
+        <div class="panel-heading">
+          <span class="panel-kicker">CONFIGURACIÓN</span>
+          <span class="method-pill">TAMAÑO Y MÉTODO</span>
         </div>
-        <div>
-          <h3>Vector b</h3>
-          <div id="vectorInputs" class="vector" aria-label="Vector de términos independientes"></div>
+        <div class="controls">
+          <label>Tamaño
+            <select id="size"><option value="2">2 × 2</option><option value="3" selected>3 × 3</option></select>
+          </label>
+          <label>Método
+            <select id="method"><option value="both" selected>Comparar ambos</option><option value="gauss">Eliminación gaussiana</option><option value="gs">Gauss-Seidel</option></select>
+          </label>
+          <label>Tolerancia
+            <input id="tol" type="number" step="any" value="0.000001">
+          </label>
+          <label>Máx. iteraciones
+            <input id="maxIter" type="number" min="1" step="1" value="100">
+          </label>
         </div>
+        <div class="presets">
+          <button type="button" data-preset="base">Caso base</button>
+          <button type="button" data-preset="singular">Fallo: singular</button>
+          <button type="button" data-preset="pivote">Pivote pequeño</button>
+          <button type="button" id="reset">Restablecer</button>
+        </div>
+        <div class="matrix-wrap">
+          <div>
+            <h3>Matriz A</h3>
+            <div id="matrixInputs" class="matrix" aria-label="Matriz de coeficientes"></div>
+          </div>
+          <div>
+            <h3>Vector b</h3>
+            <div id="vectorInputs" class="vector" aria-label="Vector de términos independientes"></div>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" id="solve" class="primary"><i class="fa-solid fa-play" aria-hidden="true"></i> Resolver</button>
+        </div>
+        <p id="message" class="message" role="status" aria-live="polite"></p>
       </div>
 
-      <div class="actions">
-        <button type="button" id="solve" class="primary">Resolver</button>
-      </div>
-      <p id="message" class="message" role="status" aria-live="polite"></p>
-
-      <div id="results" class="results" hidden>
+      <div id="results" class="output-panel" hidden>
         <div class="stats">
           <div><span>Solución directa</span><strong id="xGauss">—</strong></div>
           <div><span>Solución iterativa</span><strong id="xGs">—</strong></div>
-          <div><span>Residuo ‖b − A·x‖∞ (directo)</span><strong id="resGauss">—</strong></div>
+          <div><span>Residuo directo ‖·‖∞</span><strong id="resGauss">—</strong></div>
           <div><span>Residuo final (Gauss-Seidel)</span><strong id="resGs">—</strong></div>
         </div>
-
-        <h3>Gráfico del residuo por iteración</h3>
-        <p class="hint">Eje horizontal: iteración. Eje vertical: norma infinita del residuo (escala logarítmica). Muestra cuánto se acerca cada iteración a la solución.</p>
+        <h3>Residuo por iteración</h3>
+        <p class="calc-note">Eje horizontal: iteración. Eje vertical: residuo en norma infinita (escala logarítmica).</p>
         <div class="chart-box"><canvas id="residualChart" aria-label="Gráfico del residuo por iteración de Gauss-Seidel"></canvas></div>
-
         <h3>Pasos de eliminación gaussiana</h3>
         <div id="gaussSteps" class="steps"></div>
-
         <h3>Iteraciones de Gauss-Seidel</h3>
-        <div class="table-scroll"><table id="gsTable"><thead></thead><tbody></tbody></table></div>
+        <div class="table-scroll"><table class="calc-table" id="gsTable"><thead></thead><tbody></tbody></table></div>
       </div>
     </section>
 
-    <section id="ejemplo" class="card">
-      <h2>3. Ejemplo resuelto y caso comparativo</h2>
-      <ol class="steps-list">
-        <li><strong>Verificar la solución exacta.</strong> Con x = (1, 2, 3): fila 1 → 4·1 + 1·2 + 1·3 = 9 ✓; fila 2 → 1 + 10 + 3 = 14 ✓; fila 3 → 1 + 2 + 18 = 21 ✓.</li>
-        <li><strong>Primera iteración de Gauss-Seidel desde cero.</strong> x₁ = 9/4 = 2.25; x₂ = (14 − 2.25)/5 = 2.35; x₃ = (21 − 2.25 − 2.35)/6 = 2.7333…</li>
-        <li><strong>Comparación.</strong> Ambos métodos llegan a (1, 2, 3). El directo lo hace en un número fijo de operaciones y deja residuo cero dentro del redondeo; Gauss-Seidel necesita varias iteraciones y el residuo baja en cada una.</li>
-      </ol>
-    </section>
-
-    <section id="ejemplos-extra" class="card">
-      <h2>3b. Ejemplos adicionales</h2>
+    <!-- 04. EJEMPLOS -->
+    <section class="view" id="ejemplos" data-section="ejemplos">
+      <div class="section-heading compact">
+        <p class="eyebrow"><span>04</span> EJEMPLOS RESUELTOS</p>
+        <h2>Paso a paso</h2>
+        <p>Verificación del caso base y ejemplos adicionales con intercambio de filas y divergencia.</p>
+      </div>
+      <article class="ejemplo-extra">
+        <h3>Ejemplo del caso base · verificar la solución</h3>
+        <ol>
+          <li>Con x = (1, 2, 3): fila 1 → 4·1 + 2 + 3 = 9 ✓; fila 2 → 1 + 10 + 3 = 14 ✓; fila 3 → 1 + 2 + 18 = 21 ✓.</li>
+          <li>Primera iteración de Gauss-Seidel desde cero: x₁ = 9/4 = 2.25; x₂ = (14 − 2.25)/5 = 2.35; x₃ = (21 − 2.25 − 2.35)/6 = 2.7333….</li>
+        </ol>
+      </article>
       <div id="ejemplosExtra"></div>
     </section>
 
-    <section id="comparativo" class="card">
-      <h2>3c. Caso comparativo: directo frente a iterativo</h2>
-      <p>Mismo sistema, dos métodos. La comparación se hace con el <strong>residuo</strong> y el número de operaciones, no solo con la respuesta.</p>
+    <!-- 05. COMPARACIÓN -->
+    <section class="view" id="comparativo" data-section="comparativo">
+      <div class="section-heading compact">
+        <p class="eyebrow"><span>05</span> CASO COMPARATIVO</p>
+        <h2>Directo frente a iterativo</h2>
+        <p>La comparación se hace con el residuo y el número de operaciones, no solo con la respuesta.</p>
+      </div>
       <div class="table-scroll">
-        <table>
+        <table class="calc-table">
           <thead><tr><th>Criterio</th><th>Eliminación gaussiana</th><th>Gauss-Seidel (caso base)</th><th>Gauss-Seidel (A = [[1,2],[3,1]])</th></tr></thead>
           <tbody>
             <tr><td>Solución</td><td>(1, 2, 3)</td><td>(1, 2, 3) tras 8 iteraciones</td><td>No converge</td></tr>
-            <tr><td>Residuo final ‖b − A·x‖∞</td><td>≈ 0 (redondeo)</td><td>≤ 10⁻⁶</td><td>Crece: 18 → 140 000 en 6 iteraciones</td></tr>
-            <tr><td>Procedimiento</td><td>Finito: n³/3 operaciones aprox.</td><td>Repetido hasta la tolerancia</td><td>Sin garantía</td></tr>
-            <tr><td>Advertencia</td><td>Pivote pequeño o singular</td><td>Máx. de iteraciones sin convergencia</td><td>Sin dominancia: usar eliminación</td></tr>
+            <tr><td>Residuo final</td><td>≈ 0 (redondeo)</td><td>≤ 10⁻⁶</td><td>Crece: 18 → 140 000 en 6 iteraciones</td></tr>
+            <tr><td>Procedimiento</td><td>Número fijo de operaciones (≈ n³/3)</td><td>Se repite hasta la tolerancia</td><td>Sin garantía de convergencia</td></tr>
+            <tr><td>Advertencia</td><td>Pivote pequeño o singular</td><td>Máximo sin convergencia</td><td>Sin dominancia: usar eliminación</td></tr>
           </tbody>
         </table>
       </div>
-      <p><strong>Cuándo usar cada uno:</strong> eliminación para sistemas pequeños y densos como los de este módulo; Gauss-Seidel cuando la matriz es grande y dispersa, y se conoce que converge (por ejemplo, dominancia diagonal estricta).</p>
+      <div class="ejemplo-extra">
+        <h3>Cuándo usar cada uno</h3>
+        <p>Eliminación gaussiana para sistemas pequeños y densos como los de este módulo. Gauss-Seidel cuando la matriz es grande y dispersa y se conoce que converge, por ejemplo con dominancia diagonal estricta.</p>
+      </div>
     </section>
 
-    <section id="ejercicios" class="card">
-      <h2>3d. Ejercicios propuestos</h2>
-      <p class="hint">Dos intermedios y dos de mayor dificultad. Intenta primero; luego abre la solución.</p>
+    <!-- 06. EJERCICIOS -->
+    <section class="view" id="ejercicios" data-section="ejercicios">
+      <div class="section-heading compact">
+        <p class="eyebrow"><span>06</span> PRÁCTICA</p>
+        <h2>Ejercicios propuestos</h2>
+        <p>Dos intermedios y dos de mayor dificultad. Intenta primero y luego revisa la solución.</p>
+      </div>
       <div id="ejercicios-lista"></div>
     </section>
 
-    <section id="autoevaluacion" class="card">
-      <h2>3e. Autoevaluación</h2>
-      <p class="hint">Seis preguntas: selección múltiple, verdadero o falso, y respuesta numérica con tolerancia.</p>
+    <!-- 07. AUTOEVALUACIÓN -->
+    <section class="view" id="autoevaluacion" data-section="autoevaluacion">
+      <div class="section-heading compact">
+        <p class="eyebrow"><span>07</span> AUTOEVALUACIÓN</p>
+        <h2>Seis preguntas</h2>
+        <p>Selección múltiple, verdadero o falso, y respuesta numérica con tolerancia. Cada respuesta incluye su explicación.</p>
+      </div>
       <div id="quiz"></div>
     </section>
 
-    <section id="pruebas" class="card">
-      <h2>4. Pruebas del módulo</h2>
-      <p class="hint">Pruebas ejecutadas con <code>node tests/run.js</code>. Referencia: solución exacta (1, 2, 3) y primera iteración (2.25, 2.35, 2.7333333333).</p>
+    <!-- 08. PRUEBAS -->
+    <section class="view" id="pruebas" data-section="pruebas">
+      <div class="section-heading compact">
+        <p class="eyebrow"><span>08</span> MATRIZ DE PRUEBAS</p>
+        <h2>Ocho pruebas del módulo</h2>
+        <p>Cuatro normales, dos de frontera y dos inválidas. Se ejecutan en el navegador al cargar la página y también con <code>node tests/run.js</code>.</p>
+      </div>
       <div class="table-scroll">
-        <table>
+        <table class="calc-table">
           <thead><tr><th>ID</th><th>Método</th><th>Tipo</th><th>Entrada</th><th>Esperado</th><th>Estado</th></tr></thead>
           <tbody id="testsBody"></tbody>
         </table>
       </div>
     </section>
+
+    <!-- 09. REFERENCIAS -->
+    <section class="view" id="referencias" data-section="referencias">
+      <div class="section-heading compact">
+        <p class="eyebrow"><span>09</span> REFERENCIAS</p>
+        <h2>Fuentes y código de referencia</h2>
+        <p>Los valores de la guía se contrastaron con una implementación independiente.</p>
+      </div>
+      <ul class="ref-list">
+        <li>Código de referencia en Python: <code>2/scripts/referencia.py</code> (sin dependencias).</li>
+        <li>Guía de trabajo de laboratorio, módulo 2: valores de verificación y casos.</li>
+        <li>MDN Web Docs, Learn web development: <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development" target="_blank" rel="noopener">developer.mozilla.org</a>.</li>
+        <li>Chart.js y MathJax: bibliotecas de gráficos y de fórmulas usadas en el portal.</li>
+      </ul>
+    </section>
+
+    <!-- 10. EQUIPO -->
+    <section class="view" id="equipo" data-section="equipo">
+      <div class="section-heading compact">
+        <p class="eyebrow"><span>10</span> EQUIPO</p>
+        <h2>Integrantes</h2>
+        <p>Los roles rotan cada tres semanas. Cada integrante defiende su parte del módulo.</p>
+      </div>
+      <ul class="ref-list">
+        <li>A · Condori Idme Raul Wilfredo</li>
+        <li>B · Quispe Rupaylla Fabrizio Alonso</li>
+        <li>C · Suarez Huamani Marco Antonio</li>
+        <li>D · Chura Monroy Daniel Wilston</li>
+      </ul>
+    </section>
   </main>
 
-  <footer class="footer">
-    <p>UNSA · Ingeniería de Sistemas · Laboratorio de Métodos Numéricos · 2026</p>
-    <p><a href="../">Volver al portal</a></p>
+  <footer>
+    <span>ITERA · MÓDULO 2: SISTEMAS DE ECUACIONES LINEALES</span>
+    <a class="back-portal" href="../index.html"><i class="fa-solid fa-arrow-left"></i> Volver al Portal General</a>
+    <span>UNSA · INGENIERÍA DE SISTEMAS · 2026</span>
   </footer>
 
   <script src="js/algorithms.js"></script>
@@ -183,6 +297,7 @@
   <script src="js/tests.js"></script>
   <script src="js/content.js"></script>
   <script src="../assets/js/learn.js"></script>
+  <script src="../assets/js/shell.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
