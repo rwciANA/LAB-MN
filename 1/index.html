@@ -60,6 +60,7 @@
       <a href="#cerrados" data-view="cerrados"><i class="fa-solid fa-lock"></i>Métodos Cerrados</a>
       <a href="#abiertos" data-view="abiertos"><i class="fa-solid fa-lock-open"></i>Métodos Abiertos</a>
       <a href="#comparacion" data-view="comparacion"><i class="fa-solid fa-code-compare"></i>Comparación</a>
+      <a href="#historia" data-view="historia"><i class="fa-solid fa-clock-rotate-left"></i>Historia</a>
       <a href="#calculadoras" data-view="calculadoras"><i class="fa-solid fa-calculator"></i>Calculadoras</a>
       <a href="#practica" data-view="practica"><i class="fa-solid fa-pen-to-square"></i>Práctica</a>
       <a href="#referencias" data-view="referencias"><i class="fa-solid fa-quote-right"></i>Referencias</a>
@@ -434,6 +435,54 @@
     <!-- ==========================================
          05. CALCULADORAS INTERACTIVAS
          ========================================== -->
+    <section class="view" id="historia" data-section="historia">
+      <div class="section-heading">
+        <p class="eyebrow"><span>07</span> HISTORIA</p>
+        <h2>Cuatro mil años buscando raíces</h2>
+        <p>Encontrar el valor que anula una expresión es una de las preguntas más antiguas de las matemáticas. Esta historia explica por qué existen dos familias de métodos: las que encierran la raíz y las que la persiguen.</p>
+      </div>
+
+      <ol class="timeline">
+        <li><span class="year">c. 1800 a. C.</span><div><h3>Babilonia · aproximar √2</h3><p>Una tablilla cuneiforme (YBC 7289) da √2 con cerca de seis cifras exactas, en base sesenta. Los babilonios usaban un proceso de promedios sucesivos que hoy reconocemos como un método iterativo.</p></div></li>
+        <li><span class="year">1669 · 1711</span><div><h3>Isaac Newton · método de las tangentes</h3><p>Newton describe cómo corregir una aproximación usando la pendiente de la curva. Su trabajo circuló en manuscrito y se publicó en 1711; la idea es el germen del método que hoy lleva su nombre.</p></div></li>
+        <li><span class="year">1690</span><div><h3>Joseph Raphson · forma iterativa</h3><p>Raphson simplifica el procedimiento de Newton y lo aplica a polinomios de forma iterativa. Por eso el método se llama Newton-Raphson.</p></div></li>
+        <li><span class="year">1740</span><div><h3>Thomas Simpson · la fórmula con derivada</h3><p>Simpson escribe la iteración x<sub>n+1</sub> = x<sub>n</sub> − f(x<sub>n</sub>)/f′(x<sub>n</sub>) en la forma que se enseña hoy, y la aplica a sistemas de ecuaciones.</p></div></li>
+        <li><span class="year">1817</span><div><h3>Bernard Bolzano · teorema del valor intermedio</h3><p>Bolzano demuestra que una función continua que cambia de signo en un intervalo debe anularse dentro de él. Esa es la base teórica del método de bisección.</p></div></li>
+        <li><span class="year">1821</span><div><h3>Augustin-Louis Cauchy · rigor en el análisis</h3><p>En su Cours d'analyse define con precisión la continuidad y el límite. Gracias a ello, la convergencia de los métodos iterativos puede enunciarse y demostrarse con rigor.</p></div></li>
+        <li><span class="year">1914 · 1920</span><div><h3>Leonard Bairstow · factores cuadráticos</h3><p>Bairstow propone un método para extraer factores cuadráticos de polinomios reales, incluidos pares de raíces complejas conjugadas. Es uno de los métodos de la práctica de este módulo.</p></div></li>
+        <li><span class="year">1948</span><div><h3>Leonid Kantorovich · convergencia de Newton</h3><p>Kantorovich establece condiciones verificables, a partir de los datos iniciales, que garantizan la convergencia de Newton. Permite saber de antemano si la semilla es buena.</p></div></li>
+        <li><span class="year">1956</span><div><h3>David E. Muller · el método de las parábolas</h3><p>Muller usa una parábola que pasa por tres puntos en lugar de una recta tangente. Puede encontrar raíces complejas sin usar derivadas, y es el método guiado de este módulo.</p></div></li>
+        <li><span class="year">Hoy</span><div><h3>Solucionadores de ingeniería</h3><p>Los métodos de bisección y Newton están dentro de casi todo software técnico: simulación de circuitos, cálculo de equilibrios químicos y calibración de sensores. La pregunta que sigue siendo central es la misma: ¿cuándo converge, y qué tan rápido?</p></div></li>
+      </ol>
+
+      <div class="ejemplo-extra">
+        <h3>El hilo conductor</h3>
+        <p>La bisección «atrapa» la raíz con garantías, pero avanza despacio. Newton avanza rápido, pero necesita una buena semilla y una derivada que no se anule. Casi toda la historia se reduce a equilibrar esas dos exigencias.</p>
+      </div>
+
+      <h3 class="block-title"><i class="fa-solid fa-spell-check"></i> Glosario</h3>
+      <dl class="glossary">
+        <dt>Raíz</dt><dd>Valor x* tal que f(x*) = 0. Un sistema real puede tener varias, ninguna o raíces complejas.</dd>
+        <dt>Teorema de Bolzano</dt><dd>Si f es continua en [a, b] y f(a)·f(b) &lt; 0, existe al menos una raíz en (a, b).</dd>
+        <dt>Semilla</dt><dd>Aproximación inicial x₀ que necesita Newton o Muller. Una mala semilla puede hacer que el método diverja o cicle.</dd>
+        <dt>Convergencia lineal</dt><dd>El error se reduce por un factor fijo en cada paso (por ejemplo, ½ en bisección).</dd>
+        <dt>Convergencia cuadrática</dt><dd>El número de cifras correctas se duplica en cada paso (Newton, cerca de una raíz simple).</dd>
+        <dt>Raíz doble</dt><dd>Raíz donde f y f′ se anulan. Newton pierde su orden cuadrático y la bisección no puede iniciar sin cambio de signo.</dd>
+        <dt>Tolerancia</dt><dd>Umbral que decide cuándo parar. Conviene distinguir tolerancia de parada, de comparación y de cifras mostradas.</dd>
+      </dl>
+
+      <div class="route" aria-label="Ruta de aprendizaje">
+        <h3 class="block-title"><i class="fa-solid fa-route"></i> Tu ruta de aprendizaje</h3>
+        <ol class="route-steps">
+          <li><a href="#cerrados" data-view="cerrados"><span>1</span><strong>Método cerrado</strong><small>Bisección y garantías</small></a></li>
+          <li><a href="#abiertos" data-view="abiertos"><span>2</span><strong>Método abierto</strong><small>Newton y convergencia</small></a></li>
+          <li><a href="#historia" data-view="historia"><span>3</span><strong>Historia</strong><small>De Babilonia a Muller</small></a></li>
+          <li><a href="#calculadoras" data-view="calculadoras"><span>4</span><strong>Calculadora</strong><small>Cambia f(x) y observa</small></a></li>
+          <li><a href="#practica" data-view="practica"><span>5</span><strong>Ejercicios</strong><small>Resuelve y compara</small></a></li>
+        </ol>
+      </div>
+    </section>
+
     <section class="view" id="calculadoras" data-section="calculadoras">
       <div class="section-heading compact">
         <p class="eyebrow"><span>05</span> EXPERIMENTACIÓN NUMÉRICA</p>
@@ -611,6 +660,72 @@
             <p>Seleccionar una semilla distinta (ej. $x_0 = 1.5$) o cambiar a un método cerrado como Bisección.</p>
           </div>
         </article>
+        <article class="exercise-card">
+          <span class="difficulty intermediate">MÉTODO CERRADO</span>
+          <span class="exercise-number">05</span>
+          <h3>Punto Fijo Disfrazado: Bisección de $\cos(x) - x$</h3>
+          <p>Encuentra la raíz de $f(x) = \cos(x) - x$ en $[0, 1]$ con error menor a $10^{-6}$. Muestra los primeros tres puntos medios.</p>
+          <button class="solution-toggle" type="button">Ver solución completa <i class="fa-solid fa-chevron-down"></i></button>
+          <div class="solution">
+            <h4>1 · Cambio de signo:</h4>
+            <p>$f(0) = 1 &gt; 0$ y $f(1) = \cos 1 - 1 \approx -0.4597 &lt; 0$. Hay raíz en $[0, 1]$ por Bolzano.</p>
+            <h4>2 · Primeras iteraciones:</h4>
+            <p>$m_1 = 0.5$: $f(0.5) \approx 0.3776 &gt; 0$, la raíz está en $[0.5, 1]$. $m_2 = 0.75$: $f(0.75) \approx -0.0183 &lt; 0$, la raíz está en $[0.5, 0.75]$. $m_3 = 0.625$: $f(0.625) \approx 0.1860 &gt; 0$, la raíz está en $[0.625, 0.75]$.</p>
+            <h4>3 · Número de iteraciones:</h4>
+            <p>La cota $\frac{b-a}{2^n} \le 10^{-6}$ se cumple con $n = 20$ iteraciones, porque $2^{-20} \approx 9.5 \cdot 10^{-7}$.</p>
+            <h4>4 · Resultado:</h4>
+            <p>$x^* \approx 0.7390852$. Verificación: $\cos(0.7390852) \approx 0.7390852$.</p>
+          </div>
+        </article>
+
+        <article class="exercise-card">
+          <span class="difficulty intermediate">MÉTODO ABIERTO</span>
+          <span class="exercise-number">06</span>
+          <h3>Calcular $\sqrt{2}$ con Newton: Convergencia Cuadrática Visible</h3>
+          <p>Aplica Newton a $f(x) = x^2 - 2$ desde $x_0 = 1$. Compara el error en cada paso y observa cuántas cifras correctas se duplican.</p>
+          <button class="solution-toggle" type="button">Ver solución completa <i class="fa-solid fa-chevron-down"></i></button>
+          <div class="solution">
+            <h4>1 · Fórmula:</h4>
+            <p>$x_{n+1} = x_n - \frac{x_n^2 - 2}{2x_n} = \frac{1}{2}\left(x_n + \frac{2}{x_n}\right)$ (el método de Herón).</p>
+            <h4>2 · Iteraciones y error ($\sqrt{2} \approx 1.41421356$):</h4>
+            <p>$x_1 = 1.5$ (error $8.6 \cdot 10^{-2}$). $x_2 = 1.4166667$ (error $2.5 \cdot 10^{-3}$). $x_3 = 1.4142157$ (error $2.1 \cdot 10^{-6}$). $x_4 = 1.41421356$ (error $1.6 \cdot 10^{-12}$).</p>
+            <h4>3 · Interpretación:</h4>
+            <p>El error pasa de $10^{-1}$ a $10^{-3}$, luego a $10^{-6}$ y a $10^{-12}$: el número de cifras correctas se duplica en cada paso. Es convergencia cuadrática, con $p = 2$.</p>
+          </div>
+        </article>
+
+        <article class="exercise-card">
+          <span class="difficulty advanced">PUNTO CIEGO ABIERTO</span>
+          <span class="exercise-number">07</span>
+          <h3>Newton que Cicla: $f(x) = x^3 - 2x + 2$ desde $x_0 = 0$</h3>
+          <p>Aplica Newton desde $x_0 = 0$ y explica lo que ocurre. Después encuentra la raíz de forma segura.</p>
+          <button class="solution-toggle" type="button">Ver solución completa <i class="fa-solid fa-chevron-down"></i></button>
+          <div class="solution">
+            <h4>1 · Iteración de Newton:</h4>
+            <p>$f(0) = 2$, $f'(0) = -2$, así que $x_1 = 0 - \frac{2}{-2} = 1$. Luego $f(1) = 1$, $f'(1) = 1$, y $x_2 = 1 - 1 = 0$. La sucesión vuelve a 0: <strong>cicla</strong> entre 0 y 1 y nunca converge.</p>
+            <h4>2 · Diagnóstico:</h4>
+            <p>La derivada no es nula, así que el fallo no es de la derivada. Newton depende de la semilla: la tangente en 0 lleva a 1 y la tangente en 1 regresa a 0.</p>
+            <h4>3 · Solución segura:</h4>
+            <p>$f(-2) = -2 &lt; 0$ y $f(-1) = 3 &gt; 0$: hay cambio de signo en $[-2, -1]$. Tras 19 iteraciones el intervalo mide menos de $2 \cdot 10^{-6}$ y el punto medio es $x^* \approx -1.769292$.</p>
+          </div>
+        </article>
+
+        <article class="exercise-card">
+          <span class="difficulty advanced">DIAGNÓSTICO CERRADO</span>
+          <span class="exercise-number">08</span>
+          <h3>Sin Cambio de Signo: ¿Puede Bisección Empezar?</h3>
+          <p>Evalúa si la bisección puede aplicarse a $f(x) = x^2 + 1$ en $[-1, 2]$. Si no puede, propone qué hacer.</p>
+          <button class="solution-toggle" type="button">Ver solución completa <i class="fa-solid fa-chevron-down"></i></button>
+          <div class="solution">
+            <h4>1 · Comprobación del requisito:</h4>
+            <p>$f(-1) = 2 &gt; 0$ y $f(2) = 5 &gt; 0$. El producto $f(a)\cdot f(b) = 10 &gt; 0$: no hay cambio de signo y la bisección no puede empezar.</p>
+            <h4>2 · Por qué no hay raíz real:</h4>
+            <p>$x^2 + 1 \ge 1$ para todo $x$. La función no cruza el eje, así que no tiene raíz real. El algoritmo debe devolver un error, no un valor.</p>
+            <h4>3 · Qué hacer:</h4>
+            <p>Si la raíz compleja es lo que interesa, hay que cambiar de modelo (método de Müller, que sí puede encontrar raíces complejas). Si se buscaba una raíz real, revisar el modelo o el intervalo.</p>
+          </div>
+        </article>
+
       </div>
 
       <article class="muller-example">

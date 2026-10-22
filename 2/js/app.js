@@ -195,6 +195,6 @@ document.addEventListener("DOMContentLoaded", () => {
   loadPreset("base");
   renderTests();
   $("ejemplosExtra").innerHTML = EJEMPLOS_EXTRA_2;
-  renderSolvedExercises($("ejercicios-lista"), EJERCICIOS_2, { generar: solucionSistema, resolver: cargarEjercicioEnCalculadora });
+  renderSolvedExercises($("ejercicios-lista"), [...EJERCICIOS_2, ...EJERCICIOS_2_MAS], { generar: solucionSistema, resolver: cargarEjercicioEnCalculadora });
   renderQuiz($("quiz"), AUTOEVALUACION_2);
 });

@@ -36,6 +36,7 @@
       </div>
       <a href="#inicio" data-view="inicio" class="active"><i class="fa-solid fa-house"></i>Inicio</a>
       <a href="#teoria" data-view="teoria"><i class="fa-solid fa-book-open"></i>Teoría</a>
+      <a href="#historia" data-view="historia"><i class="fa-solid fa-clock-rotate-left"></i>Historia</a>
       <a href="#calculadora" data-view="calculadora"><i class="fa-solid fa-calculator"></i>Calculadora</a>
       <a href="#ejemplos" data-view="ejemplos"><i class="fa-solid fa-list-ol"></i>Ejemplos</a>
       <a href="#comparativo" data-view="comparativo"><i class="fa-solid fa-code-compare"></i>Comparación</a>
@@ -84,6 +85,17 @@
           </div>
         </div>
       </div>
+      <div class="route" aria-label="Ruta de aprendizaje">
+        <h3 class="block-title"><i class="fa-solid fa-route"></i> Tu ruta de aprendizaje</h3>
+        <ol class="route-steps">
+          <li><a href="#teoria" data-view="teoria"><span>1</span><strong>Teoría</strong><small>Entiende la idea y el algoritmo</small></a></li>
+          <li><a href="#historia" data-view="historia"><span>2</span><strong>Historia</strong><small>Quién lo creó y por qué</small></a></li>
+          <li><a href="#calculadora" data-view="calculadora"><span>3</span><strong>Calculadora</strong><small>Cambia datos y observa</small></a></li>
+          <li><a href="#ejemplos" data-view="ejemplos"><span>4</span><strong>Ejemplos</strong><small>Sigue cada paso</small></a></li>
+          <li><a href="#ejercicios" data-view="ejercicios"><span>5</span><strong>Ejercicios</strong><small>Resuelve y compara</small></a></li>
+          <li><a href="#autoevaluacion" data-view="autoevaluacion"><span>6</span><strong>Autoevaluación</strong><small>Comprueba lo aprendido</small></a></li>
+        </ol>
+      </div>
     </section>
 
     <!-- 02. TEORÍA -->
@@ -122,7 +134,7 @@ sustitución hacia atrás</code></pre>
           <h3><i class="fa-solid fa-rotate"></i> Gauss-Seidel</h3>
           <p><strong>Idea.</strong> Partir de una aproximación inicial (aquí, el vector cero) y mejorarla componente por componente. Cada componente nueva usa los valores más recientes disponibles, por eso suele converger más rápido que el método de Jacobi, que solo usa los valores de la iteración anterior.</p>
           <p><strong>Fórmula por componente.</strong></p>
-          <p>$$x_i^{(k+1)}=\frac{1}{a_{ii}}\Big(b_i-\sum_{j<i}a_{ij}x_j^{(k+1)}-\sum_{j>i}a_{ij}x_j^{(k)}\Big)$$</p>
+          <p>$$x_i^{(k+1)}=\frac{1}{a_{ii}}\Big(b_i-\sum_{j&lt;i}a_{ij}x_j^{(k+1)}-\sum_{j>i}a_{ij}x_j^{(k)}\Big)$$</p>
           <pre class="algo"><code>x = vector cero
 repetir k = 1 … maxIter:
     para i = 1 … n:
@@ -176,6 +188,79 @@ si no: no se alcanzó la tolerancia</code></pre>
         <h3>Dominancia diagonal estricta: suficiente, no necesaria</h3>
         <p>Si <code>|aᵢᵢ| &gt; Σ_{j≠i}|aᵢⱼ|</code> en cada fila, Gauss-Seidel converge. Pero no es necesaria: la matriz $\begin{pmatrix}2&1&0\\1&2&1\\0&1&2\end{pmatrix}$ es simétrica definida positiva y converge aunque su fila 2 no sea estrictamente dominante ($2=1+1$). Al revés, <code>[[1,2],[3,1]]</code> no es dominante y diverge.</p>
       </div>
+      <h3 class="block-title"><i class="fa-solid fa-eye"></i> Intuición geométrica</h3>
+      <div class="theory-grid">
+        <article class="theory-card">
+          <h3><i class="fa-solid fa-draw-polygon"></i> Dos rectas que se cortan</h3>
+          <p>Cada ecuación de un sistema 2 × 2 es una recta en el plano. La solución es el punto donde se cortan. Eliminar una variable equivale a despejar una recta y sustituirla en la otra.</p>
+          <ul>
+            <li><strong>Rectas no paralelas:</strong> un único punto, solución única.</li>
+            <li><strong>Rectas paralelas:</strong> ningún punto en común, sistema inconsistente.</li>
+            <li><strong>Rectas coincidentes:</strong> infinitos puntos, sistema indeterminado. Es el caso del ejercicio de la matriz singular.</li>
+          </ul>
+          <p>Cuando las rectas son casi paralelas, un pequeño error en los datos mueve mucho el punto de corte. Esa sensibilidad es lo que mide el número de condición.</p>
+        </article>
+        <article class="theory-card">
+          <h3><i class="fa-solid fa-person-walking-arrow-right"></i> Gauss-Seidel como caminata</h3>
+          <p>Gauss-Seidel se puede imaginar como buscar el punto de corte avanzando por coordenadas: se ajusta una variable para que cumpla su ecuación con las demás fijas, luego se ajusta la siguiente, y así se repite. Cada paso acerca el punto a la solución en una dirección.</p>
+          <ul>
+            <li>Si la matriz es dominante, cada paso acerca al punto correcto.</li>
+            <li>Si no lo es, los pasos pueden alejarse: es lo que ocurre con <code>[[1,2],[3,1]]</code>.</li>
+          </ul>
+          <p>Observa en la calculadora la tabla de iteraciones y la curva del residuo: una bajada constante indica convergencia; una subida indica divergencia.</p>
+        </article>
+      </div>
+
+      <h3 class="block-title"><i class="fa-solid fa-scale-balanced"></i> ¿Cuál usar?</h3>
+      <div class="table-scroll">
+        <table class="calc-table">
+          <thead><tr><th>Situación</th><th>Recomendación</th><th>Motivo</th></tr></thead>
+          <tbody>
+            <tr><td>Sistema pequeño (2 × 2 o 3 × 3) y denso</td><td>Eliminación con pivoteo</td><td>Solución directa, verificable con el residuo.</td></tr>
+            <tr><td>Muchas variables con pocos coeficientes no nulos</td><td>Gauss-Seidel</td><td>Cada iteración es barata y no se almacena la factorización.</td></tr>
+            <tr><td>Matriz con dominancia diagonal estricta</td><td>Gauss-Seidel</td><td>Convergencia garantizada.</td></tr>
+            <tr><td>Pivote nulo o muy pequeño tras pivotear</td><td>Revisar el modelo</td><td>Puede haber singularidad o datos redundantes.</td></tr>
+            <tr><td>Quieres un resultado con cifras exactas (fracciones)</td><td>Eliminación en fracciones</td><td>Evita el redondeo decimal.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 02b. HISTORIA -->
+    <section class="view" id="historia" data-section="historia">
+      <div class="section-heading compact">
+        <p class="eyebrow"><span>02</span> HISTORIA</p>
+        <h2>De los nueve capítulos a LAPACK</h2>
+        <p>Resolver sistemas lineales es uno de los problemas más antiguos de las matemáticas. Su historia muestra cómo las ideas prácticas (eliminar variables) se volvieron teoría del error y, después, software de alto rendimiento.</p>
+      </div>
+
+      <ol class="timeline">
+        <li><span class="year">c. 150 a. C.</span><div><h3>Nueve capítulos sobre el arte matemático (China)</h3><p>Aparece el procedimiento de «fang cheng»: se ordenan los coeficientes en columnas y se eliminan términos para resolver varios sistemas a la vez. Es la eliminación gaussiana en su forma más antigua conocida.</p></div></li>
+        <li><span class="year">1809</span><div><h3>Carl Friedrich Gauss · Theoria motus</h3><p>Gauss usa la eliminación para calcular la órbita del planeta Ceres a partir de observaciones con error. Aquí aparecen juntos la resolución de sistemas y el ajuste por mínimos cuadrados.</p></div></li>
+        <li><span class="year">1823</span><div><h3>Gauss · carta a Gerling</h3><p>Gauss describe un procedimiento iterativo que corrige, paso a paso, el residuo más grande. Es el germen de los métodos iterativos modernos, aunque aún no se escribe como algoritmo general.</p></div></li>
+        <li><span class="year">1845</span><div><h3>Carl Gustav Jacobi</h3><p>Formaliza el método iterativo en el que cada componente se actualiza usando solo los valores de la iteración anterior. Hoy se llama método de Jacobi y es la base para entender Gauss-Seidel.</p></div></li>
+        <li><span class="year">1874</span><div><h3>Philipp Ludwig von Seidel</h3><p>Propone usar, dentro de la misma iteración, los valores ya actualizados. Esa mejora da el método de Gauss-Seidel, que suele converger más rápido que Jacobi.</p></div></li>
+        <li><span class="year">1910–1924</span><div><h3>André-Louis Cholesky</h3><p>Desarrolla una factorización para matrices simétricas definidas positivas. Su trabajo se publica póstumamente en 1924. Es el origen de los métodos directos especializados para matrices simétricas.</p></div></li>
+        <li><span class="year">1947–1948</span><div><h3>Alan Turing · errores de redondeo</h3><p>En «Rounding-off errors in matrix processes» analiza cómo el redondeo afecta a la eliminación y acuña la idea de número de condición. Explica por qué un residuo pequeño no garantiza un error pequeño.</p></div></li>
+        <li><span class="year">1961</span><div><h3>James H. Wilkinson · análisis de error hacia atrás</h3><p>Demuestra que la eliminación con pivoteo es estable en la práctica y que el pivoteo evita el crecimiento descontrolado de los elementos. Es la justificación teórica del pivoteo parcial.</p></div></li>
+        <li><span class="year">1992</span><div><h3>LAPACK</h3><p>Se publica la biblioteca LAPACK, que implementa factorizaciones y resolución de sistemas con cuidado numérico. Hoy está detrás de muchos programas científicos y de MATLAB, Octave y NumPy.</p></div></li>
+      </ol>
+
+      <div class="ejemplo-extra">
+        <h3>Idea que conecta toda la historia</h3>
+        <p>La eliminación es la misma idea desde hace dos mil años. Lo que cambió es la pregunta: primero era «¿cómo obtengo la solución?»; hoy es «¿qué tan confiable es la solución que obtuve, dado el redondeo y la condición de la matriz?». Por eso este módulo siempre muestra el residuo y advierte sobre pivotes pequeños.</p>
+      </div>
+
+      <h3 class="block-title"><i class="fa-solid fa-spell-check"></i> Glosario</h3>
+      <dl class="glossary">
+        <dt>Pivote</dt><dd>Elemento por el que se divide al eliminar una variable. Con pivoteo parcial se elige el de mayor valor absoluto de su columna.</dd>
+        <dt>Residuo</dt><dd>r = b − A·x. Mide qué tan bien x satisface el sistema; se calcula sin conocer la solución exacta.</dd>
+        <dt>Error</dt><dd>e = x* − x. Es la distancia a la solución exacta; no siempre se puede medir.</dd>
+        <dt>Número de condición κ(A)</dt><dd>Mide cuánto se amplifica un error en los datos. Valores grandes indican un sistema sensible.</dd>
+        <dt>Dominancia diagonal estricta</dt><dd>Cada elemento diagonal supera la suma de los demás de su fila en valor absoluto. Asegura la convergencia de Gauss-Seidel.</dd>
+        <dt>Matriz singular</dt><dd>Matriz sin inversa; el sistema no tiene solución única (puede tener infinitas o ninguna).</dd>
+        <dt>Radio espectral</dt><dd>Mayor valor absoluto de los autovalores de la matriz de iteración. Si es menor que 1, el método iterativo converge.</dd>
+      </dl>
     </section>
 
     <!-- 03. CALCULADORA -->
@@ -254,7 +339,7 @@ si no: no se alcanzó la tolerancia</code></pre>
         </ul>
         <h3><i class="fa-solid fa-square-root-variable"></i> Fórmulas de referencia</h3>
         <p>$$A\,x=b,\qquad r=b-A\,x,\qquad \|r\|_\infty=\max_i |r_i|$$</p>
-        <p>$$x_i^{(k+1)}=\frac{1}{a_{ii}}\Big(b_i-\sum_{j<i}a_{ij}x_j^{(k+1)}-\sum_{j>i}a_{ij}x_j^{(k)}\Big)$$</p>
+        <p>$$x_i^{(k+1)}=\frac{1}{a_{ii}}\Big(b_i-\sum_{j&lt;i}a_{ij}x_j^{(k+1)}-\sum_{j>i}a_{ij}x_j^{(k)}\Big)$$</p>
         <h3><i class="fa-solid fa-lightbulb"></i> Sugerencias</h3>
         <ul>
           <li>Empieza con el caso base y cambia un solo número para ver el efecto.</li>
@@ -382,6 +467,7 @@ si no: no se alcanzó la tolerancia</code></pre>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script src="js/tests.js"></script>
   <script src="js/content.js"></script>
+  <script src="js/content-extra.js"></script>
   <script src="js/solver.js"></script>
   <script src="../assets/js/learn.js"></script>
   <script src="../assets/js/shell.js"></script>

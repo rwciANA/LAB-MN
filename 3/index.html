@@ -36,6 +36,7 @@
       </div>
       <a href="#inicio" data-view="inicio" class="active"><i class="fa-solid fa-house"></i>Inicio</a>
       <a href="#teoria" data-view="teoria"><i class="fa-solid fa-book-open"></i>Teoría</a>
+      <a href="#historia" data-view="historia"><i class="fa-solid fa-clock-rotate-left"></i>Historia</a>
       <a href="#calculadora" data-view="calculadora"><i class="fa-solid fa-calculator"></i>Calculadora</a>
       <a href="#ejemplos" data-view="ejemplos"><i class="fa-solid fa-list-ol"></i>Ejemplos</a>
       <a href="#comparativo" data-view="comparativo"><i class="fa-solid fa-code-compare"></i>Comparación</a>
@@ -83,6 +84,17 @@
             <div><span>SCR</span><strong>0.70</strong></div>
           </div>
         </div>
+      </div>
+      <div class="route" aria-label="Ruta de aprendizaje">
+        <h3 class="block-title"><i class="fa-solid fa-route"></i> Tu ruta de aprendizaje</h3>
+        <ol class="route-steps">
+          <li><a href="#teoria" data-view="teoria"><span>1</span><strong>Teoría</strong><small>Entiende la idea y el algoritmo</small></a></li>
+          <li><a href="#historia" data-view="historia"><span>2</span><strong>Historia</strong><small>Quién lo creó y por qué</small></a></li>
+          <li><a href="#calculadora" data-view="calculadora"><span>3</span><strong>Calculadora</strong><small>Cambia datos y observa</small></a></li>
+          <li><a href="#ejemplos" data-view="ejemplos"><span>4</span><strong>Ejemplos</strong><small>Sigue cada paso</small></a></li>
+          <li><a href="#ejercicios" data-view="ejercicios"><span>5</span><strong>Ejercicios</strong><small>Resuelve y compara</small></a></li>
+          <li><a href="#autoevaluacion" data-view="autoevaluacion"><span>6</span><strong>Autoevaluación</strong><small>Comprueba lo aprendido</small></a></li>
+        </ol>
       </div>
     </section>
 
@@ -161,6 +173,78 @@ SCR = Σ rᵢ²</code></pre>
           </ul>
         </article>
       </div>
+      <h3 class="block-title"><i class="fa-solid fa-eye"></i> Intuición geométrica</h3>
+      <div class="theory-grid">
+        <article class="theory-card">
+          <h3><i class="fa-solid fa-bezier-curve"></i> Pasar por los puntos frente a seguir la nube</h3>
+          <p>Imagina los datos como puntos en una hoja. La interpolación traza una curva que toca cada punto: es un «cosido» exacto. La regresión traza una recta que deja los puntos a ambos lados, como una línea de tendencia a ojo.</p>
+          <ul>
+            <li><strong>Lagrange:</strong> la curva atraviesa todos los puntos y puede serpentear entre ellos.</li>
+            <li><strong>Recta:</strong> no toca ningún punto en general, pero resume la nube y se extiende de forma estable.</li>
+          </ul>
+          <p>En la calculadora, la curva naranja atraviesa los puntos; la recta azul no. Esa diferencia visual es la que debes saber interpretar.</p>
+        </article>
+        <article class="theory-card">
+          <h3><i class="fa-solid fa-arrows-up-down"></i> El residuo como distancia vertical</h3>
+          <p>El residuo de cada punto es el segmento vertical entre el dato y la recta. La regresión elige la recta que hace mínima la suma de esos segmentos al cuadrado.</p>
+          <ul>
+            <li>Elevar al cuadrado castiga más a los puntos lejanos: por eso un atípico desplaza mucho la recta.</li>
+            <li>Un residuo positivo significa que el dato está por encima de la recta; uno negativo, por debajo.</li>
+          </ul>
+          <p>Una buena regla: los residuos deben repartirse al azar a ambos lados de la recta. Si siguen un patrón, el modelo lineal no es adecuado.</p>
+        </article>
+      </div>
+
+      <h3 class="block-title"><i class="fa-solid fa-scale-balanced"></i> ¿Cuál usar?</h3>
+      <div class="table-scroll">
+        <table class="calc-table">
+          <thead><tr><th>Situación</th><th>Recomendación</th><th>Motivo</th></tr></thead>
+          <tbody>
+            <tr><td>Datos exactos (tabla de valores de una función)</td><td>Interpolación de Lagrange</td><td>Reproduce cada valor sin error.</td></tr>
+            <tr><td>Mediciones con error y se quiere predecir la tendencia</td><td>Regresión lineal</td><td>Filtra el error y resume la relación.</td></tr>
+            <tr><td>Predecir fuera del rango de los datos</td><td>Regresión, con precaución</td><td>La interpolación puede dispararse fuera del intervalo.</td></tr>
+            <tr><td>Muchos nodos equiespaciados</td><td>Revisar antes de interpolar</td><td>Puede aparecer el fenómeno de Runge.</td></tr>
+            <tr><td>Abscisas repetidas o todas iguales</td><td>No aplicable</td><td>Lagrange y la pendiente quedan indefinidas.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 02b. HISTORIA -->
+    <section class="view" id="historia" data-section="historia">
+      <div class="section-heading compact">
+        <p class="eyebrow"><span>02</span> HISTORIA</p>
+        <h2>De las tablas astronómicas a los modelos de datos</h2>
+        <p>Interpolar y ajustar nacieron para predecir: posiciones de astros, tablas de funciones, mediciones con error. La historia muestra la tensión entre pasar por cada dato y describir la tendencia general.</p>
+      </div>
+
+      <ol class="timeline">
+        <li><span class="year">Antigüedad</span><div><h3>Tablas y estimación entre valores</h3><p>Astrónomos de Babilonia y Grecia construyen tablas de posiciones planetarias. Para valores intermedios usan interpolación lineal entre dos entradas: la primera idea de estimar entre datos.</p></div></li>
+        <li><span class="year">1676–1687</span><div><h3>Isaac Newton · diferencias divididas</h3><p>Newton formula una interpolación con diferencias divididas que se puede ampliar añadiendo puntos sin rehacer todo el cálculo. Es equivalente, en resultado, al polinomio de Lagrange.</p></div></li>
+        <li><span class="year">1779</span><div><h3>Edward Waring</h3><p>Publica una fórmula de interpolación con productos de factores (x − xᵢ), la misma estructura que el polinomio de Lagrange.</p></div></li>
+        <li><span class="year">1795</span><div><h3>Joseph-Louis Lagrange</h3><p>Presenta la forma del polinomio interpolador que hoy lleva su nombre: cada base Lᵢ vale 1 en su nodo y 0 en los demás. Es la forma que usa este módulo.</p></div></li>
+        <li><span class="year">1805</span><div><h3>Adrien-Marie Legendre · mínimos cuadrados</h3><p>Publica el método de los mínimos cuadrados para combinar observaciones con error, en un apéndice sobre la órbita de cometas. Minimizar la suma de cuadrados de los residuos se vuelve el criterio estándar.</p></div></li>
+        <li><span class="year">1809</span><div><h3>Carl Friedrich Gauss · Theoria motus</h3><p>Gauss reclama haber usado mínimos cuadrados desde 1795 y lo vincula con la ley normal de los errores. Desde entonces el ajuste por mínimos cuadrados se apoya en supuestos probabilísticos sobre el error.</p></div></li>
+        <li><span class="year">1901</span><div><h3>Carl Runge · el fenómeno de Runge</h3><p>Muestra que interpolar una función suave con muchos nodos equiespaciados puede oscilar mucho cerca de los extremos. Es la razón por la que más nodos no siempre mejoran el resultado.</p></div></li>
+        <li><span class="year">1946</span><div><h3>Isaac Schoenberg · splines</h3><p>Introduce las splines: polinomios de grado bajo unidos suavemente entre nodos. Evitan las oscilaciones de Runge y son la base del trazado de curvas en gráficos y en diseño asistido por computadora.</p></div></li>
+        <li><span class="year">Hoy</span><div><h3>Regresión en ciencia de datos</h3><p>La regresión lineal se extiende a muchas variables y a modelos con regularización. Sigue siendo el primer modelo que se prueba en estadística, ingeniería y aprendizaje automático.</p></div></li>
+      </ol>
+
+      <div class="ejemplo-extra">
+        <h3>La pregunta que cambia el método</h3>
+        <p>Si los datos son exactos (una tabla astronómica), interesa reproducirlos: interpolar. Si los datos traen error (una medición de latencia), interesa la tendencia: ajustar. La historia de la estadística nació de esa diferencia, y el error de medición es la razón por la que la regresión existe.</p>
+      </div>
+
+      <h3 class="block-title"><i class="fa-solid fa-spell-check"></i> Glosario</h3>
+      <dl class="glossary">
+        <dt>Nodo</dt><dd>Par (xᵢ, yᵢ) de datos por el que pasa el polinomio interpolador. Las abscisas deben ser distintas.</dd>
+        <dt>Base de Lagrange Lᵢ(x)</dt><dd>Polinomio que vale 1 en xᵢ y 0 en los demás nodos. Multiplicada por yᵢ, aporta su contribución al valor interpolado.</dd>
+        <dt>Extrapolación</dt><dd>Estimar fuera del intervalo de los datos. Es poco confiable para polinomios de grado alto.</dd>
+        <dt>Residuo de regresión</dt><dd>rᵢ = yᵢ − ŷᵢ. Diferencia entre el dato y la recta ajustada.</dd>
+        <dt>SCR</dt><dd>Suma de cuadrados de los residuos. El ajuste por mínimos cuadrados es el que la hace mínima.</dd>
+        <dt>Fenómeno de Runge</dt><dd>Oscilación de la interpolación polinómica con muchos nodos equiespaciados.</dd>
+        <dt>Coeficiente de determinación R²</dt><dd>Fracción de la variación de y que explica la recta: R² = 1 − SCR/SCT.</dd>
+      </dl>
     </section>
 
     <!-- 03. CALCULADORA -->
@@ -356,6 +440,7 @@ SCR = Σ rᵢ²</code></pre>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script src="js/tests.js"></script>
   <script src="js/content.js"></script>
+  <script src="js/content-extra.js"></script>
   <script src="js/solver.js"></script>
   <script src="../assets/js/learn.js"></script>
   <script src="../assets/js/shell.js"></script>
