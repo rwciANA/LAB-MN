@@ -789,75 +789,7 @@
         <button class="button button-outline quiz-reset" type="button"><i class="fa-solid fa-rotate-left"></i> Reiniciar test</button>
       </div>
 
-      <div class="quiz-grid">
-        <article class="quiz-card" data-type="opcion" data-answer="b" data-explain="Bisección requiere f(a) · f(b) < 0 por el Teorema de Bolzano para garantizar la existencia de una raíz en el intervalo cerrado.">
-          <div class="quiz-head"><span class="quiz-n">1</span><span class="quiz-kind">MÉTODOS CERRADOS</span></div>
-          <p class="quiz-q">¿Qué condición matemática indispensable exige un método cerrado como Bisección?</p>
-          <div class="quiz-options">
-            <label><input type="radio" name="q1" value="a"> Que la derivada $f'(x) \neq 0$ en todo el intervalo</label>
-            <label><input type="radio" name="q1" value="b"> Que $f(a) \cdot f(b) < 0$ (cambio de signo en función continua)</label>
-            <label><input type="radio" name="q1" value="c"> Que $a$ y $b$ sean enteros positivos</label>
-            <label><input type="radio" name="q1" value="d"> Que la función sea polinomial</label>
-          </div>
-          <button class="button button-outline quiz-check" type="button">Comprobar</button>
-          <p class="quiz-feedback" aria-live="polite"></p>
-        </article>
-
-        <article class="quiz-card" data-type="opcion" data-answer="f" data-explain="FALSO. El residuo |f(x)| y el error |x - r| son magnitudes distintas: Ea ≈ |residuo| / |f'(r)|. Con pendiente pequeña, un residuo diminuto esconde un error enorme.">
-          <div class="quiz-head"><span class="quiz-n">2</span><span class="quiz-kind">ERRORES Y RESIDUOS</span></div>
-          <p class="quiz-q">"Si el residuo $|f(x_{\text{aprox}})|$ es menor a $10^{-6}$, entonces el error de la raíz $|x_{\text{aprox}} - r|$ siempre es menor a $10^{-6}$."</p>
-          <div class="quiz-options">
-            <label><input type="radio" name="q2" value="v"> Verdadero</label>
-            <label><input type="radio" name="q2" value="f"> Falso</label>
-          </div>
-          <button class="button button-outline quiz-check" type="button">Comprobar</button>
-          <p class="quiz-feedback" aria-live="polite"></p>
-        </article>
-
-        <article class="quiz-card" data-type="numerica" data-answer="-0.125" data-tol="0.001" data-explain="f(1.5) = (1.5)³ - 1.5 - 2 = 3.375 - 3.5 = -0.125. Por ello el nuevo intervalo pasa a ser [1.5, 2].">
-          <div class="quiz-head"><span class="quiz-n">3</span><span class="quiz-kind">CÁLCULO MANUAL · TOL 0.001</span></div>
-          <p class="quiz-q">En la primera iteración de Bisección sobre $[1, 2]$ con $f(x) = x^3 - x - 2$, ¿cuánto vale $f(1.5)$?</p>
-          <div class="quiz-input-row">
-            <input class="quiz-input" type="number" step="any" placeholder="Escribe el valor exacto…" aria-label="Respuesta numérica pregunta 3">
-            <button class="button button-outline quiz-check" type="button">Comprobar</button>
-          </div>
-          <p class="quiz-feedback" aria-live="polite"></p>
-        </article>
-
-        <article class="quiz-card" data-type="opcion" data-answer="a" data-explain="x₁ = 1.5 - f(1.5)/f'(1.5) = 1.5 - (-0.125)/5.75 = 1.5 + 0.02173913 = 1.5217391.">
-          <div class="quiz-head"><span class="quiz-n">4</span><span class="quiz-kind">MÉTODOS ABIERTOS</span></div>
-          <p class="quiz-q">En Newton-Raphson con $x_0 = 1.5$ para $f(x) = x^3 - x - 2$ ($f'(x) = 3x^2 - 1$), ¿cuál es el valor de $x_1$?</p>
-          <div class="quiz-options">
-            <label><input type="radio" name="q4" value="a"> $1.5217391$</label>
-            <label><input type="radio" name="q4" value="b"> $1.4782609$</label>
-            <label><input type="radio" name="q4" value="c"> $1.6250000$</label>
-            <label><input type="radio" name="q4" value="d"> $1.5000000$</label>
-          </div>
-          <button class="button button-outline quiz-check" type="button">Comprobar</button>
-          <p class="quiz-feedback" aria-live="polite"></p>
-        </article>
-
-        <article class="quiz-card" data-type="opcion" data-answer="f" data-explain="FALSO. El Teorema Fundamental del Álgebra promete 3 raíces complejas en C. f(x)=x³-x-2 tiene 1 real (1.5214) y 2 complejas conjugadas (-0.7607 ± 0.8578i).">
-          <div class="quiz-head"><span class="quiz-n">5</span><span class="quiz-kind">ÁLGEBRA DE POLINOMIOS</span></div>
-          <p class="quiz-q">"Todo polinomio de grado 3 con coeficientes reales tiene necesariamente 3 raíces reales."</p>
-          <div class="quiz-options">
-            <label><input type="radio" name="q5" value="v"> Verdadero</label>
-            <label><input type="radio" name="q5" value="f"> Falso</label>
-          </div>
-          <button class="button button-outline quiz-check" type="button">Comprobar</button>
-          <p class="quiz-feedback" aria-live="polite"></p>
-        </article>
-
-        <article class="quiz-card" data-type="numerica" data-answer="20" data-tol="0" data-explain="n ≥ log₂((2-1)/10⁻⁶) = log₂(10⁶) ≈ 19.9315 ⇒ Se requieren exactamente 20 iteraciones.">
-          <div class="quiz-head"><span class="quiz-n">6</span><span class="quiz-kind">COTA DE BISECCIÓN</span></div>
-          <p class="quiz-q">¿Cuántas iteraciones de Bisección en $[1, 2]$ garantizan una cota de error $\le 10^{-6}$? (valor entero)</p>
-          <div class="quiz-input-row">
-            <input class="quiz-input" type="number" step="1" placeholder="n = ?" aria-label="Respuesta numérica pregunta 6">
-            <button class="button button-outline quiz-check" type="button">Comprobar</button>
-          </div>
-          <p class="quiz-feedback" aria-live="polite"></p>
-        </article>
-      </div>
+      <div class="quiz-grid" id="quizMount"></div>
     </section>
 
     <section class="view" id="referencias" data-section="referencias">
@@ -939,6 +871,12 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/13.1.1/math.min.js"></script>
   <script src="js/app.js?v=13"></script>
+  <script src="../assets/js/learn.js"></script>
+  <script src="js/quiz-data.js"></script>
+  <script>
+    renderQuiz(document.getElementById("quizMount"), AUTOEVALUACION_1, { puntaje: ".quiz-score" });
+    document.querySelector(".quiz-reset").addEventListener("click", () => renderQuiz(document.getElementById("quizMount"), AUTOEVALUACION_1, { puntaje: ".quiz-score" }));
+  </script>
   <script src="../assets/js/keypad-float.js"></script>
   <script>activarTecladoFlotante(document.getElementById("keypadDock"), document.getElementById("keypadFab"));</script>
   <script src="../assets/js/motion.js"></script>

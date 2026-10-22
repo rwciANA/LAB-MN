@@ -284,3 +284,16 @@ body { background: radial-gradient(1200px 600px at 85% -10%, rgba(239,108,69,.10
 .ghost-btn { transition: background .15s, color .15s, transform .1s; }
 .ghost-btn:active, .presets button:active, .actions button:active { transform: scale(.97); }
 .message:not(:empty) { box-shadow: 0 1px 0 rgba(32,37,42,.04); }
+
+/* ===== Explicación completa de la autoevaluación ===== */
+.q-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 4px; }
+.explica { margin-top: 12px; }
+.explica-bloque { background: var(--cream); border: 1px solid var(--line); border-left: 4px solid var(--blue); border-radius: 14px; padding: 16px 18px; animation: itera-vista .4s ease both; }
+.explica-bloque h5 { font: 700 14px "Space Grotesk", sans-serif; margin: 14px 0 6px; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+.explica-bloque h5 i { color: var(--orange); }
+.explica-bloque p, .explica-bloque li { font-size: 14.5px; line-height: 1.65; color: #3f4a50; }
+.explica-bloque ol, .explica-bloque ul { padding-left: 20px; margin: 4px 0; }
+.motivo-error { background: #fbe9e5; border: 1px solid #f1c5bb; border-radius: 12px; padding: 12px 14px; margin-bottom: 6px; }
+.motivo-error h5 { color: #a33b1e; margin-top: 0; }
+.motivo-error h5 i { color: #a33b1e; }
+.motivo-error p { margin: 0; }

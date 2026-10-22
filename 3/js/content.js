@@ -2,27 +2,102 @@
 
 const AUTOEVALUACION_3 = [
   {
+    tema: "Grado del polinomio",
     tipo: "multiple",
     pregunta: "Un polinomio de Lagrange con n nodos tiene grado:",
     opciones: ["n", "n − 1", "n + 1"],
     respuesta: 1,
-    explicacion: "n puntos determinan un único polinomio de grado a lo sumo n − 1.",
+    explicacion: "Con n abscisas distintas existe un único polinomio de grado a lo sumo n − 1. Cada base Lᵢ es un producto de n − 1 factores lineales (x − xⱼ), con j ≠ i.",
+    porQue: [
+      "Grado n exigiría un punto más que los datos disponibles: con n puntos sobra una libertad, y el grado n − 1 ya basta para pasar por todos.",
+      "",
+      "Grado n + 1 también pasa por los datos, pero no es único: habría infinitos polinomios posibles. Lagrange construye el de grado mínimo.",
+    ],
+    pasos: [
+      "Contar los nodos: n.",
+      "Cada base Lᵢ tiene un factor por cada nodo distinto de i: n − 1 factores.",
+      "Por tanto, el grado de P(x) = Σ yᵢ·Lᵢ(x) es n − 1.",
+    ],
+    comoDeberia: "Contar factores de cada base: n − 1 factores lineales dan grado n − 1.",
+    grafico: canvas => {
+      const xs = [0, 1, 2], ys = [1, 3, 2];
+      const curva = [];
+      for (let x = -0.5; x <= 2.5; x += 0.05) curva.push({ x, y: lagrange(xs, ys, x).value });
+      new Chart(canvas, {
+        type: "scatter",
+        data: { datasets: [
+          { type: "line", label: "Polinomio de grado 2 (n = 3 nodos)", data: curva, borderColor: "#ef6c45", pointRadius: 0, tension: 0.2 },
+          { label: "Nodos", data: xs.map((x, i) => ({ x, y: ys[i] })), backgroundColor: "#14232e", pointRadius: 6 },
+        ] },
+        options: { parsing: false, responsive: true, maintainAspectRatio: false, scales: { x: { type: "linear" } } },
+      });
+    },
   },
   {
+    tema: "Nodos repetidos",
     tipo: "vf",
     pregunta: "Lagrange rechaza una entrada con dos valores de y para la misma abscisa, en lugar de eliminar un nodo en silencio.",
     opciones: ["Verdadero", "Falso"],
     respuesta: 0,
-    explicacion: "Un punto x no puede tener dos imágenes en una función; el módulo informa el error y no calcula.",
+    explicacion: "Una abscisa no puede tener dos imágenes en una función: los datos son contradictorios. Eliminar un nodo sin avisar cambiaría el resultado sin que el usuario lo sepa.",
+    porQue: [
+      "Correcto: el módulo muestra «abscisa repetida» y no calcula, para que el usuario corrija los datos.",
+      "Sería un error de diseño: el resultado cambiaría sin aviso y no se podría auditar qué datos se usaron.",
+    ],
+    pasos: [
+      "Revisar que todas las abscisas sean distintas.",
+      "Si hay repetidas: mostrar un error que indique cuáles.",
+      "Solo entonces construir las bases de Lagrange.",
+    ],
+    comoDeberia: "Validar antes de calcular, y mostrar la abscisa conflictiva con sus dos valores de y.",
+    grafico: canvas => {
+      new Chart(canvas, {
+        type: "scatter",
+        data: { datasets: [
+          { label: "(1, 2)", data: [{ x: 1, y: 2 }], backgroundColor: "#185e73", pointRadius: 7 },
+          { label: "(1, 5): conflicto", data: [{ x: 1, y: 5 }], backgroundColor: "#ef6c45", pointRadius: 7 },
+          { label: "(2, 3)", data: [{ x: 2, y: 3 }], backgroundColor: "#14232e", pointRadius: 6 },
+        ] },
+        options: { parsing: false, responsive: true, maintainAspectRatio: false, scales: { x: { type: "linear", min: 0, max: 3 }, y: { min: 0, max: 6 } } },
+      });
+    },
   },
   {
+    tema: "Cálculo de Lagrange",
     tipo: "numerica",
     pregunta: "Con los nodos (1, 1), (2, 3), (3, 2), evalúa el polinomio de Lagrange en x = 2.5 (tolerancia 0.001).",
     respuesta: 2.875,
     tol: 0.001,
-    explicacion: "P(2.5) = 1·(−0.125) + 3·(0.75) + 2·(0.375) = 2.875.",
+    explicacion: "P(2.5) = 1·L₁(2.5) + 3·L₂(2.5) + 2·L₃(2.5) = 1·(−0.125) + 3·(0.75) + 2·(0.375) = 2.875.",
+    pasos: [
+      "L₁(2.5) = (2.5−2)(2.5−3) / [(1−2)(1−3)] = (0.5)(−0.5)/2 = −0.125.",
+      "L₂(2.5) = (2.5−1)(2.5−3) / [(2−1)(2−3)] = (1.5)(−0.5)/(−1) = 0.75.",
+      "L₃(2.5) = (2.5−1)(2.5−2) / [(3−1)(3−2)] = (1.5)(0.5)/2 = 0.375.",
+      "Comprobación: −0.125 + 0.75 + 0.375 = 1 (las bases suman 1 en cualquier x).",
+      "P(2.5) = 1(−0.125) + 3(0.75) + 2(0.375) = 2.875.",
+    ],
+    errores: [
+      "Olvidar el signo de un factor: el de L₁ es negativo porque (2.5 − 3) < 0. Ese signo es correcto y produce una contribución negativa.",
+      "Confundir el orden de los nodos: cada yᵢ debe multiplicar a su propia base Lᵢ.",
+    ],
+    comoDeberia: "Calcular cada base por separado, verificar que suman 1 y luego sumar las contribuciones yᵢ·Lᵢ(x).",
+    grafico: canvas => {
+      const xs = [1, 2, 3], ys = [1, 3, 2];
+      const curva = [];
+      for (let x = 0.5; x <= 3.5; x += 0.05) curva.push({ x, y: lagrange(xs, ys, x).value });
+      new Chart(canvas, {
+        type: "scatter",
+        data: { datasets: [
+          { type: "line", label: "Polinomio de Lagrange", data: curva, borderColor: "#185e73", pointRadius: 0, tension: 0.2 },
+          { label: "Nodos", data: xs.map((x, i) => ({ x, y: ys[i] })), backgroundColor: "#14232e", pointRadius: 6 },
+          { label: "P(2.5) = 2.875", data: [{ x: 2.5, y: 2.875 }], backgroundColor: "#ef6c45", pointRadius: 8 },
+        ] },
+        options: { parsing: false, responsive: true, maintainAspectRatio: false, scales: { x: { type: "linear" } } },
+      });
+    },
   },
   {
+    tema: "Requisitos de la regresión",
     tipo: "multiple",
     pregunta: "La regresión lineal por mínimos cuadrados necesita:",
     opciones: [
@@ -31,21 +106,99 @@ const AUTOEVALUACION_3 = [
       "Seis datos como mínimo.",
     ],
     respuesta: 1,
-    explicacion: "Si todas las x son iguales, la pendiente Sxy/Sxx tiene denominador cero. Pasar por los datos no es un requisito: es lo que distingue a la regresión de la interpolación.",
+    explicacion: "La pendiente b = Sxy / Sxx necesita Sxx ≠ 0, es decir, al menos dos abscisas distintas. Pasar por todos los datos no es un requisito: es justamente lo que la regresión no busca.",
+    porQue: [
+      "Eso describe la interpolación. Con error de medición la recta no pasa por todos los puntos, y eso es lo esperado.",
+      "",
+      "No hay un mínimo de seis datos. Con dos abscisas distintas se calcula la recta, aunque con dos puntos el ajuste es exacto y no permite validar el modelo.",
+    ],
+    pasos: [
+      "Calcular x̄ e ȳ.",
+      "Sxx = Σ(xᵢ − x̄)²: si vale 0, todas las x son iguales y la pendiente no existe.",
+      "Con Sxx ≠ 0: b = Sxy / Sxx y a = ȳ − b·x̄.",
+    ],
+    comoDeberia: "Verificar que hay variación en x antes de ajustar; con pocos datos, advertir que el ajuste no permite validar el modelo.",
+    grafico: canvas => {
+      const xs = [0, 1, 2, 3], ys = [1, 2, 2, 4];
+      const reg = linearRegression(xs, ys);
+      new Chart(canvas, {
+        type: "scatter",
+        data: { datasets: [
+          { type: "line", label: "Recta y = 0.9 + 0.9x", data: [{ x: -0.2, y: reg.predecir(-0.2) }, { x: 3.2, y: reg.predecir(3.2) }], borderColor: "#185e73", pointRadius: 0 },
+          { label: "Datos", data: xs.map((x, i) => ({ x, y: ys[i] })), backgroundColor: "#14232e", pointRadius: 6 },
+        ] },
+        options: { parsing: false, responsive: true, maintainAspectRatio: false, scales: { x: { type: "linear" } } },
+      });
+    },
   },
   {
+    tema: "Extrapolación",
     tipo: "vf",
     pregunta: "Si la consulta está fuera del intervalo de los datos, el valor interpolado es tan confiable como dentro del intervalo.",
     opciones: ["Verdadero", "Falso"],
     respuesta: 1,
-    explicacion: "Fuera del intervalo el polinomio puede divergir rápidamente. Por eso el módulo muestra un aviso de extrapolación.",
+    explicacion: "Fuera del intervalo el error de interpolación crece con ∏(x − xᵢ), y el polinomio puede dispararse. Con el caso de partida, P(5) = 26 mientras la recta predice 5.4.",
+    porQue: [
+      "Falso en la práctica: el término ∏(x − xᵢ) crece rápido al alejarse de los nodos, así que el error también.",
+      "Correcto: dentro del intervalo la interpolación es razonable; fuera, debe marcarse como extrapolación.",
+    ],
+    pasos: [
+      "Comprobar si x está entre el mínimo y el máximo de las abscisas.",
+      "Si no está: marcar la predicción como extrapolación.",
+      "Comparar con un modelo más estable (la regresión) antes de decidir.",
+    ],
+    comoDeberia: "Mostrar aviso de extrapolación y preferir un modelo de tendencia, o medir en ese rango.",
+    grafico: canvas => {
+      const xs = [0, 1, 2, 3], ys = [1, 2, 2, 4];
+      const reg = linearRegression(xs, ys);
+      const curva = [], recta = [];
+      for (let x = -0.5; x <= 5.5; x += 0.1) {
+        curva.push({ x, y: lagrange(xs, ys, x).value });
+        recta.push({ x, y: reg.predecir(x) });
+      }
+      new Chart(canvas, {
+        type: "scatter",
+        data: { datasets: [
+          { type: "line", label: "Lagrange (se dispara fuera de [0, 3])", data: curva, borderColor: "#ef6c45", pointRadius: 0, tension: 0.2 },
+          { type: "line", label: "Recta de regresión", data: recta, borderColor: "#185e73", borderDash: [6, 4], pointRadius: 0 },
+          { label: "Datos", data: xs.map((x, i) => ({ x, y: ys[i] })), backgroundColor: "#14232e", pointRadius: 6 },
+        ] },
+        options: { parsing: false, responsive: true, maintainAspectRatio: false, scales: { x: { type: "linear" }, y: { min: -10, max: 30 } } },
+      });
+    },
   },
   {
+    tema: "Pendiente",
     tipo: "numerica",
     pregunta: "Pendiente de la recta de mínimos cuadrados para los datos (1, 1), (2, 3), (3, 2), (4, 5) (tolerancia 0.01).",
     respuesta: 1.1,
     tol: 0.01,
-    explicacion: "Sxy = 5.5 y Sxx = 5, así que b = 1.1 (el intercepto resulta 0).",
+    explicacion: "x̄ = 2.5, ȳ = 2.75. Sxy = Σ(xᵢ − x̄)(yᵢ − ȳ) = 5.5 y Sxx = 5, así que b = 5.5 / 5 = 1.1. El intercepto resulta 0.",
+    pasos: [
+      "x̄ = (1+2+3+4)/4 = 2.5; ȳ = (1+3+2+5)/4 = 2.75.",
+      "Sxy = (−1.5)(−1.75) + (−0.5)(0.25) + (0.5)(−0.75) + (1.5)(2.25) = 5.5.",
+      "Sxx = 2.25 + 0.25 + 0.25 + 2.25 = 5.",
+      "b = 5.5 / 5 = 1.1 y a = 2.75 − 1.1·2.5 = 0.",
+    ],
+    errores: [
+      "Dividir Sxy entre n en lugar de Sxx: da 1.375, que no es la pendiente de mínimos cuadrados.",
+      "No centrar los datos: sumar xᵢyᵢ sin restar las medias no da la pendiente correcta en general.",
+    ],
+    comoDeberia: "Centrar con las medias, calcular Sxy y Sxx, dividir y comprobar que los residuos suman aproximadamente cero.",
+    grafico: canvas => {
+      const xs = [1, 2, 3, 4], ys = [1, 3, 2, 5];
+      const reg = linearRegression(xs, ys);
+      const segmentos = xs.map((x, i) => [{ x, y: ys[i] }, { x, y: reg.predecir(x) }]);
+      new Chart(canvas, {
+        type: "scatter",
+        data: { datasets: [
+          { type: "line", label: "Recta y = 1.1x", data: [{ x: 0.5, y: reg.predecir(0.5) }, { x: 4.5, y: reg.predecir(4.5) }], borderColor: "#185e73", pointRadius: 0 },
+          { label: "Datos", data: xs.map((x, i) => ({ x, y: ys[i] })), backgroundColor: "#14232e", pointRadius: 6 },
+          ...segmentos.map((s, k) => ({ type: "line", label: k === 0 ? "Residuos" : undefined, data: s, borderColor: "#ef6c45", borderDash: [3, 3], pointRadius: 0 })),
+        ] },
+        options: { parsing: false, responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { filter: it => it.text } } }, scales: { x: { type: "linear" } } },
+      });
+    },
   },
 ];
 
