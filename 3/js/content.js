@@ -52,6 +52,8 @@ const AUTOEVALUACION_3 = [
 const EJERCICIOS_3 = [
   {
     nivel: "Intermedio",
+    tipo: "lagrange",
+    datos: { xs: [0, 1, 2, 3], ys: [1, 2, 2, 4], x: 1.5 },
     enunciado: "Para los nodos (0, 1), (1, 2), (2, 2), (3, 4), calcula la base L₀(x) y su valor en x = 1.5.",
     solucion: `<p>L₀(x) = (x − 1)(x − 2)(x − 3) / [(0 − 1)(0 − 2)(0 − 3)] = (x − 1)(x − 2)(x − 3) / (−6).</p>
       <p>En x = 1.5: (0.5)(−0.5)(−1.5) / (−6) = 0.375 / (−6) = <strong>−0.0625</strong>.</p>
@@ -59,6 +61,8 @@ const EJERCICIOS_3 = [
   },
   {
     nivel: "Intermedio",
+    tipo: "regresion",
+    datos: { xs: [1, 2, 3, 4], ys: [1, 3, 2, 5], x: 5 },
     enunciado: "Ajusta por mínimos cuadrados los datos (1, 1), (2, 3), (3, 2), (4, 5). Calcula pendiente, intercepto, SCR y el valor ajustado en x = 5.",
     solucion: `<p>x̄ = 2.5, ȳ = 2.75. Sxy = 5.5, Sxx = 5.</p>
       <p>Pendiente b = 1.1; intercepto a = 2.75 − 1.1·2.5 = 0. Recta: y = 1.1x.</p>
@@ -67,12 +71,16 @@ const EJERCICIOS_3 = [
   },
   {
     nivel: "Avanzado",
+    tipo: "lagrange",
+    datos: { xs: [0, 1, 2], ys: [0, 1, 4], x: 3 },
     enunciado: "Demuestra que la interpolación de Lagrange reproduce exactamente un polinomio de grado ≤ n − 1. Aplícalo a (0, 0), (1, 1), (2, 4), que siguen y = x², y calcula P(3).",
     solucion: `<p>Si f es un polinomio de grado ≤ n − 1, el polinomio interpolador P de los n nodos cumple P(xᵢ) = f(xᵢ). Ambos tienen grado ≤ n − 1 y coinciden en n puntos distintos; la diferencia tiene n raíces y grado ≤ n − 1, así que es idénticamente cero.</p>
       <p>Por eso P(x) = x² para estos tres nodos, y <strong>P(3) = 9</strong>, aunque x = 3 no sea un nodo.</p>`,
   },
   {
     nivel: "Avanzado",
+    tipo: "comparacion",
+    datos: { xs: [0, 1, 2, 3], ys: [1, 2, 2, 4], x: 5 },
     enunciado: "Con el caso de partida (x = 0, 1, 2, 3; y = 1, 2, 2, 4), compara Lagrange y la recta en x = 5. ¿Cuál confiarías más y por qué?",
     solucion: `<p>Lagrange (cuatro nodos) da P(5) = 26 ms. La recta da 0.9 + 0.9·5 = 5.4 ms.</p>
       <p>La diferencia es grande porque x = 5 está fuera del intervalo de los datos (extrapolación). El polinomio de grado 3 sigue su curvatura y se dispara; la recta modela una tendencia y es más estable para predecir.</p>

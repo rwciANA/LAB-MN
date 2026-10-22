@@ -210,3 +210,11 @@ pre.algo code { background: none; color: inherit; font: inherit; padding: 0; }
   .calc-layout { grid-template-columns: minmax(340px, 4fr) minmax(0, 5fr) minmax(280px, 3fr); }
   .calc-layout .calc-aside { grid-column: 3; grid-row: 1; position: sticky; top: 96px; }
 }
+
+/* ===== Ejercicios paso a paso ===== */
+.ej-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0 4px; }
+.ghost-btn i { margin-right: 6px; color: var(--orange); }
+.calc-steps { padding-left: 22px; line-height: 1.8; font-size: 15px; }
+.calc-steps sub { font-size: 75%; }
+table.mini td.aug { border-left: 1px dashed var(--muted); padding-left: 12px; }
+.chart-box { height: clamp(260px, 32vh, 380px); }

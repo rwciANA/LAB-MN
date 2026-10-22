@@ -60,6 +60,8 @@ const AUTOEVALUACION_2 = [
 const EJERCICIOS_2 = [
   {
     nivel: "Intermedio",
+    tipo: "gauss",
+    datos: { A: [[2, 1], [1, 3]], b: [3, 5] },
     enunciado: "Resuelve por eliminación gaussiana con pivoteo parcial: 2x + y = 3, x + 3y = 5.",
     solucion: `<p>Matriz aumentada: [2 1 | 3; 1 3 | 5]. En la columna 1 el mayor |valor| es 2 (fila 1): no hay intercambio.</p>
       <p>Multiplicador 1/2: fila 2 ← fila 2 − ½·fila 1 → [0 2.5 | 3.5].</p>
@@ -68,6 +70,8 @@ const EJERCICIOS_2 = [
   },
   {
     nivel: "Intermedio",
+    tipo: "gs",
+    datos: { A: [[2, 1, -1], [-3, -1, 2], [-2, 1, 2]], b: [8, -11, -3], maxIter: 3 },
     enunciado: "Calcula la primera iteración de Gauss-Seidel desde x₀ = (0, 0, 0) para A = [[2,1,−1],[−3,−1,2],[−2,1,2]], b = (8, −11, −3).",
     solucion: `<p>x₁ = (8 − 0 − 0)/2 = 4.</p>
       <p>x₂ = (−11 − (−3)(4) − 2·0)/(−1) = (−11 + 12)/(−1) = −1.</p>
@@ -76,6 +80,8 @@ const EJERCICIOS_2 = [
   },
   {
     nivel: "Avanzado",
+    tipo: "gs",
+    datos: { A: [[1, 2], [3, 1]], b: [5, 6], maxIter: 6 },
     enunciado: "Aplica Gauss-Seidel a A = [[1,2],[3,1]], b = (5, 6), desde cero. ¿Converge? Justifica con el residuo y con la dominancia diagonal.",
     solucion: `<p>La matriz no es diagonal dominante: en la fila 1, |1| &lt; |2|.</p>
       <p>Los residuos de la calculadora crecen en cada iteración (≈ 18, 108, 648, 3890, …): el método <strong>diverge</strong>.</p>
@@ -84,6 +90,8 @@ const EJERCICIOS_2 = [
   },
   {
     nivel: "Avanzado",
+    tipo: "gs",
+    datos: { A: [[10, 2, 1], [1, 5, 1], [2, 3, 10]], b: [7, -8, 6] },
     enunciado: "Para A = [[10,2,1],[1,5,1],[2,3,10]], b = (7, −8, 6): (a) verifica la dominancia diagonal estricta; (b) con tolerancia 10⁻⁶ en residuo, ¿cuántas iteraciones de Gauss-Seidel necesita desde cero? (c) ¿Cuál es la solución?",
     solucion: `<p>(a) Filas: |10| &gt; 2+1; |5| &gt; 1+1; |10| &gt; 2+3. Sí es estrictamente dominante, por lo que converge.</p>
       <p>(b) Con la calculadora del módulo: 8 iteraciones hasta residuo ≤ 10⁻⁶.</p>

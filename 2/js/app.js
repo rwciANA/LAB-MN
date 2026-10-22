@@ -169,6 +169,18 @@ function renderTests() {
   }).join("");
 }
 
+// Carga un ejercicio en la calculadora, lo resuelve y muestra la vista de la calculadora.
+function cargarEjercicioEnCalculadora(ej) {
+  const { A, b, maxIter } = ej.datos;
+  $("size").value = String(A.length);
+  buildInputs(A.length, A, b);
+  $("method").value = ej.tipo === "gauss" ? "gauss" : "gs";
+  $("tol").value = "0.000001";
+  $("maxIter").value = String(maxIter || 100);
+  solve();
+  switchView("calculadora");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   $("size").addEventListener("change", () => {
     const n = sizeNow();
@@ -183,6 +195,6 @@ document.addEventListener("DOMContentLoaded", () => {
   loadPreset("base");
   renderTests();
   $("ejemplosExtra").innerHTML = EJEMPLOS_EXTRA_2;
-  renderExercises($("ejercicios-lista"), EJERCICIOS_2);
+  renderSolvedExercises($("ejercicios-lista"), EJERCICIOS_2, { generar: solucionSistema, resolver: cargarEjercicioEnCalculadora });
   renderQuiz($("quiz"), AUTOEVALUACION_2);
 });

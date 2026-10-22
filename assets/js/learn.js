@@ -74,3 +74,46 @@ function renderExercises(container, ejercicios) {
     });
   });
 }
+
+/*
+ * Ejercicios con solución paso a paso.
+ * lista: ejercicios con { nivel, enunciado, solucion, tipo, datos }.
+ * opciones.generar(ej) -> { html, chart? }   chart(canvas) dibuja el gráfico.
+ * opciones.resolver(ej)  carga el ejercicio en la calculadora del módulo.
+ */
+function renderSolvedExercises(container, lista, opciones) {
+  container.innerHTML = lista.map((ej, i) => `
+    <article class="ejercicio">
+      <p class="nivel">${escapeHtml(ej.nivel)}</p>
+      <h4>Ejercicio ${i + 1}</h4>
+      <p>${ej.enunciado}</p>
+      <div class="ej-actions">
+        <button type="button" class="ghost-btn" data-solve="${i}" aria-expanded="false"><i class="fa-solid fa-list-check" aria-hidden="true"></i> <span>Ver solución paso a paso</span></button>
+        <button type="button" class="ghost-btn" data-load="${i}"><i class="fa-solid fa-calculator" aria-hidden="true"></i> Resolver en la calculadora</button>
+      </div>
+      <div class="solucion" data-solution="${i}" hidden></div>
+    </article>`).join("");
+
+  container.querySelectorAll("[data-solve]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.dataset.solve);
+      const panel = container.querySelector(`[data-solution="${i}"]`);
+      if (!panel.dataset.ready) {
+        const ej = lista[i];
+        const sol = opciones.generar(ej);
+        const graficos = sol.charts || (sol.chart ? [sol.chart] : []);
+        panel.innerHTML = `<h4>Solución de referencia</h4>${ej.solucion}${sol.html}` +
+          graficos.map((_, k) => `<h4>Gráfico ${k + 1}</h4><div class="chart-box"><canvas id="ej-chart-${i}-${k}" aria-label="Gráfico ${k + 1} del ejercicio ${i + 1}"></canvas></div>`).join("");
+        panel.dataset.ready = "1";
+        if (typeof Chart !== "undefined") graficos.forEach((dibuja, k) => dibuja(panel.querySelector(`#ej-chart-${i}-${k}`)));
+      }
+      panel.hidden = !panel.hidden;
+      btn.setAttribute("aria-expanded", String(!panel.hidden));
+      btn.querySelector("span").textContent = panel.hidden ? "Ver solución paso a paso" : "Ocultar solución";
+    });
+  });
+
+  container.querySelectorAll("[data-load]").forEach(btn => {
+    btn.addEventListener("click", () => opciones.resolver(lista[Number(btn.dataset.load)]));
+  });
+}

@@ -163,6 +163,17 @@ function renderTests() {
   }).join("");
 }
 
+// Carga un ejercicio en la calculadora, lo calcula y muestra la vista de la calculadora.
+function cargarEjercicioEnCalculadora(ej) {
+  const { xs, ys, x } = ej.datos;
+  $("nCount").value = String(xs.length);
+  buildPoints(xs.length, xs, ys);
+  $("xQuery").value = String(x);
+  $("method").value = ej.tipo === "regresion" ? "reg" : ej.tipo === "comparacion" ? "both" : "lagrange";
+  calculate();
+  switchView("calculadora");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   $("nCount").addEventListener("change", () => {
     const n = Math.min(6, Math.max(2, Math.round(Number($("nCount").value)) || 2));
@@ -176,6 +187,6 @@ document.addEventListener("DOMContentLoaded", () => {
   loadPreset("base");
   renderTests();
   $("ejemplosExtra").innerHTML = EJEMPLOS_EXTRA_3;
-  renderExercises($("ejercicios-lista"), EJERCICIOS_3);
+  renderSolvedExercises($("ejercicios-lista"), EJERCICIOS_3, { generar: generarSolucion, resolver: cargarEjercicioEnCalculadora });
   renderQuiz($("quiz"), AUTOEVALUACION_3);
 });
