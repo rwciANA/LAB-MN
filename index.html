@@ -229,8 +229,8 @@
           <a class="btn btn-ghost" href="#incluye"><i class="fa-solid fa-circle-play"></i> Ver cómo funciona</a>
         </div>
         <div class="stats">
-          <div class="stat"><i class="fa-solid fa-cubes"></i><div><b>5</b><span>módulos completos</span></div></div>
-          <div class="stat"><i class="fa-solid fa-book-open"></i><div><b>+50</b><span>temas y subtemas</span></div></div>
+          <div class="stat"><i class="fa-solid fa-cubes"></i><div><b>3</b><span>módulos con calculadora</span></div></div>
+          <div class="stat"><i class="fa-solid fa-book-open"></i><div><b>5</b><span>temas del curso</span></div></div>
           <div class="stat"><i class="fa-solid fa-calculator"></i><div><b>Calculadoras</b><span>interactivas</span></div></div>
           <div class="stat"><i class="fa-solid fa-list-ol"></i><div><b>Aprendizaje</b><span>paso a paso</span></div></div>
         </div>
@@ -299,15 +299,15 @@
           <span class="num">02</span><span class="ico"><i class="fa-solid fa-table-cells"></i></span>
           <h3>Sistemas de ecuaciones lineales</h3>
           <p>Eliminación con pivoteo parcial y Gauss-Seidel</p>
-          <svg viewBox="0 0 120 64"><text x="22" y="22" font-size="10" fill="#16283c" font-family="monospace">2  2  0</text><text x="22" y="36" font-size="10" fill="#16283c" font-family="monospace">-1 2  2</text><text x="22" y="50" font-size="10" fill="#16283c" font-family="monospace">0 -1  2</text><path d="M16,10 L12,10 L12,54 L16,54 M76,10 L80,10 L80,54 L76,54" fill="none" stroke="#16283c" stroke-width="1.4"/></svg>
-          <a class="soon">Próximamente</a>
+          <svg viewBox="0 0 120 64"><text x="22" y="22" font-size="10" fill="#16283c" font-family="monospace">4  1  1</text><text x="22" y="36" font-size="10" fill="#16283c" font-family="monospace">1  5  1</text><text x="22" y="50" font-size="10" fill="#16283c" font-family="monospace">1  1  6</text><path d="M16,10 L12,10 L12,54 L16,54 M76,10 L80,10 L80,54 L76,54" fill="none" stroke="#16283c" stroke-width="1.4"/></svg>
+          <a href="2/">Explorar <i class="fa-solid fa-arrow-right"></i></a>
         </article>
         <article class="mod">
           <span class="num">03</span><span class="ico"><i class="fa-solid fa-chart-line"></i></span>
           <h3>Interpolación y ajuste de curvas</h3>
           <p>Interpolación de Lagrange y regresión lineal</p>
           <svg viewBox="0 0 120 64"><circle cx="20" cy="48" r="2.6" fill="#16283c"/><circle cx="40" cy="40" r="2.6" fill="#16283c"/><circle cx="60" cy="36" r="2.6" fill="#16283c"/><circle cx="80" cy="24" r="2.6" fill="#16283c"/><circle cx="100" cy="16" r="2.6" fill="#16283c"/><line x1="14" y1="52" x2="108" y2="12" stroke="#f4581c" stroke-width="2"/></svg>
-          <a class="soon">Próximamente</a>
+          <a href="3/">Explorar <i class="fa-solid fa-arrow-right"></i></a>
         </article>
         <article class="mod">
           <span class="num">04</span><span class="ico"><i class="fa-solid fa-integral"></i></span>
@@ -324,6 +324,54 @@
           <a class="soon">Próximamente</a>
         </article>
       </div>
+    </div>
+  </section>
+
+  <section id="proposito">
+    <style>
+      #proposito .pur-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 8px; }
+      #proposito .pur-card { background: #fff; border: 1px solid #ece6dc; border-radius: 16px; padding: 22px; }
+      #proposito .pur-card h3 { margin: 0 0 8px; font-family: Manrope, Inter, sans-serif; color: #14232e; }
+      #proposito .pur-card p, #proposito .pur-card li { color: #4b5b66; font-size: .97rem; }
+      #proposito .pur-card ul { padding-left: 18px; margin: 0; }
+      #proposito .pur-card li { margin-bottom: 6px; }
+      @media (prefers-color-scheme: dark) { #proposito .pur-card { background: #162530; border-color: #2a3d48; } #proposito .pur-card h3 { color: #e9f1f4; } #proposito .pur-card p, #proposito .pur-card li { color: #9fb3bd; } }
+    </style>
+    <div class="wrap">
+      <div class="sec-head"><div><h2>Para quién es y qué lograrás</h2><p>Un portal para estudiantes de Métodos Numéricos (UNSA, Ingeniería de Sistemas) y para quien aprende por su cuenta. No requiere instalar nada: todo funciona en el navegador.</p></div></div>
+      <div class="pur-grid">
+        <article class="pur-card">
+          <h3><i class="fa-solid fa-bullseye"></i> Objetivo</h3>
+          <p>Estudiar métodos numéricos, ejecutar algoritmos, observar sus resultados y comprobar su precisión con problemas de Ingeniería de Sistemas.</p>
+        </article>
+        <article class="pur-card">
+          <h3><i class="fa-solid fa-user-graduate"></i> Para quién</h3>
+          <ul>
+            <li>Estudiantes de Métodos Numéricos (UNSA).</li>
+            <li>Autodidactas con conocimientos básicos de programación, funciones, álgebra lineal y cálculo.</li>
+          </ul>
+        </article>
+        <article class="pur-card">
+          <h3><i class="fa-solid fa-list-check"></i> Resultados de aprendizaje</h3>
+          <ul>
+            <li>Formular un problema, identificar variables, unidades y supuestos, y justificar el método.</li>
+            <li>Implementar algoritmos con criterios de parada y analizar el error.</li>
+            <li>Contrastar resultados con una referencia independiente.</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="equipo">
+    <div class="wrap">
+      <div class="sec-head"><div><h2>Equipo de desarrollo</h2><p>Integrantes A a D del equipo del laboratorio. Los roles rotan cada tres semanas.</p></div></div>
+      <ul>
+        <li>A · Condori Idme Raul Wilfredo</li>
+        <li>B · Quispe Rupaylla Fabrizio Alonso</li>
+        <li>C · Suarez Huamani Marco Antonio</li>
+        <li>D · Chura Monroy Daniel Wilston</li>
+      </ul>
     </div>
   </section>
 

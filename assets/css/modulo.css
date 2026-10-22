@@ -145,3 +145,11 @@ td.fail { color: var(--danger); font-weight: 700; }
   .card { padding: 1rem; }
   .topbar nav a { font-size: .85rem; }
 }
+
+.points { display: grid; gap: .5rem; }
+.point-row { display: grid; grid-template-columns: 2rem 1fr 1fr; gap: .5rem; align-items: center; }
+.point-row .idx { color: var(--muted); font-weight: 700; text-align: center; }
+.point-row input {
+  font: 600 1rem Inter, sans-serif; text-align: center; color: var(--ink); background: var(--bg);
+  border: 1px solid var(--line); border-radius: 10px; padding: .5rem; min-height: 44px; width: 100%;
+}

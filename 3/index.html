@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Módulo 3 · Interpolación y ajuste de curvas | ITERA</title>
+  <meta name="description" content="Compara la interpolación de Lagrange con la regresión lineal por mínimos cuadrados y decide cuál usar según el propósito.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/modulo.css">
+  <script>window.MathJax = { tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["$$", "$$"]] } };</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../">ITERA <small>Módulo 3</small></a>
+    <nav aria-label="Secciones">
+      <a href="#teoria">Teoría</a>
+      <a href="#calculadora">Calculadora</a>
+      <a href="#ejemplo">Ejemplo</a>
+      <a href="#pruebas">Pruebas</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">Módulo 3 · Aproximación de funciones</p>
+      <h1>Interpolación y ajuste de curvas</h1>
+      <p class="lead">Distingue <strong>pasar por los datos</strong> de <strong>aproximar una tendencia</strong>, y elige el método según lo que necesites.</p>
+      <p class="meta"><strong>Objetivo:</strong> distinguir interpolar de ajustar, y elegir entre ambos según el propósito.</p>
+      <p class="meta"><strong>Caso de partida (datos sintéticos):</strong> carga normalizada x = 0, 1, 2, 3 y latencia y = 1, 2, 2, 4 ms de un servicio.</p>
+    </section>
+
+    <section id="teoria" class="card">
+      <h2>1. Teoría breve</h2>
+      <div class="grid2">
+        <div>
+          <h3>Interpolación de Lagrange</h3>
+          <p>Construye un polinomio de grado <em>n − 1</em> que pasa exactamente por los <em>n</em> puntos:</p>
+          <p>$$P(x)=\sum_{i=0}^{n-1} y_i\,L_i(x), \qquad L_i(x)=\prod_{j\ne i}\frac{x-x_j}{x_i-x_j}$$</p>
+          <p><strong>Limitación:</strong> si el dato tiene error de medición, el polinomio lo reproduce. Con grado alto puede oscilar entre puntos.</p>
+        </div>
+        <div>
+          <h3>Regresión lineal por mínimos cuadrados</h3>
+          <p>Busca la recta que minimiza la suma de cuadrados de los residuos, sin pasar necesariamente por los datos:</p>
+          <p>$$\text{pendiente } b=\frac{S_{xy}}{S_{xx}},\qquad \text{intercepto } a=\bar y-b\,\bar x,\qquad SCR=\sum_i (y_i-a-b\,x_i)^2$$</p>
+          <p><strong>Limitación:</strong> requiere al menos dos abscisas distintas; supone una tendencia lineal.</p>
+        </div>
+      </div>
+      <p><strong>Idea clave:</strong> interpolar no elimina el error de medición. Ajustar sirve para describir una tendencia; interpolar, para estimar entre datos exactos.</p>
+    </section>
+
+    <section id="calculadora" class="card">
+      <h2>2. Calculadora</h2>
+      <p class="hint">Datos precargados con el caso de partida. Edita x e y, y elige el método. Entre 2 y 6 nodos.</p>
+
+      <div class="controls">
+        <label>Nodos
+          <input id="nCount" type="number" min="2" max="6" step="1" value="4">
+        </label>
+        <label>Consulta x
+          <input id="xQuery" type="number" step="any" value="1.5">
+        </label>
+        <label>Método
+          <select id="method">
+            <option value="both" selected>Comparar ambos</option>
+            <option value="lagrange">Lagrange</option>
+            <option value="reg">Regresión lineal</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="presets">
+        <button type="button" data-preset="base">Caso base</button>
+        <button type="button" data-preset="repetida">Fallo: x repetida</button>
+        <button type="button" data-preset="iguales">Fallo: x iguales</button>
+        <button type="button" id="reset">Restablecer</button>
+      </div>
+
+      <div class="matrix-wrap">
+        <div>
+          <h3>Datos (x, y)</h3>
+          <div id="pointsInputs" class="points" aria-label="Pares de datos"></div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="button" id="solve" class="primary"><i class="fa-solid fa-calculator" aria-hidden="true"></i> Calcular</button>
+      </div>
+      <p id="message" class="message" role="status" aria-live="polite"></p>
+
+      <div id="results" class="results" hidden>
+        <div class="stats">
+          <div><span>Lagrange P(x)</span><strong id="valLagrange">—</strong></div>
+          <div><span>Recta ajustada ŷ(x)</span><strong id="valReg">—</strong></div>
+          <div><span>Pendiente / intercepto</span><strong id="coefReg">—</strong></div>
+          <div><span>Suma de cuadrados de residuos</span><strong id="scr">—</strong></div>
+        </div>
+
+        <h3>Gráfico: datos, polinomio de Lagrange y recta</h3>
+        <p class="hint">Eje horizontal: carga x. Eje vertical: latencia y (ms). Los puntos son los datos; la curva naranja pasa por ellos; la recta azul es el ajuste.</p>
+        <div class="chart-box"><canvas id="curveChart" aria-label="Gráfico de datos, polinomio de Lagrange y recta de regresión"></canvas></div>
+
+        <h3>Contribución de cada base de Lagrange en x</h3>
+        <div class="table-scroll"><table id="basesTable"><thead></thead><tbody></tbody></table></div>
+
+        <h3>Residuos de la regresión</h3>
+        <div class="table-scroll"><table id="resTable"><thead></thead><tbody></tbody></table></div>
+      </div>
+    </section>
+
+    <section id="ejemplo" class="card">
+      <h2>3. Ejemplo resuelto y caso comparativo</h2>
+      <ol class="steps-list">
+        <li><strong>Lagrange con los cuatro nodos.</strong> En x = 1.5 el polinomio vale 1.9375 ms.</li>
+        <li><strong>Regresión lineal.</strong> S<sub>xy</sub> = 4.5 y S<sub>xx</sub> = 5, así que b = 0.9 y a = 0.9. La recta es y = 0.9 + 0.9x; predice 2.25 ms en x = 1.5.</li>
+        <li><strong>Interpretación.</strong> No coinciden porque tienen objetivos distintos: Lagrange respeta cada dato (incluido el 2 en x = 2) y la recta describe la tendencia general. Si la latencia real tiene ruido, la recta es el modelo más estable para predecir.</li>
+      </ol>
+    </section>
+
+    <section id="pruebas" class="card">
+      <h2>4. Pruebas del módulo</h2>
+      <p class="hint">Pruebas ejecutadas con <code>node tests/run.js</code>. Referencias: Lagrange = 1.9375 en x = 1.5; recta 0.9 + 0.9x; SCR = 0.70.</p>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>ID</th><th>Método</th><th>Tipo</th><th>Entrada</th><th>Esperado</th><th>Estado</th></tr></thead>
+          <tbody id="testsBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>UNSA · Ingeniería de Sistemas · Laboratorio de Métodos Numéricos · 2026</p>
+    <p><a href="../">Volver al portal</a></p>
+  </footer>
+
+  <script src="js/algorithms.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="js/tests.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
