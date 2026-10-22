@@ -73,7 +73,7 @@ function initKeypad(montaje, opciones = {}) {
       ${TECLAS_KP.map(k => `<button type="button" class="${k.c || ""}"${k.a ? ` data-action="${k.a}"` : ` data-insert="${k.v}"`} aria-label="${k.aria || k.t}">${k.t}</button>`).join("")}
     </div>
     <p class="keypad-hint">Puedes escribir directamente: <code>1/3</code>, <code>sqrt(2)</code>, <code>pi/6</code>, <code>2^3</code>.</p>`;
-  montaje.appendChild(dock);
+  document.body.appendChild(dock);
 
   const fab = document.createElement("button");
   fab.className = "keypad-fab";
@@ -81,8 +81,8 @@ function initKeypad(montaje, opciones = {}) {
   fab.type = "button";
   fab.setAttribute("aria-label", "Abrir teclado matemático");
   fab.innerHTML = '<i class="fa-solid fa-calculator"></i>';
-  fab.addEventListener("click", () => dock.classList.toggle("open"));
   document.body.appendChild(fab);
+  activarTecladoFlotante(dock, fab);
 
   document.addEventListener("focusin", e => {
     if (e.target.matches && e.target.matches("input[data-math]")) {
